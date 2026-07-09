@@ -22,6 +22,7 @@ class Player {
     int baseDefense = 0;
     int bonusDefense = 0;
     int defense = 0;
+    int Money = 0;
 }
 
 public class Main {
@@ -37,7 +38,6 @@ public class Main {
 
     static Random random = new Random();
 
-    static boolean goHome = false;
     static boolean North = false;
     static boolean IvoryCastle = false;
     static boolean RainbowCloud = false;
@@ -119,6 +119,7 @@ public class Main {
         p.crystals = 0;
         p.WindRing = 0;
         p.BreezeHearts = 0;
+        p.Money = 0;
 
         System.out.print("Please enter your name young traveller: ");
         p.name = input.nextLine();
@@ -147,7 +148,7 @@ public class Main {
 
         System.out.println("\n**********************************************\n");
 
-        System.out.println("Current Health: " + p.health + " Current Crystals: " + p.crystals + " Level: " + p.level + " Damage: " + p.damage + " Your Defense: " + p.defense);
+        System.out.println("Current Money is: " + p.Money + p.health + " Current Crystals: " + p.crystals + " Level: " + p.level + " Damage: " + p.damage + " Your Defense: " + p.defense);
         typeWriter("To the north you have the crystal cave \n" +
                 "To the east you have the land of wind \n" +
                 "To the south is the endless abyss \n" +
@@ -369,7 +370,7 @@ public class Main {
     }
 
     static void distract() {
-        typeWriter("To your dismay you managed to distract the crystal hunters and escape safely");
+        typeWriter("To your surprise you managed to distract the crystal hunters and escape safely");
         cave2();
     }
 
@@ -474,7 +475,8 @@ public class Main {
     static void RightCave() {
         typeWriter("You entered the right cave, the sound of running water grew louder as you ventured deeper \n" +
                 "You found a small pond with a glowing flower in the center \n" +
-                "You stepped closer, the flower pulsed as it healed you fully");
+                "You stepped closer, the flower pulsed as it healed you fully.... But you could almost hear the flower say something");
+        typeWriter("......glue.......");
         p.health = 100;
         System.out.println("Your health is now: " + p.health);
         typeWriter("You went back to the crossroad");
@@ -636,17 +638,18 @@ public class Main {
 
     private static void IvoryRightRoom() {
         typeWriter("The room is humid air thick with the smell of rain and mud, on the wall are framed taxidermy insects \n" +
-                "The walls are also filled with polkadots of red and black, on one of the corner lies a ball of yarn and string");
+                "The walls and ceiling are covered in a tapestry of interlinked string and yarn");
         IvoryRightStatue();
     }
 
     static void IvoryRightStatue() {
         typeWriter("The statue looks like the vermin god, covered with insects of all shaped, adorned with a crown of butterfly wings, with a sign that reads \n" +
-                " \"I am the lady of bugs, and have many legs to help me walk.\" \n" +
+                " \"I am the spinner of fate, I have many legs to help me walk.\" \n" +
                 " \"I am the weave maker of the word and have many eyes that help me see. What number am I?\"");
         System.out.println("You head back to the grand hall");
         IvoryHall();
     }
+
 
     static void ThroneRoom() {
         typeWriter("You entered the chamber, inside there is a chest, you open it and get 2 special item \n" +
