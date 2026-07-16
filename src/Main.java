@@ -1,14 +1,14 @@
 import java.util.Scanner;
 import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.List;
 
 class Enemy {
-    int CrystalHunters = 20;
-    int Breeze = 40;
-    int LostSouls = 60;
-    int WilloWisps = 130;
+    int CrystalHunters = 30;
+    int Breeze = 50;
+    int LostSouls = 100;
+    int WilloWisps = 150;
 }
 
 class Player {
@@ -53,8 +53,6 @@ public class Main {
     static boolean Flowery = true;
     static boolean CaveShop = true;
     static boolean CaveShopHint = true;
-    static boolean playerResponded = false;
-    static boolean secretTriggered = false;
 
     static boolean EastAccess = true;
     static boolean SouthAccess = true;
@@ -84,7 +82,7 @@ public class Main {
     }
 
     static int AeolusHealth = 500;
-    static int AelousDamage = 30;
+    static int AelousDamage = 50;
 
     static String[] RainbowL = new String[3];
     static String[] RainbowR = new String[3];
@@ -100,6 +98,7 @@ public class Main {
         }
 
     }
+    static String[] Inventory = new String[10];
 
 //region TextOutput
 
@@ -479,10 +478,10 @@ public class Main {
 
     static void takeDamage(double enemyDamage) {
 
-        double reduction = p.defense * 0.03;
+        double reduction = p.defense * 0.02;
 
-        if (reduction > 0.75) {
-            reduction = 0.75;
+        if (reduction > 0.50) {
+            reduction = 0.50;
         }
 
         double damageTaken = enemyDamage * (1 - reduction);
@@ -631,7 +630,7 @@ public class Main {
 
         typeWriter("You lit the lamp making you see everything \n" +
                 "But oh no! You were spotted by " + Hunters + " crystal hunters \n" +
-                "Crystals hunters have 20 health points, do you \n");
+                "Crystals hunters have " + enemy.CrystalHunters + " health points, do you \n");
         System.out.println("1 Attack them | 2 distract them | 3 Run");
         int choice = input.nextInt();
         input.nextLine();
@@ -652,29 +651,29 @@ public class Main {
 
         for (int i = 0; i < Hunters; i++) {
 
-            enemy.CrystalHunters = 20;
+            int CrystalHuntersHP = enemy.CrystalHunters;
 
             System.out.println("\nFighting Hunter " + (i + 1));
 
-            while (enemy.CrystalHunters > 0) {
+            while (CrystalHuntersHP > 0) {
 
                 // player attacks
-                enemy.CrystalHunters -= p.damage;
+                CrystalHuntersHP -= p.damage;
 
                 String line =
-                        "Crystal HP: " + enemy.CrystalHunters +
+                        "Crystal HP: " + CrystalHuntersHP +
                                 " | Your HP: " + String.format("%.1f", p.health);
 
                 System.out.print("\r" + String.format("%-50s", line));
                 System.out.flush();
 
                 // if dead, stop BEFORE enemy turn
-                if (enemy.CrystalHunters <= 0) {
+                if (CrystalHuntersHP <= 0) {
                     break;
                 }
 
                 // enemy attack only if still alive
-                takeDamage(0.5);
+                takeDamage(5);
 
                 try {
                     Thread.sleep(500);
@@ -757,8 +756,26 @@ public class Main {
     }
 
     static void cave2() {
+        if (CaveShop) {
+            typeWriter("You found yourself at a 3 way crossroad \n" +
+                    "To the left is a dark passage way with whispers coming from it \n" +
+                    "To the center is a cave filled with more glowing crystal \n" +
+                    "To the right is a cave with lush plant and the sound of running water");
+            System.out.println("Which path do you choose? (left, center, right) ");
+            char C2path = input.next().charAt(0);
+
+            switch (C2path) {
+                case 'L', 'l' -> LeftCave();
+                case 'C', 'c' -> CenterCave();
+                case 'R', 'r' -> RightCave();
+                default -> {
+                    System.out.println("Invalid path choice.");
+                    cave2();
+                }
+            }
+        }
         typeWriter("You found yourself at a 3 way crossroad \n" +
-                "To the left is a dark passage way with whispers coming from it \n" +
+                "To the left is the shop\n" +
                 "To the center is a cave filled with more glowing crystal \n" +
                 "To the right is a cave with lush plant and the sound of running water");
         System.out.println("Which path do you choose? (left, center, right) ");
@@ -791,7 +808,7 @@ public class Main {
     static void CaveShopFirstTime() {
 
         if (CaveShopHint) {
-
+            CaveShop = false;
             typeWriter("\"Is there anything of interest I could be of use to you?\"");
             System.out.println("| 1 talk | 2 buy items | 3 leave shop ");
 
@@ -824,7 +841,6 @@ public class Main {
                     CaveShopFirstTime();
                 }
             }
-
 
             CaveShopHint = false;
 
@@ -861,8 +877,8 @@ public class Main {
         int choice = input.nextInt();
         switch (choice) {
             case 1 -> {
-                typeWriter("\"This world was created by twins... At least that's what he says, no one has seen the other, even the history books didn't cover it hehe\"\n" +
-                        "\"Why don't you ask him yourself for why they created this world");
+                typeWriter("\"This world was created by twins... At least that's what he says, no one has seen the other one since he decided to defy fate....or even remember their name\"\n" +
+                        "\"even the history books didn't cover it hehe. Why don't you ask him yourself for why they created this world");
                 ShopTalk();
             }
             case 2 -> {
@@ -1155,7 +1171,7 @@ public class Main {
                 }
 
                 // enemy attack only if still alive
-                takeDamage(3.5);
+                takeDamage(10);
 
                 try {
                     Thread.sleep(500);
@@ -1207,7 +1223,7 @@ public class Main {
                 }
 
                 // enemy attack only if still alive
-                takeDamage(3);
+                takeDamage(7);
 
                 try {
                     Thread.sleep(500);
@@ -1237,29 +1253,29 @@ public class Main {
 
         for (int i = 0; i < Breeze; i++) {
 
-            enemy.Breeze = 40;
+            int BreezeHP = enemy.Breeze;
 
             System.out.println("\nFighting Hunter " + (i + 1));
 
-            while (enemy.Breeze > 0) {
+            while (BreezeHP > 0) {
 
                 // player attacks
-                enemy.Breeze -= p.damage;
+                BreezeHP-= p.damage;
 
                 String line =
-                        "Breeze HP: " + enemy.Breeze +
+                        "Breeze HP: " + BreezeHP +
                                 " | Your HP: " + String.format("%.1f", p.health);
 
                 System.out.print("\r" + String.format("%-50s", line));
                 System.out.flush();
 
                 // if dead, stop BEFORE enemy turn
-                if (enemy.Breeze <= 0) {
+                if (BreezeHP <= 0) {
                     break;
                 }
 
                 // enemy attack only if still alive
-                takeDamage(2.5);
+                takeDamage(5);
 
                 try {
                     Thread.sleep(500);
@@ -1429,29 +1445,29 @@ public class Main {
 
         for (int i = 0; i < Breeze; i++) {
 
-            enemy.Breeze = 40;
+            int BreezHP = enemy.Breeze;
 
             System.out.println("\nFighting Breeze " + (i + 1));
 
-            while (enemy.Breeze > 0) {
+            while (BreezHP > 0) {
 
                 // player attacks
-                enemy.Breeze -= p.damage;
+                BreezHP -= p.damage;
 
                 String line =
-                        "Breeze HP: " + enemy.Breeze +
+                        "Breeze HP: " + BreezHP +
                                 " | Your HP: " + String.format("%.1f", p.health);
 
                 System.out.print("\r" + String.format("%-50s", line));
                 System.out.flush();
 
                 // if dead, stop BEFORE enemy turn
-                if (enemy.Breeze <= 0) {
+                if (BreezHP <= 0) {
                     break;
                 }
 
                 // enemy attack only if still alive
-                takeDamage(2.5);
+                takeDamage(5);
 
                 try {
                     Thread.sleep(500);
@@ -1521,6 +1537,8 @@ public class Main {
         int i = 0;
 
         while (AeolusHealth > 0) {
+
+            int HealTimes = 0;
 
             if (i > 0 && i % 5 == 0) {
                 System.out.println("You feel the power of determination rush into you\n" +
@@ -1609,6 +1627,14 @@ public class Main {
                     System.out.println("Aeolus fights!");
                     takeDamage(AelousDamage - 10);
                     System.out.println("Your HP is now " + p.health);
+                    HealTimes += 1;
+
+                    if (HealTimes == 3){
+                        typeWriter("Aelous is enraged bt your overhaling and sends a tornado towards you");
+                        takeDamage(AelousDamage + 40);
+                        System.out.println("Your HP is now " + p.health);
+                        HealTimes = 0;
+                    }
                 }
                 default -> {
                     typeWriter("You falter in your attack, Aeolus takes advantage and hits a critical hit");
