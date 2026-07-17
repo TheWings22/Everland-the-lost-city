@@ -607,22 +607,18 @@ public class Main {
 
     }
 
-    static void Attack(){
-        if (p.damageAccuracy == -1)
-        {
+    static void Attack() {
+        if (p.damageAccuracy == -1) {
             p.DamageAccuracyBonus = 0;
             updateStats();
-        }
-        else {
-            p.DamageAccuracyBonus = (( p.damage * p.damageAccuracy ) / 20.0);
+        } else {
+            p.DamageAccuracyBonus = ((p.damage * p.damageAccuracy) / 20.0);
 
             updateStats();
-
 
 
         }
     }
-
 
 
 //endregion
@@ -764,7 +760,7 @@ public class Main {
         typeWriter("You lit the lamp making you see everything \n" +
                 "But oh no! You were spotted by " + Hunters + " crystal hunters \n" +
                 "Crystals hunters have " + enemy.CrystalHunters + " health points\n");
-       CaveAttack();
+        CaveAttack();
     }
 
     static void CaveAttack() {
@@ -773,7 +769,7 @@ public class Main {
 
         for (int i = 0; i < Hunters; i++) {
 
-            int HeavyAttack = 0;
+            int HeavyAttack = 1;
 
             int CrystalHuntersHP = enemy.CrystalHunters;
 
@@ -784,15 +780,16 @@ public class Main {
                 System.out.println("Crystal HP: " + CrystalHuntersHP +
                         " | Your HP: " + String.format("%.1f", p.health));
 
-                if (HeavyAttack == 2){
+                if (HeavyAttack == 4) {
                     typeWriter("Crystal hunter prepares for a heavy attack");
                 }
 
-                System.out.println("| 1 Fight | 2 Defend ");
+                System.out.println("| 1 Fight | 2 Defend | 3 Prayer heal ");
 
                 String choice = input.nextLine();
 
-                if (HeavyAttack == 3) {
+                if (HeavyAttack == 4) {
+                    typeWriter("Crystal hunter unleashes a heavy attack");
                     switch (choice) {
                         case "1":
                             Accuracy();
@@ -810,12 +807,27 @@ public class Main {
                         case "2":
                             takeDamage(3);
                             break;
+                        case "3":
+
+                            p.health += 5;
+                            if (p.health > 100) {
+                                p.health = 100;
+                            }
+                            typeWriter("You tried to heal, but you faltered");
+                            takeDamage(10);
+
+                            checkHealth();
+
+                            break;
 
 
 
                     }
-                    HeavyAttack = 0;
-                }else {
+
+                    HeavyAttack = 1;
+
+                }
+                else {
                     switch (choice) {
                         case "1":
                             Accuracy();
@@ -833,11 +845,22 @@ public class Main {
                         case "2":
                             takeDamage(2);
                             break;
+                        case "3":
+
+                            p.health += 10;
+                            if (p.health > 100) {
+                                p.health = 100;
+                            }
+                            takeDamage(5);
+                            checkHealth();
+
+                            break;
+
 
                     }
                 }
 
-                HeavyAttack ++;
+                HeavyAttack++;
                 checkHealth();
 
 
@@ -1767,7 +1790,10 @@ public class Main {
                 }
                 case '3' -> {
                     typeWriter("You cupped your hand in prayer, determination filled you of your travels as you got healed");
-                    p.health = 100;
+                    p.health = 20;
+                    if (p.health > 100) {
+                        p.health = 100;
+                    }
                     System.out.println("Aeolus fights!");
                     takeDamage(AelousDamage - 10);
                     System.out.println("Your HP is now " + p.health);
