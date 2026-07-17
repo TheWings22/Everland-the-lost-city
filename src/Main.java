@@ -37,7 +37,6 @@ public class Main {
     static Enemy enemy = new Enemy();
 
     static Scanner input = new Scanner(System.in);
-    static Scanner attackInput = new Scanner(System.in);
 
 
     static Player p = new Player();
@@ -57,6 +56,7 @@ public class Main {
     static boolean CaveShopHint = true;
 
     static volatile boolean pressed = false;
+    static boolean accuracyRunning = false;
 
     static boolean EastAccess = true;
     static boolean SouthAccess = true;
@@ -532,6 +532,7 @@ public class Main {
         updateStats();
 
         pressed = false;
+        accuracyRunning = true;
 
         double time = 3.00;
 
@@ -539,14 +540,21 @@ public class Main {
 
         Thread inputThread = new Thread(() -> {
             try {
-                attackInput.nextLine();
+                while (accuracyRunning) {
 
-                if (!Thread.currentThread().isInterrupted()) {
-                    pressed = true;
+                    if (System.in.available() > 0) {
+
+                        int key = System.in.read();
+
+                        if (key == '\n' || key == '\r') {
+                            pressed = true;
+                            break;
+                        }
+                    }
                 }
 
             } catch (Exception e) {
-                // ignore
+
             }
         });
 
@@ -565,6 +573,8 @@ public class Main {
 
             time = Math.round((time - 0.01) * 100.0) / 100.0;
         }
+
+        accuracyRunning = false;
 
         System.out.println();
 
@@ -587,13 +597,6 @@ public class Main {
             else
                 p.damageAccuracy = 10;
 
-            inputThread.interrupt();
-
-            try {
-                inputThread.join();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
 
         } else {
 
@@ -602,13 +605,6 @@ public class Main {
 
         }
 
-        inputThread.interrupt();
-
-        try {
-            inputThread.join();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
     }
 
     static void Attack(){
@@ -622,9 +618,6 @@ public class Main {
 
             updateStats();
 
-            System.out.println("Accuracy value: " + p.damageAccuracy);
-            System.out.println("Damage bonus: " + p.DamageAccuracyBonus);
-            System.out.println("Final attack damage: " + p.damage);
 
 
         }
@@ -753,10 +746,12 @@ public class Main {
         if (North) {
             typeWriter("The crystal has already been taken. There is nothing left to find here.");
             mainArea();
+            return;
         }
         typeWriter("You enter the underground cave, the crystals on the wall shimmer, but it's too dark to see with the naked eye");
         System.out.print("Do you use a lamp? (Y/N): ");
         char lamp = input.next().charAt(0);
+        input.nextLine();
         if (lamp == 'y' || lamp == 'Y') {
             lampPath();
         } else {
@@ -778,6 +773,8 @@ public class Main {
 
         for (int i = 0; i < Hunters; i++) {
 
+            int HeavyAttack = 0;
+
             int CrystalHuntersHP = enemy.CrystalHunters;
 
             System.out.println("\nFighting Hunter " + (i + 1));
@@ -786,32 +783,64 @@ public class Main {
 
                 System.out.println("Crystal HP: " + CrystalHuntersHP +
                         " | Your HP: " + String.format("%.1f", p.health));
-                System.out.println("| 1 Fight | 2 Defend ");
 
-                int choice = input.nextInt();
-                input.nextLine();
-
-                switch (choice) {
-                    case 1:
-                        Accuracy();
-                        Attack();
-                        if (p.damageAccuracy == -1) {
-
-                            takeDamage(5);
-
-                        }else {
-
-                            CrystalHuntersHP -= p.damage;
-                            takeDamage(5);
-                        }
-                        break;
-                    case 2:
-                        takeDamage(3.5);
-                        break;
-
+                if (HeavyAttack == 2){
+                    typeWriter("Crystal hunter prepares for a heavy attack");
                 }
 
+                System.out.println("| 1 Fight | 2 Defend ");
+
+                String choice = input.nextLine();
+
+                if (HeavyAttack == 3) {
+                    switch (choice) {
+                        case "1":
+                            Accuracy();
+                            Attack();
+                            if (p.damageAccuracy == -1) {
+
+                                takeDamage(10);
+
+                            } else {
+
+                                CrystalHuntersHP -= p.damage;
+                                takeDamage(10);
+                            }
+                            break;
+                        case "2":
+                            takeDamage(3);
+                            break;
+
+
+
+                    }
+                    HeavyAttack = 0;
+                }else {
+                    switch (choice) {
+                        case "1":
+                            Accuracy();
+                            Attack();
+                            if (p.damageAccuracy == -1) {
+
+                                takeDamage(5);
+
+                            } else {
+
+                                CrystalHuntersHP -= p.damage;
+                                takeDamage(5);
+                            }
+                            break;
+                        case "2":
+                            takeDamage(2);
+                            break;
+
+                    }
+                }
+
+                HeavyAttack ++;
                 checkHealth();
+
+
             }
 
             System.out.println("\nHunter defeated!");
