@@ -113,7 +113,7 @@ public class Main {
             System.out.flush();
 
             try {
-                Thread.sleep(0); // adjust speed here
+                Thread.sleep(35); // adjust speed here
             } catch (InterruptedException e) {
                 Thread.currentThread().interrupt();
             }
@@ -788,7 +788,7 @@ public class Main {
 
                 String choice = input.nextLine();
 
-                if (HeavyAttack == 4) {
+                if (HeavyAttack == 5) {
                     typeWriter("Crystal hunter unleashes a heavy attack");
                     switch (choice) {
                         case "1":
