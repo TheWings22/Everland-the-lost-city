@@ -57,6 +57,9 @@ public class Main {
     static boolean CaveShop = true;
     static boolean CaveShopHint = true;
 
+    static boolean CaveShopSword = true;
+    static boolean CaveShopArmor = true;
+
     static volatile boolean pressed = false;
     static volatile boolean Minepressed = false;
     static boolean accuracyRunning = false;
@@ -1274,24 +1277,32 @@ public class Main {
         int choice = input.nextInt();
         switch (choice) {
             case 1 -> {
-                if (p.Money >= 10) {
-                    p.Money -= 10;
-                    p.bonusDamage += 5;
-                    System.out.println("You bought the wooden sword.");
-                } else {
-                    System.out.println("You don't have enough money.");
+                if (CaveShopSword) {
+                    if (p.Money >= 10) {
+                        p.Money -= 10;
+                        p.bonusDamage += 5;
+                        System.out.println("You bought the wooden sword.");
+                        CaveShopSword = false;
+                    } else {
+                        System.out.println("You don't have enough money.");
+                    }
+                    ShopBuy();
                 }
-                ShopBuy();
+                typeWriter("\"Sorry, it's out of stock\"");
             }
             case 2 -> {
-                if (p.Money >= 20) {
-                    p.Money -= 20;
-                    p.bonusDefense += 15;
-                    System.out.println("You bought the wooden armor.");
-                } else {
-                    System.out.println("You don't have enough money.");
+                if  (CaveShopArmor) {
+                    if (p.Money >= 20) {
+                        p.Money -= 20;
+                        p.bonusDefense += 15;
+                        System.out.println("You bought the wooden armor.");
+                        CaveShopArmor = false;
+                    } else {
+                        System.out.println("You don't have enough money.");
+                    }
+                    ShopBuy();
                 }
-                ShopBuy();
+                typeWriter("\"Sorry, it's out of stock\"");
             }
             case 3 -> CaveShop();
             default -> {
