@@ -490,7 +490,7 @@ public class Main {
             p.Healing = 999;
             p.Money = 999;
             p.defense = 999;
-            p.Money = 99999;
+            p.Money = 999999999;
 
             System.out.println("Aha has joined the game!");
         }
@@ -570,15 +570,16 @@ public class Main {
         updateStats();
 
         pressed = false;
-        accuracyRunning = true;
 
         double time = 3.00;
 
         DecimalFormat df = new DecimalFormat("0.00");
 
+
         Thread inputThread = new Thread(() -> {
             try {
-                while (accuracyRunning) {
+
+                while (!pressed) {
 
                     if (System.in.available() > 0) {
 
@@ -589,14 +590,19 @@ public class Main {
                             break;
                         }
                     }
+
+                    Thread.sleep(1);
                 }
 
             } catch (Exception e) {
 
             }
+
         });
 
+
         inputThread.start();
+
 
         while (time >= 0.00 && !pressed) {
 
@@ -612,9 +618,16 @@ public class Main {
             time = Math.round((time - 0.01) * 100.0) / 100.0;
         }
 
-        accuracyRunning = false;
+
+        try {
+            inputThread.join(100);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
 
         System.out.println();
+
 
         if (pressed) {
 
@@ -643,6 +656,18 @@ public class Main {
 
         }
 
+
+        // Clear leftover Enter key
+        try {
+
+            while (System.in.available() > 0) {
+                System.in.read();
+            }
+
+        } catch (Exception e) {
+
+        }
+
     }
 
     static void Attack() {
@@ -668,37 +693,57 @@ public class Main {
 
         Minepressed = false;
         miningExit = false;
-        accuracyMining = true;
+
         MiningAccuracy = -1;
+
 
         double time = 3.00;
 
         DecimalFormat df = new DecimalFormat("0.00");
 
+
         Thread inputThread = new Thread(() -> {
+
             try {
 
-                while (accuracyMining) {
+                while (!Minepressed && !miningExit) {
 
-                    int key = System.in.read();
+                    if (System.in.available() > 0) {
 
-                    if (key == '\n' || key == '\r') {
-                        Minepressed = true;
-                        break;
+                        int key = System.in.read();
+
+
+                        if (key == '\n' || key == '\r') {
+
+                            Minepressed = true;
+                            break;
+
+                        }
+
+
+                        if (key == 'e' || key == 'E') {
+
+                            miningExit = true;
+                            break;
+
+                        }
+
                     }
 
-                    if (key == 'e' || key == 'E') {
-                        miningExit = true;
-                        break;
-                    }
+                    Thread.sleep(1);
+
                 }
+
 
             } catch (Exception e) {
 
             }
+
         });
 
+
         inputThread.start();
+
 
 
         while (time >= 0.00 && !Minepressed && !miningExit) {
@@ -706,73 +751,124 @@ public class Main {
             System.out.print("\rTime: " + df.format(time));
             System.out.flush();
 
+
             try {
+
                 Thread.sleep(10);
+
             } catch (InterruptedException e) {
+
                 e.printStackTrace();
+
             }
 
+
             time = Math.round((time - 0.01) * 100.0) / 100.0;
+
         }
 
-
-        accuracyMining = false;
 
 
         try {
+
             inputThread.join(100);
+
         } catch (InterruptedException e) {
+
             e.printStackTrace();
+
         }
+
 
 
         // Player pressed E
         if (miningExit) {
 
+
             try {
+
                 while (System.in.available() > 0) {
+
                     System.in.read();
+
                 }
+
             } catch (Exception e) {
 
             }
 
+
             return;
+
         }
+
 
 
         System.out.println();
 
 
+
         if (Minepressed) {
+
 
             double accuracy = Math.abs(time);
 
             int miningQuality;
 
+
             if (accuracy <= 0.05) {
+
                 miningQuality = 100;
+
             } else if (accuracy <= 0.10) {
+
                 miningQuality = 85;
+
             } else if (accuracy <= 0.20) {
+
                 miningQuality = 70;
+
             } else if (accuracy <= 0.50) {
+
                 miningQuality = 50;
+
             } else if (accuracy <= 1.00) {
+
                 miningQuality = 25;
+
             } else {
+
                 miningQuality = 10;
+
             }
+
 
             MineOres(miningQuality, pickaxeLuck);
 
+
         } else {
+
 
             System.out.println("You smashed the rock to pieces. The gemstone disintegrated.");
 
-        }
-    }
 
+        }
+
+
+        // Clear leftover Enter key
+        try {
+
+            while (System.in.available() > 0) {
+
+                System.in.read();
+
+            }
+
+        } catch (Exception e) {
+
+        }
+
+    }
     static void MineOres(int quality, int luck) {
 
         int roll = random.nextInt(100);
@@ -1289,6 +1385,8 @@ public class Main {
                     ShopBuy();
                 }
                 typeWriter("\"Sorry, it's out of stock\"");
+                ShopBuy();
+
             }
             case 2 -> {
                 if  (CaveShopArmor) {
@@ -1303,6 +1401,8 @@ public class Main {
                     ShopBuy();
                 }
                 typeWriter("\"Sorry, it's out of stock\"");
+                ShopBuy();
+
             }
             case 3 -> CaveShop();
             default -> {
@@ -1388,7 +1488,7 @@ public class Main {
         input.nextLine();
         switch (Input) {
             case 'M', 'm' -> {
-                typeWriter("Hold E and enter to cancel mining");
+                typeWriter("Press E and enter to cancel mining");
 
                 miningExit = false;
 
@@ -1436,6 +1536,11 @@ public class Main {
                     GnomeFight();
 
                 }
+                typeWriter("\"Are you trying to scam me? GUARDS throw him off the tower\"");
+                typeWriter("The orc guards shove you off the tower as you fell to the ground");
+                p.health -= 30;
+                checkHealth();
+                GnomeCave();
             }
             case 2 -> {
                 typeWriter("You raise your sword towards the chief");
@@ -1444,7 +1549,7 @@ public class Main {
             }
             case 3 -> {
                 typeWriter("You head back");
-                GnomeMines();
+                GnomeCave();
             }
             default -> {
                 typeWriter("Invalid input.");
@@ -2129,10 +2234,11 @@ public class Main {
         updateStats();
         System.out.println("Your damage is now " + p.damage);
         System.out.println("Your defense is now " + p.defense);
-        typeWriter("you continue inside and made it to the throne room. On the throne is one of the ring pieces, but it's protected by " + Breeze + "Breezes");
+        typeWriter("you continue inside and made it to the throne room. On the throne is one of the ring pieces, but it's protected by " + Breeze + " Breezes");
         typeWriter("Do you attack them? Distract them, or they and sneak around them");
         System.out.println("1 Attack them | 2 distract them | 3 Run");
         int choice = input.nextInt();
+        input.nextLine();
         switch (choice) {
             case 1 -> {
                 typeWriter("You beavery lifted your new sword and fought them");
@@ -2156,11 +2262,9 @@ public class Main {
 
         System.out.println("You bravely attack the Breezes!");
 
-
         for (int i = 0; i < Hunters; i++) {
 
             int HeavyAttack = 0;
-
             int BreezesHP = enemy.Breeze;
 
             System.out.println("\nFighting Breeze " + (i + 1));
@@ -2169,7 +2273,6 @@ public class Main {
 
                 HeavyAttack++;
 
-
                 System.out.println("Breeze HP: " + BreezesHP +
                         " | Your HP: " + String.format("%.1f", p.health));
 
@@ -2177,97 +2280,105 @@ public class Main {
                     typeWriter("Breeze prepares for a heavy attack");
                 }
 
-                System.out.println("| 1 Fight | 2 Defend | 3 Prayer heal ");
+                System.out.println("| 1 Fight | 2 Defend | 3 Prayer heal");
 
                 String choice = input.nextLine();
 
-                if (HeavyAttack == 5) {
+
+                if (HeavyAttack >= 5) {
+
                     typeWriter("Breeze unleashes a heavy attack");
+
                     switch (choice) {
+
                         case "1":
                             Accuracy();
                             Attack();
+
                             if (p.damageAccuracy == -1) {
-
                                 takeDamage(25);
-
                             } else {
-
                                 BreezesHP -= p.damage;
                                 takeDamage(25);
                             }
                             break;
+
                         case "2":
                             takeDamage(10);
                             break;
-                        case "3":
 
+                        case "3":
                             p.health += p.Healing;
+
                             if (p.health > 100) {
                                 p.health = 100;
                             }
+
                             typeWriter("You tried to heal, but you faltered");
                             takeDamage(10);
-
-                            checkHealth();
-
                             break;
-
-
                     }
 
                     HeavyAttack = 0;
 
                 } else {
+
                     switch (choice) {
+
                         case "1":
                             Accuracy();
                             Attack();
+
                             if (p.damageAccuracy == -1) {
-
                                 takeDamage(20);
-
                             } else {
-
                                 BreezesHP -= p.damage;
                                 takeDamage(20);
                             }
                             break;
+
                         case "2":
                             takeDamage(5);
                             break;
-                        case "3":
 
+                        case "3":
                             p.health += p.Healing;
+
                             if (p.health > 100) {
                                 p.health = 100;
                             }
+
                             takeDamage(5);
-                            checkHealth();
-
                             break;
-
-
                     }
                 }
 
-
-                System.out.println("\nBreeze defeated!");
-
-
+                checkHealth();
             }
+
+            System.out.println("\nBreeze defeated!");
         }
+
+        System.out.println("\nYou survived, your health is now " + p.health);
+
+        typeWriter("You obtained the missing ring piece, you head back to the cloud plateau to find the other missing pieces");
+
+        IvoryCastle = true;
+        p.WindRing += 1;
+
+        System.out.println("Wind Ring pieces are now " + p.WindRing + "\\3");
+
+        checkHealth();
+        CloudCrossway();
     }
 
     static void IvoryRun() {
 
         System.out.println("You bravely attack the Breezes!");
 
-
         for (int i = 0; i < Hunters; i++) {
 
             int HeavyAttack = 0;
-
             int BreezesHP = enemy.Breeze;
 
             System.out.println("\nFighting Breeze " + (i + 1));
@@ -2276,7 +2387,6 @@ public class Main {
 
                 HeavyAttack++;
 
-
                 System.out.println("Breeze HP: " + BreezesHP +
                         " | Your HP: " + String.format("%.1f", p.health));
 
@@ -2284,16 +2394,20 @@ public class Main {
                     typeWriter("Breeze prepares for a heavy attack");
                 }
 
-                System.out.println("| 1 Fight | 2 Defend | 3 Prayer heal ");
+                System.out.println("| 1 Fight | 2 Defend | 3 Prayer heal");
 
                 String choice = input.nextLine();
 
-                if (HeavyAttack == 5) {
+                if (HeavyAttack >= 5) {
+
                     typeWriter("Breeze unleashes a heavy attack");
+
                     switch (choice) {
+
                         case "1":
                             Accuracy();
                             Attack();
+
                             if (p.damageAccuracy == -1) {
 
                                 takeDamage(25);
@@ -2302,34 +2416,43 @@ public class Main {
 
                                 BreezesHP -= p.damage;
                                 takeDamage(25);
+
                             }
                             break;
+
+
                         case "2":
                             takeDamage(10);
                             break;
+
+
                         case "3":
 
                             p.health += p.Healing;
+
                             if (p.health > 100) {
                                 p.health = 100;
                             }
+
                             typeWriter("You tried to heal, but you faltered");
                             takeDamage(10);
 
-                            checkHealth();
-
                             break;
-
-
                     }
 
                     HeavyAttack = 0;
 
+
                 } else {
+
+
                     switch (choice) {
+
                         case "1":
+
                             Accuracy();
                             Attack();
+
                             if (p.damageAccuracy == -1) {
 
                                 takeDamage(20);
@@ -2338,41 +2461,50 @@ public class Main {
 
                                 BreezesHP -= p.damage;
                                 takeDamage(20);
+
                             }
                             break;
+
+
                         case "2":
                             takeDamage(5);
                             break;
+
+
                         case "3":
 
                             p.health += p.Healing;
+
                             if (p.health > 100) {
                                 p.health = 100;
                             }
+
                             takeDamage(5);
-                            checkHealth();
 
                             break;
-
-
                     }
                 }
 
-
-                System.out.println("\nBreeze defeated!");
-
+                checkHealth();
             }
 
+
+            System.out.println("\nBreeze defeated!");
         }
 
 
         System.out.println("\nYou survived, your health is now " + p.health);
+
         typeWriter("You obtained the missing ring piece, you head back to the cloud plateau to find the other missing pieces");
+
 
         IvoryCastle = true;
         p.WindRing += 1;
+
         System.out.println("Wind Ring pieces are now " + p.WindRing + "\\3");
+
         checkHealth();
+
         CloudCrossway();
     }
 
@@ -2380,11 +2512,9 @@ public class Main {
 
         System.out.println("You bravely attack the Breezes!");
 
-
         for (int i = 0; i < Hunters; i++) {
 
             int HeavyAttack = 0;
-
             int BreezesHP = enemy.Breeze;
 
             System.out.println("\nFighting Breeze " + (i + 1));
@@ -2393,7 +2523,6 @@ public class Main {
 
                 HeavyAttack++;
 
-
                 System.out.println("Breeze HP: " + BreezesHP +
                         " | Your HP: " + String.format("%.1f", p.health));
 
@@ -2401,98 +2530,96 @@ public class Main {
                     typeWriter("Breeze prepares for a heavy attack");
                 }
 
-                System.out.println("| 1 Fight | 2 Defend | 3 Prayer heal ");
+                System.out.println("| 1 Fight | 2 Defend | 3 Prayer heal");
 
                 String choice = input.nextLine();
 
-                if (HeavyAttack == 5) {
+                if (HeavyAttack >= 5) {
+
                     typeWriter("Breeze unleashes a heavy attack");
+
                     switch (choice) {
+
                         case "1":
                             Accuracy();
                             Attack();
+
                             if (p.damageAccuracy == -1) {
-
                                 takeDamage(20);
-
                             } else {
-
                                 BreezesHP -= p.damage;
                                 takeDamage(20);
                             }
                             break;
+
                         case "2":
                             takeDamage(10);
                             break;
-                        case "3":
 
+                        case "3":
                             p.health += p.Healing;
+
                             if (p.health > 100) {
                                 p.health = 100;
                             }
+
                             typeWriter("You tried to heal, but you faltered");
                             takeDamage(10);
-
-                            checkHealth();
-
                             break;
-
-
                     }
 
                     HeavyAttack = 0;
 
                 } else {
+
                     switch (choice) {
+
                         case "1":
                             Accuracy();
                             Attack();
+
                             if (p.damageAccuracy == -1) {
-
                                 takeDamage(15);
-
                             } else {
-
                                 BreezesHP -= p.damage;
                                 takeDamage(15);
                             }
                             break;
+
                         case "2":
                             takeDamage(5);
                             break;
-                        case "3":
 
+                        case "3":
                             p.health += p.Healing;
+
                             if (p.health > 100) {
                                 p.health = 100;
                             }
+
                             takeDamage(5);
-                            checkHealth();
-
                             break;
-
-
                     }
                 }
 
-
-                System.out.println("\nBreeze defeated!");
-
+                checkHealth();
             }
 
+            System.out.println("\nBreeze defeated!");
         }
 
-
         System.out.println("\nYou survived, your health is now " + p.health);
+
         typeWriter("You obtained the missing ring piece, you head back to the cloud plateau to find the other missing pieces");
 
         IvoryCastle = true;
         p.WindRing += 1;
+
         System.out.println("Wind Ring pieces are now " + p.WindRing + "\\3");
+
         checkHealth();
         CloudCrossway();
     }
-
 
     static void RainbowCloud() {
 
@@ -2832,7 +2959,7 @@ public class Main {
         p.bonusDefense += 20;
         p.health = 100;
         East = true;
-        SouthAccess = true;
+        SouthAccess = false;
         TrainingCap = false;
         mainArea();
     }
