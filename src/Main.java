@@ -968,7 +968,6 @@ public class Main {
 
             }
 
-
             if (input == null) {
                 return null; // no input received
             }
