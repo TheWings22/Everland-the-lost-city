@@ -543,7 +543,7 @@ public class Main {
         int choice = input.nextInt();
         switch (choice) {
             case 1: {
-                typeWriter("\"You're in everland, it's a place the lies under the real world. Come there's a lot to explain\"");
+                typeWriter("\"You're in Everland, it's a place the lies under the real world. Come there's a lot to explain\"");
                 Walk2Town();
             }
             case 2: {
@@ -809,7 +809,7 @@ public class Main {
                 "\"Since you will be staying a while, why not I show you around. You can go to different shops here to buy upgrade, if you need me for anything I will be in the library\"");
         typeWriter("\"....But if you want.. you can save us all, break the false sky and open are two worlds together, that is... if you want\"");
         typeWriter("Azriel turns back and walks away, but he quickly comes back to hand you something");
-        typeWriter("\"I forgot to give you this, it's a concule of some sort, it'll let you see your stats whenever you come here... I wish you well on your Journey");
+        typeWriter("\"I forgot to give you this, it's a console of some sort, it'll let you see your stats whenever you come here... I wish you well on your Journey");
         typeWriter("\"...I never got your name?\"");
         System.out.println("| 1 tell name | 2 don't tell name");
         int choice = input.nextInt();
@@ -1687,9 +1687,7 @@ public class Main {
                 typeWriter("\"Past my shop in the center passages there should be a civilisation of gnomes, you could ask them for money... or steal it hehe");
                 ShopTalk();
             }
-            case 5 -> {
-                CaveShop();
-            }
+            case 5 -> CaveShop();
             default -> {
                 System.out.println("Invalid choice.");
                 ShopTalk();
@@ -1795,7 +1793,7 @@ public class Main {
             case 'B', 'b' -> cave2();
             case 'I', 'i' -> {
 
-                System.out.println("Coal: " + Coal + "\n" + "" +
+                System.out.println("Coal: " + Coal + "\n"+
                         "Iron: " + Iron + "\n" +
                         "Gold: " + Gold + "\n" +
                         "Obsidian: " + Obsidian + "\n" +
@@ -1828,11 +1826,10 @@ public class Main {
                 }
 
                 GnomeMines(); // Go back to the mining menu
-                return;
             }
             case 'B', 'b' -> GnomeCave();
             case 'I', 'i' -> {
-                System.out.println("Coal: " + Coal + "\n" + "" +
+                System.out.println("Coal: " + Coal + "\n" +
                         "Iron: " + Iron + "\n" +
                         "Gold: " + Gold + "\n" +
                         "Obsidian: " + Obsidian + "\n" +
@@ -1859,7 +1856,7 @@ public class Main {
             case 'P', 'p' -> GnomeShop();
             case 'H', 'h' -> GnomeCave();
             case 'I', 'i' -> {
-                System.out.println("Coal: " + Coal + "\n" + "" +
+                System.out.println("Coal: " + Coal + "\n" +
                         "Iron: " + Iron + "\n" +
                         "Gold: " + Gold + "\n" +
                         "Obsidian: " + Obsidian + "\n" +
@@ -1889,9 +1886,7 @@ public class Main {
         System.out.println("Please enter which pickaxe you want or | E to go back");
         char Input = input.next().charAt(0);
         switch (Input) {
-            case 'E', 'e' -> {
-                GnomeTown();
-            }
+            case 'E', 'e' -> GnomeTown();
             case '1' -> { // Iron Pickaxe
 
                 if (pickaxeTier < 1) {
@@ -2074,9 +2069,7 @@ public class Main {
         System.out.println("| 1 to cash in | 2 head back");
         int chouce = input.nextInt();
         switch (chouce) {
-            case 1 -> {
-                SellAllOres();
-            }
+            case 1 -> SellAllOres();
             case 2 -> GnomeCave();
             default -> {
                 typeWriter("Invalid input.");
@@ -2298,12 +2291,8 @@ public class Main {
         System.out.println("| 1 fight | 2 show mercy");
         int choice = input.nextInt();
         switch (choice) {
-            case 1 -> {
-                U_R_evil();
-            }
-            case 2 -> {
-                GnomeMercy();
-            }
+            case 1 -> U_R_evil();
+            case 2 -> GnomeMercy();
             default -> {
                 typeWriter("Invalid input.");
                 GnomeFight();
@@ -2434,9 +2423,7 @@ public class Main {
 
 
             }
-            case 2 -> {
-                GnomeMercy();
-            }
+            case 2 -> GnomeMercy();
         }
     }
 
@@ -2584,8 +2571,6 @@ public class Main {
                 IvoryRun();
             }
         }
-        char attack = input.next().charAt(0);
-
 
     }
 
