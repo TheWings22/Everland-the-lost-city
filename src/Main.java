@@ -2448,10 +2448,12 @@ public class Main {
         EastAccess = false;
         mainArea();
     }
+
 //endregion
 
 
 //region east
+
     static void wind() {
         if (EastAccess) {
             System.out.println("You are too weak to go east yet. You need to explore the north first.");
