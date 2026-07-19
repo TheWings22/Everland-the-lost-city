@@ -57,6 +57,9 @@ public class Main {
     static boolean CaveShop = true;
     static boolean CaveShopHint = true;
 
+    static boolean Azriel = false;
+    static boolean Name = false;
+
     static boolean CaveShopSword = true;
     static boolean CaveShopArmor = true;
 
@@ -140,7 +143,21 @@ public class Main {
             System.out.flush();
 
             try {
-                Thread.sleep(0); // adjust speed here
+                Thread.sleep(0); // 35
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+            }
+        }
+        System.out.println();
+    }
+
+    public static void typeWriterSlow(String text) {
+        for (char c : text.toCharArray()) {
+            System.out.print(c);
+            System.out.flush();
+
+            try {
+                Thread.sleep(0); // 80
             } catch (InterruptedException e) {
                 Thread.currentThread().interrupt();
             }
@@ -490,32 +507,344 @@ public class Main {
             System.out.println("Aha has joined the game!");
         }
 
-        typeWriter(
-                "Welcome to the mystical land " + p.name + "\n" +
-                        "Where all creatures lay side by side\n" +
-                        "The only way to return home is to find the portal crystals\n");
+        typeWriter("If you had wings to lift you, and the second star as your guide, you'd find a land hidden beneath the aether\n" +
+                "Past the snowy peaks of the north, over the eternal season forest of the west, and under the high cloud of the east\n" +
+                "lies a small town at the heart of the magic a city of wonder lost to time and history. Welcome to");
+        typeWriterSlow("Everland The Lost City");
 
-        mainArea();
+        System.out.println("\n**********************************************\n");
+        typeWriter("It was a normal day for you, a boring repetitive of the mundane. Not until you heard a stage sound outside, the sounds of rushing air and water\n" +
+                "You thought nothing of it until you heard whispers, curiosity took the better of you as you ventured out in the dead of night, the moon as your only light\n" +
+                "You found yourself venturing deep into the dark forest, the whispers carrying you throw the darkness. You found yourself standing in front of a cave\n" +
+                "The sounds growing stronger, before you could react you got sucked into the cave, you tried to grab onto the rocks, but a strange winged man pushed you deeper \n" +
+                "you fell for eternity until light fills your vision You're falling through the sky, the view breathtaking.\n" +
+                "the north are sharp jagged snowy mountains\n" +
+                "To the east towering clouds with lavish castles on top\n" +
+                "To the south is a dark and endless abyss \n" +
+                "And to the west is an enchanted forest, where all 4 seasons lie side by side\n" +
+                "The view was breathtaking, but then you remembered you're falling at terminal velocity; you prayed to any higher power that you won't get turned into a pancake\n" +
+                "The ground closing in rapidly, as everything turned to blank");
+        typeWriterSlow(".......");
+
+        StartingArea();
     }
 
 //endregion
 
 
-//region Main Area
+//region Starting Area
+
+    static void StartingArea() {
+        updateStats();
+
+        typeWriter("\"Are you... okay?\"");
+        typeWriter("You slowly opened your eyes, surprisingly you didn't turn into a pancake, the figure standing above you is cloaked");
+        System.out.println("| 1 \"Where am I?\" | 2 \"Who are you?\" | 3 \"AM I DEAD\"");
+        int choice = input.nextInt();
+        switch (choice) {
+            case 1: {
+                typeWriter("\"You're in everland, it's a place the lies under the real world. Come there's a lot to explain\"");
+                Walk2Town();
+            }
+            case 2: {
+                typeWriter("\"Oh... um. You can call me Azriel. Come there's a lot to explain\"");
+                Azriel = true;
+                Walk2Town();
+            }
+            case 3: {
+                typeWriter("\"Wh-woah hey clam down.. no you aren't dead. You'd be surprise it's common to see people falling from the sky. \n" +
+                        "Come there's a lot to explain\"");
+                Walk2Town();
+            }
+            default: {
+                typeWriter("Invalid choice");
+                StartingArea();
+            }
+        }
+    }
+
+    static void Walk2Town() {
+        if (Azriel) {
+            typeWriter("Azriel helps you up as he leads you to the city, you see trees, plants, and creature nothing like before");
+            typeWriter("\"It's been a while since we had someone from above come here... at least not after the catastrophe\"");
+            System.out.println("| 1 \"What catastrophe?\" | 2 \"There was another before me?\" | 3 \"...\"");
+            int choice = input.nextInt();
+            switch (choice) {
+                case 1: {
+                    typeWriter("Azriel had a somber look as he looked off into the vast meadows \"This world was not the same as it was\"\n" +
+                            "\"Our creators... our Gods, they got separated, and from then no one could leave until his brother returns...\"");
+                    typeWriter("Azriel looks back at you with a wide smile \"Let's not talk on sad topics, we're almost close to Everland\"");
+                }
+                case 2: {
+                    typeWriter("\"There was... although no one knows why they come, only the Gods are allowed to send people in and out\n" +
+                            "\"But they all end up dead\"");
+                    typeWriter(p.name + "\"HUH\"");
+                    typeWriter("\"Do-don't worry I will make sure you don't die.... hopefully, ANYWAY we're close to Everland\"");
+                }
+                case 3: {
+                    typeWriter("You stayed quite the trip until as you approach the gates of Everland");
+                }
+                default: {
+                    typeWriter("Invalid choice");
+                    Walk2Town();
+                }
+            }
+        } else {
+            typeWriter("The cloaked figure helps you up as he leads you to the city, you see trees, plants, and creature nothing like before");
+            typeWriter("\"I am Azriel by the way if you were wondering...It's been a while since we had someone from above come here... \n" +
+                    "at least not after the catastrophe\"");
+            System.out.println("| 1 \"What catastrophe?\" | 2 \"There was another before me?\" | 3 \"...\"");
+            int choice = input.nextInt();
+            switch (choice) {
+                case 1: {
+                    typeWriter("Azriel had a somber look as he looked off into the vast meadows \"This world was not the same as it was\"\n" +
+                            "\"Our creators... our Gods, they got separated, and from then no one could leave until his brother returns...\"");
+                    typeWriter("Azriel looks back at you with a wide smile \"Let's not talk on sad topics, we're almost close to Everland\"");
+                    EverlandGate();
+                }
+                case 2: {
+                    typeWriter("\"There was... although no one knows why they come, only the Gods are allowed to send people in and out\n" +
+                            "\"But they all end up dead\"");
+                    typeWriter(p.name + "\"HUH\"");
+                    typeWriter("\"Do-don't worry I will make sure you don't die.... hopefully, ANYWAY we're close to Everland\"");
+                    EverlandGate();
+                }
+                case 3: {
+                    typeWriter("You stayed quite the trip until as you approach the gates of Everland");
+                    EverlandGate();
+                }
+                default: {
+                    typeWriter("Invalid choice");
+                    Walk2Town();
+                }
+            }
+        }
+    }
+
+    static void EverlandGate() {
+        typeWriter("You walk past the main gates, creatures from all shapes and sizes carrying their everyday tasks, voices bustling from the marketplace\n" +
+                "Songs and music playing from the many taverns. In the center of the town lies a massive statue of twined winged figures encircling each other");
+        System.out.println("| 1 Ask about the statue | 2 keep walking");
+        int choice = input.nextInt();
+        switch (choice) {
+            case 1: {
+                typeWriter("You stop and star at the statue. One of them looks younger, a sword raised towards the sky, the other older holding twin blades aimed at the ground\n" +
+                        "On their backs are 4 wings coming from them, and a halo adorned with pitch black crystals hover above their head");
+                typeWriter("Azriel notices you staring \"Divine aren't they? These are the twins the made this world, no one knows way, it was such a long time ago\n\"" +
+                        "\"Even their true names are forgotten, but the youngest is named the heavenly principle. And the older.... Well, we don't know... He never told us after his disappearance\"\n" +
+                        "An awkward silence passes \"Come... this way\"");
+                TutorialAsk();
+            }
+            case 2: {
+                typeWriter("You keep on walking");
+                TutorialAsk();
+            }
+            default: {
+                typeWriter("Invalid choice");
+                EverlandGate();
+            }
+        }
+    }
+
+    static void TutorialAsk() {
+        typeWriter("Azriel stops as he turns to you \"Do you.. Do you know how to fight? If you want to return you have to at least know how to fight, or use magic\"");
+        System.out.println("| 1 \"I know how to fight\" | 2 \"No I don't\"");
+        int choice = input.nextInt();
+        switch (choice) {
+            case 1: {
+                typeWriter("\"Oh.. okay then, you came prepared hehe\"");
+                EverlandCenter();
+            }
+            case 2: {
+                typeWriter("\"Well then, I'll teach you");
+                Tutorial();
+            }
+        }
+    }
+
+    static void Tutorial() {
+        typeWriter("Azriel takes you out of Everland and into the training grounds");
+        typeWriter("\"The training ground is for.... well training, here, use this sword and use it on that dummy\"");
+        typeWriter("You stood in front the dummy raising your sword \"When fighting, try to hit when the timer is close to 0.00  to get damage bonus\"");
+        TutorialAttack();
+    }
+
+    static void TutorialAttack() {
+
+        input.nextLine();
+
+        int HeavyAttack = 0;
+        int Trys = 0;
+
+        int DummyHP = 20;
+
+        System.out.println("\nFighting Dummy HP 10 ATK 5");
+
+        while (DummyHP > 0) {
+
+            HeavyAttack++;
+
+
+            System.out.println("Dummy HP: " + DummyHP +
+                    " | Your HP: " + String.format("%.1f", p.health));
+
+            if (HeavyAttack == 4) {
+                typeWriter("Dummy prepares for a heavy attack");
+                typeWriter("Azriel \"Some enemies will hit you with a heavy attack, giving you a turn to prepare. Make sure to defend\"");
+            }
+
+            System.out.println("| 1 Fight | 2 Defend | 3 Prayer heal ");
+
+            String choice = input.nextLine();
+
+            if (HeavyAttack == 5) {
+                typeWriter("Dummy unleashes a heavy attack");
+                switch (choice) {
+                    case "1":
+                        Accuracy();
+                        Attack();
+                        if (p.damageAccuracy == -1) {
+
+                            takeDamage(10);
+
+                            typeWriter("Azriel \"You... you should've defended\"");
+
+
+                        } else {
+
+                            DummyHP -= p.damage;
+                            takeDamage(10);
+
+                            typeWriter("Azriel \"You... you should've defended\"");
+
+
+                        }
+                        break;
+                    case "2":
+                        takeDamage(3);
+                        break;
+                    case "3":
+
+                        p.health += p.Healing;
+                        if (p.health > 100) {
+                            p.health = 100;
+                        }
+                        typeWriter("You tried to heal, but you faltered");
+                        typeWriter("Azriel \"Healing in a heavy attack phase doesn't work\"");
+
+                        takeDamage(10);
+
+                        checkHealth();
+
+                        break;
+
+
+                }
+
+                HeavyAttack = 0;
+
+            } else {
+                switch (choice) {
+                    case "1":
+                        Accuracy();
+                        Attack();
+                        if (p.damageAccuracy == -1) {
+
+                            takeDamage(5);
+
+                            if (Trys == 6){
+
+                                typeWriter("Azriel \"Are you.... Are you missing on purposes\"");
+                                Trys = 0;
+                            }else {
+                                typeWriter("Azriel \"It's okay try again!\"");
+                                Trys += 0;
+                            }
+
+                        } else {
+
+                            DummyHP -= p.damage;
+                            takeDamage(5);
+                        }
+                        break;
+                    case "2":
+                        takeDamage(2);
+                        break;
+                    case "3":
+
+                            typeWriter("Azriel \"Healing increases with you magic level. Just cup your hands, feel the magic around you\"\n" +
+                                    "\"and let the flow of magic heal you\"");
+
+                        p.health += p.Healing;
+                        if (p.health > 100) {
+                            p.health = 100;
+                        }
+                        System.out.println("You we're healed for " + p.Healing);
+                        takeDamage(5);
+                        checkHealth();
+
+                        break;
+
+
+                }
+            }
+
+            checkHealth();
+            Trys++;
+
+
+        }
+
+        System.out.println("Dummy defeated!");
+
+        typeWriter("Azriel \"Good job! Now you have all the basics understood. Leveling up will increase your damage, defend, and healing\"\n" +
+                "\"Just come to the training grounds to increase it, or after any big fight. Come let's go back to town\"");
+
+    EverlandCenter();
+}
+
+    static void EverlandCenter(){
+        typeWriter("Azriel walks you back to Everland, but he stops at the statues of the twins...");
+        typeWriter("\"The way back is hidden under the statues, to unlock it you need to get special gems to open it.... at lest, that's what he said\"\n" +
+                "\"Since you will be staying a while, why not I show you around. You can go to different shops here to buy upgrade, if you need me for anything I will be in the library\"");
+        typeWriter("\"....But if you want.. you can save us all, break the false sky and open are two worlds together, that is... if you want\"");
+        typeWriter("Azriel turns back and walks away, but he quickly comes back to hand you something");
+        typeWriter("\"I forgot to give you this, it's a concule of some sort, it'll let you see your stats whenever you come here... I wish you well on your Journey");
+        typeWriter("\"...I never got your name?\"");
+        System.out.println("| 1 tell name | 2 don't tell name");
+        int choice = input.nextInt();
+        switch (choice) {
+            case 1:{
+                typeWriter("\""+ p.name+ " \"...I wish you do the make the right decisions\"");
+                typeWriter("Azriel walks away to the library");
+                Name = true;
+                mainArea();
+            }
+            case 2:{
+                typeWriter("\"...It's fine if you don't want to tell me... but..I hope you make the right decisions\"");
+                typeWriter("Azriel walks away to the library");
+                mainArea();
+            }
+            default:{
+                typeWriter("Invalid choice");
+                EverlandCenter();
+
+            }
+        }
+    }
 
     static void mainArea() {
-        updateStats();
-        System.out.println("\n**********************************************\n");
-
+        typeWriter("Welcome back to Everland");
         System.out.println("Current Money is: " + p.Money + " Current Heath: " + p.health + " Current Crystals: " + p.crystals + "\n" +
                 "Level: " + p.level + " Damage: " + p.damage + " Your Defense: " + p.defense + " Your magic level is " + p.Magic);
+        typeWriter("Places to go");
         typeWriter("To the north you have the snowy crystal cave \n" +
                 "To the east you have the land of wind \n" +
                 "To the south is the endless abyss \n" +
                 "And to the west is the enchanted forest \n" +
                 "The training grounds is to higher your level and damage \n");
 
-        System.out.println("Where would you like to go? (N, E, S, W, T) ");
+        System.out.println("| N north | E east | S south | W west | T training grounds | Q Explore Everland City");
 
         char direction = input.next().charAt(0);
 
@@ -526,11 +855,19 @@ public class Main {
             case 'e', 'E' -> wind();
             case 's', 'S' -> abyss();
             case 'w', 'W' -> forest();
+            case 'Q', 'q' -> EverlandCity();
             default -> {
                 System.out.println("Invalid direction. Please choose again.");
                 mainArea();
             }
         }
+    }
+
+    static void EverlandCity() {
+        typeWriter("Where do you want to go?");
+        System.out.println("| 1 Weaponsmith | 2 Armorer | 3 World's Edge Tavern | 4 Library");
+        typeWriter("WIP");
+        mainArea();
     }
 
 //endregion
@@ -1140,7 +1477,7 @@ public class Main {
                             break;
                         case "3":
 
-                            p.health += 10;
+                            p.health += p.Healing;
                             if (p.health > 100) {
                                 p.health = 100;
                             }
@@ -2114,7 +2451,7 @@ public class Main {
 //endregion
 
 
-    //region east
+//region east
     static void wind() {
         if (EastAccess) {
             System.out.println("You are too weak to go east yet. You need to explore the north first.");
@@ -2840,8 +3177,8 @@ public class Main {
 
     static void Aeolus() {
         typeWriter("Aeolus: \"You dare to defy me To make me feel shame? No one beats me, no one wins my game, \"");
-        typeWriter("\"wind bring them through the wringer\"");
-        typeWriter("Show them I'm the judgement call The one who makes her kingdom fall\"");
+        typeWriterSlow("\"wind bring them through the wringer\"");
+        typeWriterSlow("Show them I'm the judgement call The one who makes her kingdom fall\"");
         System.out.println("You enter a fight with Aeolus");
         AeolusFight();
     }
