@@ -143,7 +143,7 @@ public class Main {
             System.out.flush();
 
             try {
-                Thread.sleep(0); // 35
+                Thread.sleep(35); // set to 35
             } catch (InterruptedException e) {
                 Thread.currentThread().interrupt();
             }
@@ -157,7 +157,7 @@ public class Main {
             System.out.flush();
 
             try {
-                Thread.sleep(0); // 80
+                Thread.sleep(80); // set to 80
             } catch (InterruptedException e) {
                 Thread.currentThread().interrupt();
             }
@@ -630,7 +630,7 @@ public class Main {
             case 1: {
                 typeWriter("You stop and star at the statue. One of them looks younger, a sword raised towards the sky, the other older holding twin blades aimed at the ground\n" +
                         "On their backs are 4 wings coming from them, and a halo adorned with pitch black crystals hover above their head");
-                typeWriter("Azriel notices you staring \"Divine aren't they? These are the twins the made this world, no one knows way, it was such a long time ago\n\"" +
+                typeWriter("Azriel notices you staring \"Divine aren't they? These are the twins the made this world, no one knows way, it was such a long time ago\"\n" +
                         "\"Even their true names are forgotten, but the youngest is named the heavenly principle. And the older.... Well, we don't know... He never told us after his disappearance\"\n" +
                         "An awkward silence passes \"Come... this way\"");
                 TutorialAsk();
@@ -804,7 +804,7 @@ public class Main {
 }
 
     static void EverlandCenter(){
-        typeWriter("Azriel walks you back to Everland, but he stops at the statues of the twins...");
+        typeWriter("Azriel walks you back to the city center, but he stops at the statues of the twins...");
         typeWriter("\"The way back is hidden under the statues, to unlock it you need to get special gems to open it.... at lest, that's what he said\"\n" +
                 "\"Since you will be staying a while, why not I show you around. You can go to different shops here to buy upgrade, if you need me for anything I will be in the library\"");
         typeWriter("\"....But if you want.. you can save us all, break the false sky and open are two worlds together, that is... if you want\"");
@@ -815,7 +815,7 @@ public class Main {
         int choice = input.nextInt();
         switch (choice) {
             case 1:{
-                typeWriter("\""+ p.name+ " \"...I wish you do the make the right decisions\"");
+                typeWriter("\""+ p.name+ "...I wish you make the right decisions\"");
                 typeWriter("Azriel walks away to the library");
                 Name = true;
                 mainArea();
