@@ -90,6 +90,9 @@ public class Main {
     static int pickaxeLuck = 0;
     static int pickaxeTier = 0;
 
+    static int swordTier = 0;
+    static int armorTier = 0;
+
 
     static boolean CharoitePik = true;
 
@@ -752,11 +755,11 @@ public class Main {
 
                             takeDamage(5);
 
-                            if (Trys == 6){
+                            if (Trys == 6) {
 
                                 typeWriter("Azriel \"Are you.... Are you missing on purposes\"");
                                 Trys = 0;
-                            }else {
+                            } else {
                                 typeWriter("Azriel \"It's okay try again!\"");
                                 Trys += 0;
                             }
@@ -772,8 +775,8 @@ public class Main {
                         break;
                     case "3":
 
-                            typeWriter("Azriel \"Healing increases with you magic level. Just cup your hands, feel the magic around you\"\n" +
-                                    "\"and let the flow of magic heal you\"");
+                        typeWriter("Azriel \"Healing increases with you magic level. Just cup your hands, feel the magic around you\"\n" +
+                                "\"and let the flow of magic heal you\"");
 
                         p.health += p.Healing;
                         if (p.health > 100) {
@@ -800,10 +803,10 @@ public class Main {
         typeWriter("Azriel \"Good job! Now you have all the basics understood. Leveling up will increase your damage, defend, and healing\"\n" +
                 "\"Just come to the training grounds to increase it, or after any big fight. Come let's go back to town\"");
 
-    EverlandCenter();
-}
+        EverlandCenter();
+    }
 
-    static void EverlandCenter(){
+    static void EverlandCenter() {
         typeWriter("Azriel walks you back to the city center, but he stops at the statues of the twins...");
         typeWriter("\"The way back is hidden under the statues, to unlock it you need to get special gems to open it.... at lest, that's what he said\"\n" +
                 "\"Since you will be staying a while, why not I show you around. You can go to different shops here to buy upgrade, if you need me for anything I will be in the library\"");
@@ -814,18 +817,18 @@ public class Main {
         System.out.println("| 1 tell name | 2 don't tell name");
         int choice = input.nextInt();
         switch (choice) {
-            case 1:{
-                typeWriter("\""+ p.name+ "...I wish you make the right decisions\"");
+            case 1: {
+                typeWriter("\"" + p.name + "...I wish you make the right decisions\"");
                 typeWriter("Azriel walks away to the library");
                 Name = true;
                 mainArea();
             }
-            case 2:{
+            case 2: {
                 typeWriter("\"...It's fine if you don't want to tell me... but..I hope you make the right decisions\"");
                 typeWriter("Azriel walks away to the library");
                 mainArea();
             }
-            default:{
+            default: {
                 typeWriter("Invalid choice");
                 EverlandCenter();
 
@@ -865,9 +868,331 @@ public class Main {
 
     static void EverlandCity() {
         typeWriter("Where do you want to go?");
-        System.out.println("| 1 Weaponsmith | 2 Armorer | 3 World's Edge Tavern | 4 Library");
-        typeWriter("WIP");
-        mainArea();
+        System.out.println("| 1 Weaponsmith | 2 Armorer | 3 World's Edge Tavern | 4 Library | 5 go back");
+        int choice = input.nextInt();
+        switch (choice) {
+            case 1 -> weaponsmith();
+            case 2 -> armorer();
+            case 3 -> WorldsEdgeTavern();
+            case 4 -> Library();
+            case 5 -> mainArea();
+            default -> {
+                typeWriter("Invalid choice");
+                EverlandCity();
+            }
+        }
+    }
+
+    static void weaponsmith() {
+        typeWriter("\"Welcome, anything fancy you like?\"");
+        System.out.println("Your money is: " + p.Money);
+        System.out.println("Available swords");
+        System.out.println("1 | Iron sword: 50$ + 3 atk\n" +
+                "2 | Golden sword: 100$ + 10 atk\n" +
+                "3 | Diamond sword: 200$ + 15 atk\n" +
+                "4 | Ruby sword: 250$ + 20 atk\n" +
+                "5 | Obsidian sword: 1000$ + 20 atk");
+        System.out.println("Please enter which sword you want or | E to go back");
+        char Input = input.next().charAt(0);
+        switch (Input) {
+            case 'E', 'e' -> EverlandCity();
+            case '1' -> {
+
+                if (swordTier < 1) {
+
+                    if (p.Money >= 50) {
+
+                        p.Money -= 50;
+                        swordTier = 1;
+
+                        typeWriter("You bought the Iron pickaxe");
+                        GnomeShop();
+
+                    } else {
+
+                        typeWriter("You don't have enough money");
+                        GnomeShop();
+
+                    }
+
+                } else {
+
+                    typeWriter("You already own this or a better sword.");
+                    GnomeShop();
+
+                }
+            }
+            case '2' -> {
+
+                if (swordTier < 2) {
+
+                    if (p.Money >= 100) {
+
+                        p.Money -= 100;
+                        swordTier = 2;
+
+                        typeWriter("You bought the Golden pickaxe");
+                        GnomeShop();
+
+                    } else {
+
+                        typeWriter("You don't have enough money");
+                        GnomeShop();
+
+                    }
+
+                } else {
+
+                    typeWriter("You already own this or a better sword.");
+                    GnomeShop();
+
+                }
+            }
+            case '3' -> {
+
+                if (swordTier < 3) {
+
+                    if (p.Money >= 200) {
+
+                        p.Money -= 200;
+                        swordTier = 3;
+
+                        typeWriter("You bought the Diamond pickaxe");
+                        GnomeShop();
+
+                    } else {
+
+                        typeWriter("You don't have enough money");
+                        GnomeShop();
+
+                    }
+
+                } else {
+
+                    typeWriter("You already own this or a better sword.");
+                    GnomeShop();
+
+                }
+            }
+            case '4' -> {
+
+                if (swordTier < 4) {
+
+                    if (p.Money >= 250) {
+
+                        p.Money -= 250;
+                        swordTier = 4;
+
+                        typeWriter("You bought the Ruby pickaxe");
+                        GnomeShop();
+
+                    } else {
+
+                        typeWriter("You don't have enough money");
+                        GnomeShop();
+
+                    }
+
+                } else {
+
+                    typeWriter("You already own this or a better sword.");
+                    GnomeShop();
+
+                }
+            }
+            case '5' -> {
+
+                if (swordTier < 5) {
+
+                    if (p.Money >= 350) {
+
+                        p.Money -= 350;
+                        swordTier = 5;
+
+                        typeWriter("You bought the Obsidian sword");
+                        typeWriter("\"No one ever bought that, you're thr first\"");
+                        GnomeShop();
+
+                    } else {
+
+                        typeWriter("You don't have enough money");
+                        GnomeShop();
+
+                    }
+
+                } else {
+
+                    typeWriter("You already own this or a better sword.");
+                    GnomeShop();
+
+                }
+            }
+
+            default -> {
+                typeWriter("Invalid input.");
+                weaponsmith();
+            }
+        }
+    }
+
+    static void armorer() {
+        typeWriter("\"Hello dear, anything you like?\"");
+        System.out.println("Your money is: " + p.Money);
+        System.out.println("Available armors");
+        System.out.println("1 | Iron armor: 50$ + 3 def\n" +
+                "2 | Golden armor: 100$ + 10 def\n" +
+                "3 | Diamond armor: 200$ + 15 def\n" +
+                "4 | Ruby armor: 250$ + 20 def\n" +
+                "5 | Obsidian armor: 1000$ + 20 def");
+        System.out.println("Please enter which armor you want or | E to go back");
+        char Input = input.next().charAt(0);
+        switch (Input) {
+            case 'E', 'e' -> EverlandCity();
+            case '1' -> {
+
+                if (armorTier < 1) {
+
+                    if (p.Money >= 50) {
+
+                        p.Money -= 50;
+                        armorTier = 1;
+
+                        typeWriter("You bought the Iron armor");
+                        GnomeShop();
+
+                    } else {
+
+                        typeWriter("You don't have enough money");
+                        GnomeShop();
+
+                    }
+
+                } else {
+
+                    typeWriter("You already own this or a better pickaxe.");
+                    GnomeShop();
+
+                }
+            }
+            case '2' -> {
+
+                if (armorTier < 2) {
+
+                    if (p.Money >= 100) {
+
+                        p.Money -= 100;
+                        armorTier = 2;
+
+                        typeWriter("You bought the Golden armor");
+                        GnomeShop();
+
+                    } else {
+
+                        typeWriter("You don't have enough money");
+                        GnomeShop();
+
+                    }
+
+                } else {
+
+                    typeWriter("You already own this or a better armor.");
+                    GnomeShop();
+
+                }
+            }
+            case '3' -> {
+
+                if (armorTier < 3) {
+
+                    if (p.Money >= 200) {
+
+                        p.Money -= 200;
+                        armorTier = 3;
+
+                        typeWriter("You bought the Diamond armor");
+                        GnomeShop();
+
+                    } else {
+
+                        typeWriter("You don't have enough money");
+                        GnomeShop();
+
+                    }
+
+                } else {
+
+                    typeWriter("You already own this or a better armor.");
+                    GnomeShop();
+
+                }
+            }
+            case '4' -> {
+
+                if (armorTier < 4) {
+
+                    if (p.Money >= 250) {
+
+                        p.Money -= 250;
+                        armorTier = 4;
+
+                        typeWriter("You bought the Ruby armor");
+                        GnomeShop();
+
+                    } else {
+
+                        typeWriter("You don't have enough money");
+                        GnomeShop();
+
+                    }
+
+                } else {
+
+                    typeWriter("You already own this or a better armor.");
+                    GnomeShop();
+
+                }
+            }
+            case '5' -> {
+
+                if (armorTier < 5) {
+
+                    if (p.Money >= 350) {
+
+                        p.Money -= 350;
+                        armorTier = 5;
+
+                        typeWriter("You bought the Obsidian armor");
+                        typeWriter("\"No one ever bought that, you're thr first\"");
+                        GnomeShop();
+
+                    } else {
+
+                        typeWriter("You don't have enough money");
+                        GnomeShop();
+
+                    }
+
+                } else {
+
+                    typeWriter("You already own this or a better pickaxe.");
+                    GnomeShop();
+
+                }
+            }
+
+            default -> {
+                typeWriter("Invalid input.");
+                armorer();
+            }
+        }
+    }
+
+    static void WorldsEdgeTavern() {
+
+    }
+
+    static void Library() {
+
     }
 
 //endregion
@@ -1077,7 +1402,6 @@ public class Main {
         inputThread.start();
 
 
-
         while (time >= 0.00 && !Minepressed && !miningExit) {
 
             System.out.print("\rTime: " + df.format(time));
@@ -1100,7 +1424,6 @@ public class Main {
         }
 
 
-
         try {
 
             inputThread.join(100);
@@ -1110,7 +1433,6 @@ public class Main {
             e.printStackTrace();
 
         }
-
 
 
         // Player pressed E
@@ -1135,9 +1457,7 @@ public class Main {
         }
 
 
-
         System.out.println();
-
 
 
         if (Minepressed) {
@@ -1201,6 +1521,7 @@ public class Main {
         }
 
     }
+
     static void MineOres(int quality, int luck) {
 
         int roll = random.nextInt(100);
@@ -1718,7 +2039,7 @@ public class Main {
 
             }
             case 2 -> {
-                if  (CaveShopArmor) {
+                if (CaveShopArmor) {
                     if (p.Money >= 20) {
                         p.Money -= 20;
                         p.bonusDefense += 15;
@@ -1793,7 +2114,7 @@ public class Main {
             case 'B', 'b' -> cave2();
             case 'I', 'i' -> {
 
-                System.out.println("Coal: " + Coal + "\n"+
+                System.out.println("Coal: " + Coal + "\n" +
                         "Iron: " + Iron + "\n" +
                         "Gold: " + Gold + "\n" +
                         "Obsidian: " + Obsidian + "\n" +
@@ -1914,8 +2235,6 @@ public class Main {
 
                 }
             }
-
-
             case '2' -> { // Golden Pickaxe
 
                 if (pickaxeTier < 2) {
@@ -1943,8 +2262,6 @@ public class Main {
 
                 }
             }
-
-
             case '3' -> { // Diamond Pickaxe
 
                 if (pickaxeTier < 3) {
@@ -1972,8 +2289,6 @@ public class Main {
 
                 }
             }
-
-
             case '4' -> { // Ruby Pickaxe
 
                 if (pickaxeTier < 4) {
@@ -2001,8 +2316,6 @@ public class Main {
 
                 }
             }
-
-
             case '5' -> { // Emerald Pickaxe
 
                 if (pickaxeTier < 5) {
@@ -2030,7 +2343,6 @@ public class Main {
 
                 }
             }
-
             case '6' -> {
                 if (CharoitePik) {
                     if (p.Money >= 1000) {
@@ -2301,7 +2613,7 @@ public class Main {
     }
 
     static void U_R_evil() {
-        System.out.println("Gnome chief has 10hp. 1ATK");
+        System.out.println("Gnome chief. 10hp. 1ATK");
         System.out.println("| 1 fight? | 2 show mercy");
         int choice = input.nextInt();
         input.nextLine();
@@ -2410,12 +2722,13 @@ public class Main {
 
                 System.out.println("\nGnome defeated........you monster");
 
-                p.Money += 100000;
+                p.Money += 1;
 
-                typeWriter("Gnome dropped 100000 coins");
+                typeWriter("Gnome dropped 1 coins");
 
-                typeWriter("The gnome tribe kicked you out, but before that you managed to snag the real ice crystal");
+                typeWriter("The gnome tribe kicked you out, not after taking all your money, but before that you managed to snag the real ice crystal");
                 p.crystals += 1;
+                p.Money -= 100000;
                 p.level += 10;
                 North = true;
                 EastAccess = false;
@@ -2546,8 +2859,8 @@ public class Main {
 
     static void ThroneRoom() {
         typeWriter("You entered the chamber, inside there is a chest, you open it and get 2 special item \n" +
-                "The Royal Ivory Cloud Sword | +15 Damage and the Royal Ivory Cloud Armor | +10 Defense");
-        p.bonusDamage += 15;
+                "The Royal Ivory Cloud Sword | +10 Damage and the Royal Ivory Cloud Armor | +10 Defense");
+        p.bonusDamage += 10;
         p.bonusDefense += 10;
         updateStats();
         System.out.println("Your damage is now " + p.damage);
@@ -2937,6 +3250,7 @@ public class Main {
         CloudCrossway();
     }
 
+
     static void RainbowCloud() {
 
         if (RainbowCloud) {
@@ -3149,16 +3463,14 @@ public class Main {
                 "\"And here is a little bonus\"");
         p.WindRing += 1;
         p.health = 100;
-        p.bonusDamage += 10;
-        p.bonusDefense += 10;
-        p.Magic += 10;
+        p.bonusDamage += 5;
+        p.bonusDefense += 5;
+        p.Magic += 5;
         updateStats();
 
         StormCloud = true;
-        System.out.println("Your health is now " + p.health);
-        System.out.println("Your damage is now " + p.damage);
-        System.out.println("Your defense is now " + p.defense);
-        System.out.println("Your magic is now " + p.Magic);
+
+        System.out.println("Your gained a stat boost from Thor");
         CloudCrossway();
     }
 
@@ -3171,7 +3483,7 @@ public class Main {
     }
 
     static void AeolusFight() {
-        System.out.println("You are fighting Aeolus, the wind god");
+        System.out.println("You are fighting Aeolus, the wind God");
 
         int i = 0;
 
@@ -3273,7 +3585,6 @@ public class Main {
         typeWriter("Wind crystal was added to your inventory");
         p.crystals += 1;
         p.level += 10;
-        p.bonusDefense += 10;
         p.health = 100;
         East = true;
         SouthAccess = false;
