@@ -17,15 +17,13 @@ public class SoundManager {
 
             URL url = SoundManager.class.getResource(path);
 
-            System.out.println("Looking for: " + path);
-            System.out.println("URL: " + url);
-
             if (url == null) {
-                System.out.println("Music not found!");
+                System.out.println("MISSING SOUND FILE: " + path);
                 return;
             }
 
             AudioInputStream audio = AudioSystem.getAudioInputStream(url);
+
 
             musicClip = AudioSystem.getClip();
             musicClip.open(audio);
@@ -36,7 +34,6 @@ public class SoundManager {
             e.printStackTrace();
         }
     }
-
     // Stops the current music
     public static void stopMusic() {
         if (musicClip != null) {

@@ -156,7 +156,7 @@ public class Main {
             System.out.flush();
 
             try {
-                Thread.sleep(0); // set to 35
+                Thread.sleep(35); // set to 35
             } catch (InterruptedException e) {
                 Thread.currentThread().interrupt();
             }
@@ -600,6 +600,7 @@ public class Main {
                     typeWriter("Azriel had a somber look as he looked off into the vast meadows \"This world was not the same as it was\"\n" +
                             "\"Our creators... our Gods, they got separated, and from then no one could leave until his brother returns...\"");
                     typeWriter("Azriel looks back at you with a wide smile \"Let's not talk on sad topics, we're almost close to Everland\"");
+                    EverlandGate();
                 }
                 case 2: {
                     typeWriter("\"There was... although no one knows why they come, only the Gods are allowed to send people in and out\n" +
@@ -688,7 +689,8 @@ public class Main {
                 SoundManager.stopMusic();
                 Tutorial();
             }
-            default: TutorialAsk();
+            default:
+                TutorialAsk();
         }
     }
 
@@ -706,7 +708,7 @@ public class Main {
     }
 
     static void TutorialAttack() {
-        SoundManager.playMusic("/sounds/009_Enemy_Approaching.wav/");
+        SoundManager.playMusic("/sounds/009_Enemy_Approaching.wav");
         input.nextLine();
 
         int HeavyAttack = 0;
@@ -764,7 +766,7 @@ public class Main {
                         break;
                     case "3":
 
-                        p.health += (p.Healing/2);
+                        p.health += (p.Healing / 2);
                         if (p.health > 100) {
                             p.health = 100;
                         }
@@ -972,19 +974,19 @@ public class Main {
                         updateStats();
 
                         typeWriter("You bought the Iron sword");
-                        GnomeShop();
+                        weaponsmith();
 
                     } else {
 
                         typeWriter("You don't have enough money");
-                        GnomeShop();
+                        weaponsmith();
 
                     }
 
                 } else {
 
                     typeWriter("You already own this or a better sword.");
-                    GnomeShop();
+                    weaponsmith();
 
                 }
             }
@@ -1000,19 +1002,19 @@ public class Main {
                         updateStats();
 
                         typeWriter("You bought the Golden sword");
-                        GnomeShop();
+                        weaponsmith();
 
                     } else {
 
                         typeWriter("You don't have enough money");
-                        GnomeShop();
+                        weaponsmith();
 
                     }
 
                 } else {
 
                     typeWriter("You already own this or a better sword.");
-                    GnomeShop();
+                    weaponsmith();
 
                 }
             }
@@ -1027,19 +1029,19 @@ public class Main {
                         updateStats();
 
                         typeWriter("You bought the Diamond sword");
-                        GnomeShop();
+                        weaponsmith();
 
                     } else {
 
                         typeWriter("You don't have enough money");
-                        GnomeShop();
+                        weaponsmith();
 
                     }
 
                 } else {
 
                     typeWriter("You already own this or a better sword.");
-                    GnomeShop();
+                    weaponsmith();
 
                 }
             }
@@ -1055,19 +1057,19 @@ public class Main {
                         updateStats();
 
                         typeWriter("You bought the Ruby sword");
-                        GnomeShop();
+                        weaponsmith();
 
                     } else {
 
                         typeWriter("You don't have enough money");
-                        GnomeShop();
+                        weaponsmith();
 
                     }
 
                 } else {
 
                     typeWriter("You already own this or a better sword.");
-                    GnomeShop();
+                    weaponsmith();
 
                 }
             }
@@ -1085,19 +1087,19 @@ public class Main {
 
                         typeWriter("You bought the Obsidian sword");
                         typeWriter("\"No one ever bought that, you're thr first\"");
-                        GnomeShop();
+                        weaponsmith();
 
                     } else {
 
                         typeWriter("You don't have enough money");
-                        GnomeShop();
+                        weaponsmith();
 
                     }
 
                 } else {
 
                     typeWriter("You already own this or a better sword.");
-                    GnomeShop();
+                    weaponsmith();
 
                 }
             }
@@ -1134,19 +1136,19 @@ public class Main {
                         updateStats();
 
                         typeWriter("You bought the Iron armor");
-                        GnomeShop();
+                        armorer();
 
                     } else {
 
                         typeWriter("You don't have enough money");
-                        GnomeShop();
+                        armorer();
 
                     }
 
                 } else {
 
                     typeWriter("You already own this or a better pickaxe.");
-                    GnomeShop();
+                    armorer();
 
                 }
             }
@@ -1162,19 +1164,19 @@ public class Main {
                         updateStats();
 
                         typeWriter("You bought the Golden armor");
-                        GnomeShop();
+                        armorer();
 
                     } else {
 
                         typeWriter("You don't have enough money");
-                        GnomeShop();
+                        armorer();
 
                     }
 
                 } else {
 
                     typeWriter("You already own this or a better armor.");
-                    GnomeShop();
+                    armorer();
 
                 }
             }
@@ -1190,19 +1192,19 @@ public class Main {
                         updateStats();
 
                         typeWriter("You bought the Diamond armor");
-                        GnomeShop();
+                        armorer();
 
                     } else {
 
                         typeWriter("You don't have enough money");
-                        GnomeShop();
+                        armorer();
 
                     }
 
                 } else {
 
                     typeWriter("You already own this or a better armor.");
-                    GnomeShop();
+                    armorer();
 
                 }
             }
@@ -1218,19 +1220,19 @@ public class Main {
                         updateStats();
 
                         typeWriter("You bought the Ruby armor");
-                        GnomeShop();
+                        armorer();
 
                     } else {
 
                         typeWriter("You don't have enough money");
-                        GnomeShop();
+                        armorer();
 
                     }
 
                 } else {
 
                     typeWriter("You already own this or a better armor.");
-                    GnomeShop();
+                    armorer();
 
                 }
             }
@@ -1248,19 +1250,19 @@ public class Main {
 
                         typeWriter("You bought the Obsidian armor");
                         typeWriter("\"No one ever bought that, you're thr first\"");
-                        GnomeShop();
+                        armorer();
 
                     } else {
 
                         typeWriter("You don't have enough money");
-                        GnomeShop();
+                        armorer();
 
                     }
 
                 } else {
 
                     typeWriter("You already own this or a better pickaxe.");
-                    GnomeShop();
+                    armorer();
 
                 }
             }
@@ -1781,12 +1783,16 @@ public class Main {
             mainArea();
             return;
         }
+        SoundManager.playMusic("/sounds/006_Uwa_So_Temperate.wav");
         typeWriter("You enter the underground cave, the crystals on the wall shimmer, but it's too dark to see with the naked eye");
         System.out.print("Do you use a lamp? (Y/N): ");
         char lamp = input.next().charAt(0);
         input.nextLine();
         switch (lamp) {
-            case 'Y', 'y' -> lampPath();
+            case 'Y', 'y' -> {
+                lampPath();
+                SoundManager.stopMusic();
+            }
             case 'N', 'n' -> noLampPath();
             default -> {
                 typeWriter("Invalid input. Please try again.");
@@ -1797,7 +1803,7 @@ public class Main {
     }
 
     static void lampPath() {
-
+        SoundManager.playMusic("/sounds/Rude Buster.wav");
         typeWriter("You lit the lamp making you see everything \n" +
                 "But oh no! You were spotted by " + Hunters + " crystal hunters \n" +
                 "Crystals hunters have " + enemy.CrystalHunters + " health points\n");
@@ -1853,7 +1859,7 @@ public class Main {
                             break;
                         case "3":
 
-                            p.health += (p.Healing/2);
+                            p.health += (p.Healing / 2);
                             if (p.health > 100) {
                                 p.health = 100;
                             }
@@ -1920,6 +1926,7 @@ public class Main {
 
         }
 
+        SoundManager.stopMusic();
         System.out.println("\nYou survived, your health is now " + p.health);
 
         typeWriter("You picked up the armor the hunters have been wearing, your defence increased by 10");
@@ -1960,6 +1967,7 @@ public class Main {
     }
 
     static void cave2() {
+        SoundManager.playMusic("/sounds/006_Uwa_So_Temperate.wav");
         if (CaveShop) {
             typeWriter("You found yourself at a 3 way crossroad \n" +
                     "To the left is a dark passage way with whispers coming from it \n" +
@@ -2002,6 +2010,7 @@ public class Main {
             typeWriter("you traversed the dark cave, whispers echoed across the walls, you felt a cold breeze and a shiver ran down your spine \n" +
                     "You felt the looming present of an entity, you thought it was an enemy but then the lights came on and it was just a mannequin \n" +
                     "In front of you lies a small shop, the shopkeeper having a kind face");
+            SoundManager.stopMusic();
             typeWriter("\"Oh sorry there traveler, I didn't mean to scare you, I was just fixing the lights hehe\"");
 
             CaveShopFirstTime();
@@ -2012,6 +2021,7 @@ public class Main {
 
 
     static void CaveShopFirstTime() {
+        SoundManager.playMusic("/sounds/Lantern.wav");
 
         if (CaveShopHint) {
             CaveShop = false;
@@ -2025,7 +2035,14 @@ public class Main {
 
 
             if (answer == null) {
+                SoundManager.stopMusic();
+                SoundManager.playSFX("/sounds/Weird_route_sound.wav");
                 typeWriter("...");
+                try {
+                    Thread.sleep(3000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
                 SecretBossHint();
                 return;
             }
@@ -2059,6 +2076,7 @@ public class Main {
 
 
     static void CaveShop() {
+        SoundManager.playMusic("/sounds/Lantern.wav");
         typeWriter("\"Is there anything of interest I could be of use to you?\"");
         System.out.println("| 1 talk | 2 buy items | 3 leave shop ");
         int choice = input.nextInt();
@@ -2067,6 +2085,7 @@ public class Main {
             case 2 -> ShopBuy();
             case 3 -> {
                 typeWriter("\"Take care\"");
+                SoundManager.stopMusic();
                 cave2();
             }
             default -> {
@@ -2155,10 +2174,12 @@ public class Main {
 
 
     static void SecretBossHint() {
+        SoundManager.playMusic("/sounds/Weird Route.wav");
         typeWriter("\"Oh.... oh I know what you want... You don't care about the vanity of this word\"\n" +
                 "\"Hehe... a kindred spirit. Take this coin of Elation, show it to the bartender at the world's edge tavern, he should give you all that you need... Take care\"");
         p.ElationCoin = 1;
         typeWriter("Coin of Elation was added to your inventory");
+        SoundManager.stopMusic();
         CaveShopHint = false;
         CaveShop();
     }
@@ -2169,7 +2190,15 @@ public class Main {
             typeWriter("You entered the right cave, the sound of running water grew louder as you ventured deeper \n" +
                     "You found a small pond with a glowing flower in the center \n" +
                     "You stepped closer, the flower pulsed as it healed you fully.... But you could almost hear the flower say something");
+            SoundManager.stopMusic();
+            SoundManager.playSFX("/sounds/Glue.wav");
             typeWriter("......glue.......");
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+
             p.health = 100;
             Flowery = false;
             System.out.println("Your health is now: " + p.health);
@@ -2188,6 +2217,8 @@ public class Main {
     }
 
     static void CenterCave() {
+        SoundManager.stopMusic();
+        SoundManager.playMusic("/sounds/Ever Higher.wav");
         typeWriter("You entered the center cave, the crystals shimmered and you felt a sense of calm \n" +
                 "You stand in front of a large opening, gnomes trotting all over, doing their duties.\n");
         GnomeCave();
@@ -2533,6 +2564,7 @@ public class Main {
         switch (choice) {
             case 1 -> {
                 if (p.Money >= 100000) {
+                    p.Money -= 100000;
                     typeWriter("You gave the gnome chief the money. He laughs happily");
                     typeWriter("\"As intended here");
                     System.out.println("North crystal was added to you items");
@@ -2564,7 +2596,8 @@ public class Main {
     }
 
     static void OrcFight() {
-
+        SoundManager.stopMusic();
+        SoundManager.playMusic("/sounds/Chaos King.wav");
         int Orc = 250;
         typeWriter("Orcs have 250hp. 20 ATK");
 
@@ -2601,23 +2634,28 @@ public class Main {
                             if (p.damageAccuracy == -1) {
 
                                 takeDamage(30);
+                                SoundManager.playSFX("/sounds/Dammaged.wav");
 
                             } else {
 
                                 OrcHP -= p.damage;
                                 takeDamage(30);
+                                SoundManager.playSFX("/sounds/Attack.wav");
+
                             }
                             break;
                         case "2":
                             takeDamage(5);
+                            SoundManager.playSFX("/sounds/Dammaged.wav");
                             break;
                         case "3":
 
-                            p.health += p.Healing;
+                            p.health += p.Healing/2;
                             if (p.health > 100) {
                                 p.health = 100;
                             }
                             typeWriter("You tried to heal, but you faltered");
+                            SoundManager.playSFX("/sounds/Dammaged.wav");
                             takeDamage(10);
 
                             checkHealth();
@@ -2637,15 +2675,19 @@ public class Main {
                             if (p.damageAccuracy == -1) {
 
                                 takeDamage(20);
+                                SoundManager.playSFX("/sounds/Dammaged.wav");
 
                             } else {
 
                                 OrcHP -= p.damage;
                                 takeDamage(20);
+                                SoundManager.playSFX("/sounds/Attack.wav");
+
                             }
                             break;
                         case "2":
                             takeDamage(5);
+                            SoundManager.playSFX("/sounds/Dammaged.wav");
                             break;
                         case "3":
 
@@ -2654,6 +2696,7 @@ public class Main {
                                 p.health = 100;
                             }
                             takeDamage(5);
+                            SoundManager.playSFX("/sounds/Heal.wav");
                             checkHealth();
 
                             break;
@@ -2689,7 +2732,8 @@ public class Main {
 
 
     static void GnomeFight() {
-
+        SoundManager.stopMusic();
+        SoundManager.playMusic("/sounds/Dump.wav");
         typeWriter("\"Wh-WHAT.. W-wait please HAVE MERCY");
         System.out.println("| 1 fight | 2 show mercy");
         int choice = input.nextInt();
@@ -2854,6 +2898,7 @@ public class Main {
             System.out.println("The portal crystal has already been taken. There is nothing left to find here.");
             mainArea();
         }
+        SoundManager.playMusic("/sounds/Dark_Place.wav");
         typeWriter("Your sore up into the land of wind, cloud mansions fill your every vison \n" +
                 "You found a lavish temple, ivory pillars as high as the heavens \n" +
                 "Inside at the alter you saw the portal crystal, you thought it was too easy, but suddenly the wind god Aeolus appeared before you \n");
@@ -2862,6 +2907,7 @@ public class Main {
                 "\"What do you say?\"\n" +
                 "You accepted the challenge and set off");
         typeWriter("After your encounter with the wind god Aeolus you venture off to find the missing ring pieces");
+        SoundManager.stopMusic();
         CloudCrossway();
     }
 
@@ -2871,14 +2917,24 @@ public class Main {
             WindRing = true;
             Aeolus();
         }
+        SoundManager.playMusic("/sounds/ATRIUM.wav");
         typeWriter("You land at a cloud plateau, in front of you are three large clouds \n" +
                 "To the left is a large ivory castle. The center is a cloud adorned with rainbows. And to the left is a dark storm cloud.");
         System.out.println("Which cloud do you choose? (left, center, right) ");
         char Cloud = input.next().charAt(0);
         switch (Cloud) {
-            case 'L', 'l' -> IvoryCastle();
-            case 'C', 'c' -> RainbowCloud();
-            case 'R', 'r' -> StormCloud();
+            case 'L', 'l' -> {
+                IvoryCastle();
+                SoundManager.stopMusic();
+            }
+            case 'C', 'c' -> {
+                RainbowCloud();
+                SoundManager.stopMusic();
+            }
+            case 'R', 'r' -> {
+                StormCloud();
+                SoundManager.stopMusic();
+            }
             default -> {
                 System.out.println("Invalid cloud choice.");
                 CloudCrossway();
@@ -2891,6 +2947,7 @@ public class Main {
             System.out.println("The ivory castle has already been explored. There is nothing left to find here.");
             CloudCrossway();
         }
+        SoundManager.playMusic("/sounds/Dark_Sanctuary.wav");
         typeWriter("You enter the ivory castle, ivory columns shining bright and dazzling \n" +
                 "You made it to the back of the castle but the grand doors are locked with a 3 combination lock\n");
         IvoryCode();
@@ -2965,21 +3022,24 @@ public class Main {
             case 1 -> {
                 typeWriter("You beavery lifted your new sword and fought them");
                 IvoryAttack();
+                SoundManager.stopMusic();
             }
             case 2 -> {
                 typeWriter("You attempted to distract them but the Breezes weren't fooled by you, you take extra damage");
                 IvoryDistract();
+                SoundManager.stopMusic();
             }
             case 3 -> {
                 typeWriter("You attempted to run but the Breezes caught you and attacked you, you take extra damage");
                 IvoryRun();
+                SoundManager.stopMusic();
             }
         }
 
     }
 
     static void IvoryDistract() {
-
+        SoundManager.playMusic("/sounds/From_Now_On_Battle.wav");
         System.out.println("You bravely attack the Breezes!");
 
         for (int i = 0; i < Hunters; i++) {
@@ -3016,25 +3076,29 @@ public class Main {
                             Attack();
 
                             if (p.damageAccuracy == -1) {
+                                SoundManager.playSFX("/sounds/Dammaged.wav");
                                 takeDamage(25);
                             } else {
                                 BreezesHP -= p.damage;
+                                SoundManager.playSFX("/sounds/Attack.wav");
                                 takeDamage(25);
                             }
                             break;
 
                         case "2":
+                            SoundManager.playSFX("/sounds/Dammaged.wav");
                             takeDamage(10);
                             break;
 
                         case "3":
-                            p.health += p.Healing;
+                            p.health += p.Healing / 2;
 
                             if (p.health > 100) {
                                 p.health = 100;
                             }
 
                             typeWriter("You tried to heal, but you faltered");
+                            SoundManager.playSFX("/sounds/Dammaged.wav");
                             takeDamage(10);
                             break;
                     }
@@ -3050,15 +3114,18 @@ public class Main {
                             Attack();
 
                             if (p.damageAccuracy == -1) {
+                                SoundManager.playSFX("/sounds/Dammaged.wav");
                                 takeDamage(20);
                             } else {
                                 BreezesHP -= p.damage;
+                                SoundManager.playSFX("/sounds/Attack.wav");
                                 takeDamage(20);
                             }
                             break;
 
                         case "2":
                             takeDamage(5);
+                            SoundManager.playSFX("/sounds/Dammaged.wav");
                             break;
 
                         case "3":
@@ -3069,6 +3136,7 @@ public class Main {
                             }
 
                             takeDamage(5);
+                            SoundManager.playSFX("/sounds/Heal.wav");
                             break;
                     }
                 }
@@ -3093,6 +3161,7 @@ public class Main {
     }
 
     static void IvoryRun() {
+        SoundManager.playMusic("/sounds/From_Now_On_Battle.wav");
 
         System.out.println("You bravely attack the Breezes!");
 
@@ -3131,11 +3200,13 @@ public class Main {
                             if (p.damageAccuracy == -1) {
 
                                 takeDamage(25);
+                                SoundManager.playSFX("/sounds/Dammaged.wav");
 
                             } else {
 
                                 BreezesHP -= p.damage;
                                 takeDamage(25);
+                                SoundManager.playSFX("/sounds/Attack.wav");
 
                             }
                             break;
@@ -3143,18 +3214,20 @@ public class Main {
 
                         case "2":
                             takeDamage(10);
+                            SoundManager.playSFX("/sounds/Dammaged.wav");
                             break;
 
 
                         case "3":
 
-                            p.health += p.Healing;
+                            p.health += p.Healing / 2;
 
                             if (p.health > 100) {
                                 p.health = 100;
                             }
 
                             typeWriter("You tried to heal, but you faltered");
+                            SoundManager.playSFX("/sounds/Dammaged.wav");
                             takeDamage(10);
 
                             break;
@@ -3176,11 +3249,13 @@ public class Main {
                             if (p.damageAccuracy == -1) {
 
                                 takeDamage(20);
+                                SoundManager.playSFX("/sounds/Dammaged.wav");
 
                             } else {
 
                                 BreezesHP -= p.damage;
                                 takeDamage(20);
+                                SoundManager.playSFX("/sounds/Attack.wav");
 
                             }
                             break;
@@ -3188,6 +3263,7 @@ public class Main {
 
                         case "2":
                             takeDamage(5);
+                            SoundManager.playSFX("/sounds/Dammaged.wav");
                             break;
 
 
@@ -3199,6 +3275,7 @@ public class Main {
                                 p.health = 100;
                             }
 
+                            SoundManager.playSFX("/sounds/Heal.wav");
                             takeDamage(5);
 
                             break;
@@ -3229,6 +3306,7 @@ public class Main {
     }
 
     static void IvoryAttack() {
+        SoundManager.playMusic("/sounds/From_Now_On_Battle.wav");
 
         System.out.println("You bravely attack the Breezes!");
 
@@ -3266,24 +3344,28 @@ public class Main {
 
                             if (p.damageAccuracy == -1) {
                                 takeDamage(20);
+                                SoundManager.playSFX("/sounds/Dammaged.wav");
                             } else {
                                 BreezesHP -= p.damage;
                                 takeDamage(20);
+                                SoundManager.playSFX("/sounds/Attack.wav");
                             }
                             break;
 
                         case "2":
                             takeDamage(10);
+                            SoundManager.playSFX("/sounds/Dammaged.wav");
                             break;
 
                         case "3":
-                            p.health += p.Healing;
+                            p.health += p.Healing / 2;
 
                             if (p.health > 100) {
                                 p.health = 100;
                             }
 
                             typeWriter("You tried to heal, but you faltered");
+                            SoundManager.playSFX("/sounds/Dammaged.wav");
                             takeDamage(10);
                             break;
                     }
@@ -3300,9 +3382,11 @@ public class Main {
 
                             if (p.damageAccuracy == -1) {
                                 takeDamage(15);
+                                SoundManager.playSFX("/sounds/Dammaged.wav");
                             } else {
                                 BreezesHP -= p.damage;
                                 takeDamage(15);
+                                SoundManager.playSFX("/sounds/Attack.wav");
                             }
                             break;
 
@@ -3318,6 +3402,7 @@ public class Main {
                             }
 
                             takeDamage(5);
+                            SoundManager.playSFX("/sounds/Heal.wav");
                             break;
                     }
                 }
@@ -3348,6 +3433,8 @@ public class Main {
             System.out.println("The rainbow cloud has already been explored. There is nothing left to find here.");
             CloudCrossway();
         }
+        SoundManager.stopMusic();
+        SoundManager.playMusic("/sounds/Old wooden rafters.wav");
 
         generateRainbowCode(RainbowL);
         generateRainbowCode(RainbowR);
@@ -3449,6 +3536,7 @@ public class Main {
         p.WindRing += 1;
         System.out.println("Wind Ring pieces are now " + p.WindRing + "\\3");
         RainbowCloud = true;
+        SoundManager.stopMusic();
         CloudCrossway();
     }
 
@@ -3458,14 +3546,18 @@ public class Main {
             System.out.println("The storm cloud has already been explored. There is nothing left to find here.");
             CloudCrossway();
         }
+        SoundManager.playMusic("/sounds/Gyaa Ha ha.wav");
         typeWriter("You enter the dark storm cloud, lightning crackling in the distance, in the center there is a large stone temple, the sound of lighting crackling from within \n " +
                 "You enter the temple and inside you find Thor training with his hammer the Wind ring pice framed on the wall, as he catches you eyeing it");
         typeWriter("Thor: \"You dare disturb Thor son of Odin? If you want that pice of junk You must prove your worth by fetching me 5 breeze hearts and the ring is yours\"\n" +
                 "\"Head to the dungeon and fetch me the hearts\"");
+        SoundManager.stopMusic();
+        SoundManager.playMusic("/sounds/Hammer_of_Justice.wav");
         DungeonEntrance();
     }
 
     static void DungeonEntrance() {
+
         typeWriter("You go forward and head to the entrance of the dungeon, the sounds of howling winds grows stronger");
         typeWriter("Inside the dungeon you can go left to fight the endless horde of breeze, to your right is a room with a pound that would heal you of all your wound");
         System.out.println("The chances of getting a breeze heart is 10% tread carefully");
@@ -3544,11 +3636,14 @@ public class Main {
     static void HealingPond() {
         typeWriter("You enter the healing pond, you drink from the pond and feel your wounds heal");
         p.health = 100;
+        SoundManager.playSFX("/sounds/Heal.wav");
         System.out.println("Your health is now " + p.health);
         DungeonEntrance();
     }
 
     static void ThorRing() {
+        SoundManager.stopMusic();
+        SoundManager.playMusic("/sounds/Gyaa Ha ha.wav");
         typeWriter("You return to Thor with the 5 Breeze Hearts");
         typeWriter("Thor: \"AHA! You have proven your worth, here is the Wind Ring piece, may it serve you well\"\n" +
                 "\"And here is a little bonus\"");
@@ -3566,14 +3661,18 @@ public class Main {
     }
 
     static void Aeolus() {
+        SoundManager.stopMusic();
+        SoundManager.playMusic("/sounds/Heavy_Footsteps.wav");
         typeWriter("Aeolus: \"You dare to defy me To make me feel shame? No one beats me, no one wins my game, \"");
         typeWriterSlow("\"wind bring them through the wringer\"");
-        typeWriterSlow("Show them I'm the judgement call The one who makes her kingdom fall\"");
+        typeWriterSlow("Show them I'm the judgement call, The one who makes the kingdom fall\"");
         System.out.println("You enter a fight with Aeolus");
         AeolusFight();
     }
 
     static void AeolusFight() {
+        SoundManager.stopMusic();
+        SoundManager.playMusic("/sounds/GUARDIAN.wav");
         System.out.println("You are fighting Aeolus, the wind God");
 
         int i = 0;
@@ -3601,12 +3700,14 @@ public class Main {
                     Attack();
                     if (p.damageAccuracy == -1) {
 
+                        SoundManager.playSFX("/sounds/Dammaged.wav");
                         takeDamage(AeolusDamage);
 
                     } else {
 
                         AeolusHealth -= p.damage;
                         takeDamage(AeolusDamage);
+                        SoundManager.playSFX("/sounds/Attack.wav");
                         typeWriter("You struck Aeolus!");
                         System.out.println("Aeolus's HP is now " + AeolusHealth);
                     }
@@ -3618,18 +3719,21 @@ public class Main {
                     switch (defended) {
                         case 0:
                             takeDamage(AeolusDamage - 5);
+                            SoundManager.playSFX("/sounds/Dammaged.wav");
                             typeWriter("You blocked Aeolus attack!)");
                             System.out.println("Your HP is now " + p.health);
                             break;
 
                         case 1:
                             takeDamage(AeolusDamage - 10);
+                            SoundManager.playSFX("/sounds/Dammaged.wav");
                             typeWriter("You hit a hard blocked against Aeolus attack!)");
                             System.out.println("Your HP is now " + p.health);
                             break;
 
                         case 2:
                             takeDamage(AeolusDamage - 20);
+                            SoundManager.playSFX("/sounds/Dammaged.wav");
                             typeWriter("You hit a critical blocked against Aeolus attack!)");
                             System.out.println("Your HP is now " + p.health);
                             break;
@@ -3641,6 +3745,7 @@ public class Main {
                 case '3' -> {
                     typeWriter("You cupped your hand in prayer, determination filled you of your travels as you got healed");
                     p.health += p.Healing;
+                    SoundManager.playSFX("/sounds/Heal.wav");
                     if (p.health > 100) {
                         p.health = 100;
                     }
@@ -3651,6 +3756,7 @@ public class Main {
 
                     if (HealTimes == 3) {
                         typeWriter("Aeolus is enraged bt your overhaling and sends a tornado towards you");
+                        SoundManager.playSFX("/sounds/Dammaged.wav");
                         takeDamage(AeolusDamage + 40);
                         System.out.println("Your HP is now " + p.health);
                         HealTimes = 0;
@@ -3658,6 +3764,7 @@ public class Main {
                 }
                 default -> {
                     typeWriter("You falter in your attack, Aeolus takes advantage and hits a critical hit");
+                    SoundManager.playSFX("/sounds/Dammaged.wav");
                     takeDamage(AeolusDamage + 20);
                     System.out.println("Your HP is now " + p.health);
                 }
@@ -3672,6 +3779,7 @@ public class Main {
         updateStats();
 
         typeWriter("You have defeated Aeolus, the wind god");
+        SoundManager.stopMusic();
         typeWriter("Aeolus: \"Ugh, take it. I have better things to waist my powers on\"");
         typeWriter("Wind crystal was added to your inventory");
         p.crystals += 1;
