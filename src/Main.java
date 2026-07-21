@@ -11,8 +11,10 @@ class Enemy {
 }
 
 class Player {
+
     String name;
     double health;
+    double Maxhp = 100.0;
     int crystals;
     int WindRing;
     int BreezeHearts;
@@ -23,10 +25,12 @@ class Player {
     int damageAccuracy = -1;
     int baseDamage = 0;
     int bonusDamage = 0;
+    int SwordAtk = 0;
     double DamageAccuracyBonus = 0;
     int baseDefense = 0;
     int bonusDefense = 0;
     int defense = 0;
+    int ArmorDef = 0;
     int Money = 0;
     int ElationCoin = 0;
     int MaskOfElation = 0;
@@ -71,6 +75,8 @@ public class Main {
     static boolean SouthAccess = true;
     static boolean WestAccess = true;
 
+    static boolean ObssedineSword = false;
+    static boolean ObssedineArmor = false;
 
     static int Hunters = random.nextInt(3) + 1;
     static int Breeze = random.nextInt(3) + 3;
@@ -106,10 +112,10 @@ public class Main {
 
 
         p.baseDamage = Math.max(1, (int) (p.level * 0.3));
-        p.damage = p.baseDamage + p.bonusDamage + (int) Math.ceil(p.DamageAccuracyBonus);
+        p.damage = p.baseDamage + p.bonusDamage + p.SwordAtk + (int) Math.ceil(p.DamageAccuracyBonus);
 
         p.baseDefense = Math.max(1, (int) (p.level * 0.2));
-        p.defense = p.baseDefense + p.bonusDefense;
+        p.defense = p.baseDefense + p.bonusDefense + p.ArmorDef;
 
 
         p.Magic = Math.max(1, (int) (p.level * 0.5));
@@ -887,10 +893,10 @@ public class Main {
         typeWriter("\"Welcome, anything fancy you like?\"");
         System.out.println("Your money is: " + p.Money);
         System.out.println("Available swords");
-        System.out.println("1 | Iron sword: 50$ + 3 atk\n" +
-                "2 | Golden sword: 100$ + 10 atk\n" +
-                "3 | Diamond sword: 200$ + 15 atk\n" +
-                "4 | Ruby sword: 250$ + 20 atk\n" +
+        System.out.println("1 | Iron sword: 20$ + 3 atk\n" +
+                "2 | Golden sword: 50$ + 10 atk\n" +
+                "3 | Diamond sword: 100$ + 15 atk\n" +
+                "4 | Ruby sword: 150$ + 20 atk\n" +
                 "5 | Obsidian sword: 1000$ + 20 atk");
         System.out.println("Please enter which sword you want or | E to go back");
         char Input = input.next().charAt(0);
@@ -904,8 +910,10 @@ public class Main {
 
                         p.Money -= 50;
                         swordTier = 1;
+                        p.SwordAtk = 3;
+                        updateStats();
 
-                        typeWriter("You bought the Iron pickaxe");
+                        typeWriter("You bought the Iron sword");
                         GnomeShop();
 
                     } else {
@@ -930,8 +938,10 @@ public class Main {
 
                         p.Money -= 100;
                         swordTier = 2;
+                        p.SwordAtk = 10;
+                        updateStats();
 
-                        typeWriter("You bought the Golden pickaxe");
+                        typeWriter("You bought the Golden sword");
                         GnomeShop();
 
                     } else {
@@ -955,9 +965,10 @@ public class Main {
                     if (p.Money >= 200) {
 
                         p.Money -= 200;
-                        swordTier = 3;
+                        swordTier = 15;
+                        updateStats();
 
-                        typeWriter("You bought the Diamond pickaxe");
+                        typeWriter("You bought the Diamond sword");
                         GnomeShop();
 
                     } else {
@@ -982,8 +993,10 @@ public class Main {
 
                         p.Money -= 250;
                         swordTier = 4;
+                        p.SwordAtk = 20;
+                        updateStats();
 
-                        typeWriter("You bought the Ruby pickaxe");
+                        typeWriter("You bought the Ruby sword");
                         GnomeShop();
 
                     } else {
@@ -1008,6 +1021,9 @@ public class Main {
 
                         p.Money -= 350;
                         swordTier = 5;
+                        p.SwordAtk = 20;
+                        ObssedineSword = true;
+                        updateStats();
 
                         typeWriter("You bought the Obsidian sword");
                         typeWriter("\"No one ever bought that, you're thr first\"");
@@ -1056,6 +1072,8 @@ public class Main {
 
                         p.Money -= 50;
                         armorTier = 1;
+                        p.ArmorDef = 3;
+                        updateStats();
 
                         typeWriter("You bought the Iron armor");
                         GnomeShop();
@@ -1082,6 +1100,8 @@ public class Main {
 
                         p.Money -= 100;
                         armorTier = 2;
+                        p.ArmorDef = 10;
+                        updateStats();
 
                         typeWriter("You bought the Golden armor");
                         GnomeShop();
@@ -1108,6 +1128,8 @@ public class Main {
 
                         p.Money -= 200;
                         armorTier = 3;
+                        p.ArmorDef = 15;
+                        updateStats();
 
                         typeWriter("You bought the Diamond armor");
                         GnomeShop();
@@ -1134,6 +1156,8 @@ public class Main {
 
                         p.Money -= 250;
                         armorTier = 4;
+                        p.ArmorDef = 20;
+                        updateStats();
 
                         typeWriter("You bought the Ruby armor");
                         GnomeShop();
@@ -1160,6 +1184,9 @@ public class Main {
 
                         p.Money -= 350;
                         armorTier = 5;
+                        p.ArmorDef = 20;
+                        ObssedineArmor = true;
+                        updateStats();
 
                         typeWriter("You bought the Obsidian armor");
                         typeWriter("\"No one ever bought that, you're thr first\"");
@@ -1188,7 +1215,7 @@ public class Main {
     }
 
     static void WorldsEdgeTavern() {
-
+        typeWriter("You enter the World's edge tavern");
     }
 
     static void Library() {
