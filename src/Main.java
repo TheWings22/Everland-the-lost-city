@@ -2,6 +2,9 @@ import java.text.DecimalFormat;
 import java.util.Scanner;
 import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
+import javax.sound.sampled.*;
+import java.io.IOException;
+import java.net.URL;
 
 class Enemy {
     int CrystalHunters = 50;
@@ -35,6 +38,7 @@ class Player {
     int ElationCoin = 0;
     int MaskOfElation = 0;
 }
+
 
 public class Main {
 
@@ -152,7 +156,7 @@ public class Main {
             System.out.flush();
 
             try {
-                Thread.sleep(35); // set to 35
+                Thread.sleep(0); // set to 35
             } catch (InterruptedException e) {
                 Thread.currentThread().interrupt();
             }
@@ -500,7 +504,7 @@ public class Main {
         p.MaskOfElation = 0;
 
 
-        System.out.print("Please enter your name young traveller: ");
+        System.out.println("Please enter your name young traveller: ");
         p.name = input.nextLine();
 
         if (p.name.equalsIgnoreCase("Ahmed")) {
@@ -512,9 +516,17 @@ public class Main {
             p.Money = 999;
             p.defense = 999;
             p.Money = 999999999;
-
-            System.out.println("Aha has joined the game!");
+            SoundManager.playSFX("/sounds/Aha laugh.wav");
+            typeWriter("Aha has joined the game!");
+            try {
+                Thread.sleep(3000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         }
+
+        SoundManager.playMusic("/sounds/The_Legend.wav");
+
 
         typeWriter("If you had wings to lift you, and the second star as your guide, you'd find a land hidden beneath the aether\n" +
                 "Past the snowy peaks of the north, over the eternal season forest of the west, and under the high cloud of the east\n" +
@@ -535,6 +547,9 @@ public class Main {
                 "The ground closing in rapidly, as everything turned to blank");
         typeWriterSlow(".......");
 
+        SoundManager.stopMusic();
+
+
         StartingArea();
     }
 
@@ -544,6 +559,8 @@ public class Main {
 //region Starting Area
 
     static void StartingArea() {
+
+        SoundManager.playMusic("/sounds/Empty_Town.wav");
         updateStats();
 
         typeWriter("\"Are you... okay?\"");
@@ -587,11 +604,13 @@ public class Main {
                 case 2: {
                     typeWriter("\"There was... although no one knows why they come, only the Gods are allowed to send people in and out\n" +
                             "\"But they all end up dead\"");
-                    typeWriter(p.name + "\"HUH\"");
+                    typeWriter(p.name + " \"HUH\"");
                     typeWriter("\"Do-don't worry I will make sure you don't die.... hopefully, ANYWAY we're close to Everland\"");
+                    EverlandGate();
                 }
                 case 3: {
                     typeWriter("You stayed quite the trip until as you approach the gates of Everland");
+                    EverlandGate();
                 }
                 default: {
                     typeWriter("Invalid choice");
@@ -666,20 +685,28 @@ public class Main {
             }
             case 2: {
                 typeWriter("\"Well then, I'll teach you");
+                SoundManager.stopMusic();
                 Tutorial();
             }
         }
     }
 
     static void Tutorial() {
+        SoundManager.playMusic("/sounds/007_Anticipation.wav");
         typeWriter("Azriel takes you out of Everland and into the training grounds");
         typeWriter("\"The training ground is for.... well training, here, use this sword and use it on that dummy\"");
         typeWriter("You stood in front the dummy raising your sword \"When fighting, try to hit when the timer is close to 0.00  to get damage bonus\"");
+        typeWriter("Enter any button to continue");
+        char enter = input.next().charAt(0);
+        input.nextLine();
+
+
+        SoundManager.stopMusic();
         TutorialAttack();
     }
 
     static void TutorialAttack() {
-
+        SoundManager.playMusic("/sounds/009_Enemy_Approaching.wav/");
         input.nextLine();
 
         int HeavyAttack = 0;
@@ -715,12 +742,14 @@ public class Main {
                         if (p.damageAccuracy == -1) {
 
                             takeDamage(10);
+                            SoundManager.playSFX("/sounds/Dammaged.wav");
 
                             typeWriter("Azriel \"You... you should've defended\"");
 
 
                         } else {
 
+                            SoundManager.playSFX("/sounds/Attack.wav");
                             DummyHP -= p.damage;
                             takeDamage(10);
 
@@ -731,13 +760,15 @@ public class Main {
                         break;
                     case "2":
                         takeDamage(3);
+                        SoundManager.playSFX("/sounds/Dammaged.wav");
                         break;
                     case "3":
 
-                        p.health += p.Healing;
+                        p.health += 5;
                         if (p.health > 100) {
                             p.health = 100;
                         }
+                        SoundManager.playSFX("/sounds/Heal.wav");
                         typeWriter("You tried to heal, but you faltered");
                         typeWriter("Azriel \"Healing in a heavy attack phase doesn't work\"");
 
@@ -760,6 +791,7 @@ public class Main {
                         if (p.damageAccuracy == -1) {
 
                             takeDamage(5);
+                            SoundManager.playSFX("/sounds/Dammaged.wav");
 
                             if (Trys == 6) {
 
@@ -772,12 +804,14 @@ public class Main {
 
                         } else {
 
+                            SoundManager.playSFX("/sounds/Attack.wav");
                             DummyHP -= p.damage;
                             takeDamage(5);
                         }
                         break;
                     case "2":
                         takeDamage(2);
+                        SoundManager.playSFX("/sounds/Dammaged.wav");
                         break;
                     case "3":
 
@@ -788,6 +822,8 @@ public class Main {
                         if (p.health > 100) {
                             p.health = 100;
                         }
+                        SoundManager.playSFX("/sounds/Heal.wav");
+
                         System.out.println("You we're healed for " + p.Healing);
                         takeDamage(5);
                         checkHealth();
@@ -804,10 +840,14 @@ public class Main {
 
         }
 
+
         System.out.println("Dummy defeated!");
+        SoundManager.stopMusic();
 
         typeWriter("Azriel \"Good job! Now you have all the basics understood. Leveling up will increase your damage, defend, and healing\"\n" +
                 "\"Just come to the training grounds to increase it, or after any big fight. Come let's go back to town\"");
+        SoundManager.playMusic("/sounds/Empty_Town.wav");
+
 
         EverlandCenter();
     }
@@ -826,12 +866,14 @@ public class Main {
             case 1: {
                 typeWriter("\"" + p.name + "...I wish you make the right decisions\"");
                 typeWriter("Azriel walks away to the library");
+                SoundManager.stopMusic();
                 Name = true;
                 mainArea();
             }
             case 2: {
                 typeWriter("\"...It's fine if you don't want to tell me... but..I hope you make the right decisions\"");
                 typeWriter("Azriel walks away to the library");
+                SoundManager.stopMusic();
                 mainArea();
             }
             default: {
@@ -843,6 +885,7 @@ public class Main {
     }
 
     static void mainArea() {
+        SoundManager.playMusic("/sounds/My Castle Town.wav");
         typeWriter("Welcome back to Everland");
         System.out.println("Current Money is: " + p.Money + " Current Heath: " + p.health + " Current Crystals: " + p.crystals + "\n" +
                 "Level: " + p.level + " Damage: " + p.damage + " Your Defense: " + p.defense + " Your magic level is " + p.Magic);
@@ -859,11 +902,26 @@ public class Main {
 
         switch (direction) {
 
-            case 't', 'T' -> Training();
-            case 'n', 'N' -> cave();
-            case 'e', 'E' -> wind();
-            case 's', 'S' -> abyss();
-            case 'w', 'W' -> forest();
+            case 't', 'T' -> {
+                Training();
+                SoundManager.stopMusic();
+            }
+            case 'n', 'N' -> {
+                cave();
+                SoundManager.stopMusic();
+            }
+            case 'e', 'E' -> {
+                wind();
+                SoundManager.stopMusic();
+            }
+            case 's', 'S' -> {
+                abyss();
+                SoundManager.stopMusic();
+            }
+            case 'w', 'W' -> {
+                forest();
+                SoundManager.stopMusic();
+            }
             case 'Q', 'q' -> EverlandCity();
             default -> {
                 System.out.println("Invalid direction. Please choose again.");
@@ -1215,7 +1273,13 @@ public class Main {
     }
 
     static void WorldsEdgeTavern() {
+
+        SoundManager.playMusic("/sounds/World's End Tavern.wav");
+
         typeWriter("You enter the World's edge tavern");
+        int test = input.nextInt();
+        SoundManager.stopMusic();
+
     }
 
     static void Library() {
