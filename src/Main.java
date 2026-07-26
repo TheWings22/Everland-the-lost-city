@@ -1,3 +1,4 @@
+import java.sql.SQLOutput;
 import java.text.DecimalFormat;
 import java.util.Scanner;
 import java.util.Random;
@@ -17,7 +18,7 @@ class Player {
 
     String name;
     double health;
-    double Maxhp = 100.0;
+    double Maxhp = 0;
     int crystals;
     int WindRing;
     int BreezeHearts;
@@ -102,6 +103,7 @@ public class Main {
 
     static int swordTier = 0;
     static int armorTier = 0;
+    static int ElationTier = 0;
 
 
     static boolean CharoitePik = true;
@@ -124,6 +126,9 @@ public class Main {
 
         p.Magic = Math.max(1, (int) (p.level * 0.5));
         p.Healing = Math.max(5, (int) (p.Magic * 1.5 + 5));
+
+
+        p.health = p.health + p.Maxhp;
 
 
     }
@@ -156,7 +161,7 @@ public class Main {
             System.out.flush();
 
             try {
-                Thread.sleep(35); // set to 35
+                Thread.sleep(0); // set to 35
             } catch (InterruptedException e) {
                 Thread.currentThread().interrupt();
             }
@@ -516,8 +521,8 @@ public class Main {
             p.Money = 999;
             p.defense = 999;
             p.Money = 999999999;
-            SoundManager.playSFX("/sounds/Aha laugh.wav");
-            typeWriter("Aha has joined the game!");
+            SoundManager.playSFX("/sounds/Elation Laugh.wav");
+            typeWriter("The chosen one has joined the game!");
             try {
                 Thread.sleep(3000);
             } catch (InterruptedException e) {
@@ -933,6 +938,7 @@ public class Main {
     }
 
     static void EverlandCity() {
+        SoundManager.playMusic("/sounds/My Castle Town.wav");
         typeWriter("Where do you want to go?");
         System.out.println("| 1 Weaponsmith | 2 Armorer | 3 World's Edge Tavern | 4 Library | 5 go back");
         int choice = input.nextInt();
@@ -1276,16 +1282,220 @@ public class Main {
 
     static void WorldsEdgeTavern() {
 
-        SoundManager.playMusic("/sounds/World's End Tavern.wav");
+        SoundManager.playMusic("/sounds/The_Circus.wav");
 
-        typeWriter("You enter the World's edge tavern");
-        int test = input.nextInt();
-        SoundManager.stopMusic();
+        typeWriter("You enter the World's edge tavern, patrons and other people are dressed lavishly. All wearing makes\n" +
+                "Some comedy masks, some tragedy masks. The bartender a lavish man with a mask split in 2, one smiling and the other weeping");
+        typeWriter("\"Welcome welcome, you're new here, what do you fancy? A glass of pure fire? A knife straight to your heart, or something else?");
+        System.out.println("| 1 check the menu | 2 talk | 3 leave");
+        int choice = input.nextInt();
+        switch (choice) {
+            case 1 -> WorldsEdgeTavernBuy();
+            case 2 -> WorldsEdgeTavernTalk();
+            case 3 -> {
+                typeWriter("Farewell traveler");
+                SoundManager.stopMusic();
+                EverlandCity();
+            }
+            default -> {
+                typeWriter("Invalid input.");
+                mainArea();
+            }
+        }
+
 
     }
 
-    static void Library() {
 
+    static void WorldsEdgeTavernBuy() {
+        typeWriter("\"What will it be?\"");
+        System.out.println("Your money is: " + p.Money);
+        System.out.println("Available items");
+        System.out.println("1 | Mask of Thalia: 50$ + 25 hp point\n" +
+                "2 | Mask of Melpomene: 100$ + 35 hp points\n" +
+                "3 | Tragicomedy mask: 200$ + 45 hp points\n" +
+                "4 | The dice of fate: 250$ + 55 hp points\n" +
+                "5 | The mask of fate: 1000$ + 200 hp points");
+        System.out.println("Please enter which armor you want or | E to go back");
+        char Input = input.next().charAt(0);
+        switch (Input) {
+            case 'E', 'e' -> WorldsEdgeTavern();
+            case '1' -> {
+
+                if (ElationTier < 1) {
+
+                    if (p.Money >= 50) {
+
+                        p.Money -= 50;
+                        ElationTier = 1;
+                        p.Maxhp = 25.0;
+                        updateStats();
+
+                        typeWriter("You bought the Mask of Thalia");
+                        WorldsEdgeTavernBuy();
+
+                    } else {
+
+                        typeWriter("You don't have enough money");
+                        WorldsEdgeTavernBuy();
+
+                    }
+
+                } else {
+
+                    typeWriter("You already own this or a better item.");
+                    WorldsEdgeTavernBuy();
+
+                }
+            }
+            case '2' -> {
+
+                if (ElationTier < 2) {
+
+                    if (p.Money >= 100) {
+
+                        p.Money -= 100;
+                        ElationTier = 2;
+                        p.Maxhp = 35.0;
+                        typeWriter("You bought the Mask of Melpomene");
+                        WorldsEdgeTavernBuy();
+
+                    } else {
+
+                        typeWriter("You don't have enough money");
+                        WorldsEdgeTavernBuy();
+
+                    }
+
+                } else {
+
+                    typeWriter("You already own this or a better item.");
+                    WorldsEdgeTavernBuy();
+
+                }
+            }
+            case '3' -> {
+
+                if (ElationTier < 3) {
+
+                    if (p.Money >= 200) {
+
+                        p.Money -= 200;
+                        ElationTier = 3;
+                        p.Maxhp = 45.0;
+                        updateStats();
+
+                        typeWriter("You bought the Tragicomedy mask");
+                        WorldsEdgeTavernBuy();
+
+                    } else {
+
+                        typeWriter("You don't have enough money");
+                        WorldsEdgeTavernBuy();
+
+                    }
+
+                } else {
+
+                    typeWriter("You already own this or a better item.");
+                    WorldsEdgeTavernBuy();
+
+                }
+            }
+            case '4' -> {
+
+                if (ElationTier < 4) {
+
+                    if (p.Money >= 250) {
+
+                        p.Money -= 250;
+                        ElationTier = 4;
+                        p.Maxhp = 55.0;
+                        updateStats();
+
+                        typeWriter("You bought the dice of fate");
+                        WorldsEdgeTavernBuy();
+
+                    } else {
+
+                        typeWriter("You don't have enough money");
+                        WorldsEdgeTavernBuy();
+
+                    }
+
+                } else {
+
+                    typeWriter("You already own this or a better item.");
+                    WorldsEdgeTavernBuy();
+
+                }
+            }
+            case '5' -> {
+
+                if (ElationTier < 5) {
+
+                    if (p.Money >= 350) {
+
+                        p.Money -= 350;
+                        ElationTier = 5;
+                        p.Maxhp = 200.0;
+                        updateStats();
+
+                        typeWriter("You bought the mask of fate");
+                        WorldsEdgeTavernBuy();
+
+                    } else {
+
+                        typeWriter("You don't have enough money");
+                        WorldsEdgeTavernBuy();
+
+                    }
+
+                } else {
+
+                    typeWriter("You already own this or a better item.");
+                    WorldsEdgeTavernBuy();
+
+                }
+            }
+            default -> {
+                typeWriter("Invalid input.");
+                WorldsEdgeTavernBuy();
+            }
+        }
+
+    }
+
+    static void WorldsEdgeTavernTalk() {
+        typeWriter("\"What do you want to ponder about?\"");
+        System.out.println("| 1 \"What is this place?\"| 2 \"Isn't illegal to hack my hp?\" | 3 \"Who are you?\"| 4 exit");
+        int choice = input.nextInt();
+        switch (choice) {
+            case 1 -> {
+                typeWriter("\"This is the world's edge tavern, where we dance and sing till the sun inevitable explode\"\n" +
+                        "\"Why bother will all the prophecy bullcrap when we can make our own fate\"");
+                WorldsEdgeTavernTalk();
+            }
+            case 2 -> {
+                typeWriter("\"Well you sure are a party pooper, why be constrained with such such restriction when you can be free and fly\"\n" +
+                        "\"That's what our creator wants us to be, free\"");
+                WorldsEdgeTavernTalk();
+            }
+            case 3 -> {
+                typeWriter("\"I need not have a name, but we all are called the enlighten ones, we see far greater then that malevolent keeper\"\n" +
+                        "\"Forcing us to be traped here untill the one saver falls to the heavens and sets us free AHAH like that's going to happen\"");
+            }
+            case 4 -> WorldsEdgeTavernTalk();
+            default -> {
+                typeWriter("Invalid input.");
+                WorldsEdgeTavernTalk();
+            }
+        }
+    }
+
+    static void Library() {
+        typeWriter("WIP");
+        EverlandCity();
     }
 
 //endregion
@@ -1803,7 +2013,6 @@ public class Main {
     }
 
     static void lampPath() {
-        SoundManager.playMusic("/sounds/Rude Buster.wav");
         typeWriter("You lit the lamp making you see everything \n" +
                 "But oh no! You were spotted by " + Hunters + " crystal hunters \n" +
                 "Crystals hunters have " + enemy.CrystalHunters + " health points\n");
@@ -1811,8 +2020,16 @@ public class Main {
     }
 
     static void CaveAttack() {
+        SoundManager.stopMusic();
+        SoundManager.playSFX("/sounds/Battle_Start.wav");
+        typeWriter("You entered a battle!");
+        try {
+            Thread.sleep(1500);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
 
-        System.out.println("Press enter when the timer is close to 0.00  to get damage bonus");
+        SoundManager.playMusic("/sounds/Rude Buster.wav");
 
         for (int i = 0; i < Hunters; i++) {
 
@@ -1847,15 +2064,18 @@ public class Main {
                             if (p.damageAccuracy == -1) {
 
                                 takeDamage(10);
+                                SoundManager.playSFX("/sounds/Dammaged.wav");
 
                             } else {
 
                                 CrystalHuntersHP -= p.damage;
                                 takeDamage(10);
+                                SoundManager.playSFX("/sounds/Attack.wav");
                             }
                             break;
                         case "2":
                             takeDamage(3);
+                            SoundManager.playSFX("/sounds/Dammaged.wav");
                             break;
                         case "3":
 
@@ -1864,6 +2084,7 @@ public class Main {
                                 p.health = 100;
                             }
                             typeWriter("You tried to heal, but you faltered");
+                            SoundManager.playSFX("/sounds/Heal.wav");
                             takeDamage(10);
 
                             checkHealth();
@@ -1883,15 +2104,18 @@ public class Main {
                             if (p.damageAccuracy == -1) {
 
                                 takeDamage(5);
+                                SoundManager.playSFX("/sounds/Dammaged.wav");
 
                             } else {
 
                                 CrystalHuntersHP -= p.damage;
                                 takeDamage(5);
+                                SoundManager.playSFX("/sounds/Attack.wav");
                             }
                             break;
                         case "2":
                             takeDamage(2);
+                            SoundManager.playSFX("/sounds/Dammaged.wav");
                             break;
                         case "3":
 
@@ -1900,6 +2124,7 @@ public class Main {
                                 p.health = 100;
                             }
                             takeDamage(5);
+                            SoundManager.playSFX("/sounds/Heal.wav");
                             checkHealth();
 
                             break;
@@ -2201,6 +2426,7 @@ public class Main {
 
             p.health = 100;
             Flowery = false;
+            SoundManager.playSFX("/sounds/Heal.wav");
             System.out.println("Your health is now: " + p.health);
             typeWriter("You went back to the crossroad");
             cave2();
@@ -2210,7 +2436,7 @@ public class Main {
                 "You stepped closer, the flower pulsed as it healed you fully");
         p.health = 100;
 
-
+        SoundManager.playSFX("/sounds/Heal.wav");
         System.out.println("Your health is now: " + p.health);
         typeWriter("You went back to the crossroad");
         cave2();
@@ -2597,6 +2823,13 @@ public class Main {
 
     static void OrcFight() {
         SoundManager.stopMusic();
+        SoundManager.playSFX("/sounds/Battle_Start.wav");
+        typeWriter("You entered a battle!");
+        try {
+            Thread.sleep(1500);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         SoundManager.playMusic("/sounds/Chaos King.wav");
         int Orc = 250;
         typeWriter("Orcs have 250hp. 20 ATK");
@@ -2650,7 +2883,7 @@ public class Main {
                             break;
                         case "3":
 
-                            p.health += p.Healing/2;
+                            p.health += p.Healing / 2;
                             if (p.health > 100) {
                                 p.health = 100;
                             }
@@ -2733,6 +2966,13 @@ public class Main {
 
     static void GnomeFight() {
         SoundManager.stopMusic();
+        SoundManager.playSFX("/sounds/Battle_Start.wav");
+        typeWriter("You entered a battle!");
+        try {
+            Thread.sleep(1500);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         SoundManager.playMusic("/sounds/Dump.wav");
         typeWriter("\"Wh-WHAT.. W-wait please HAVE MERCY");
         System.out.println("| 1 fight | 2 show mercy");
@@ -2786,15 +3026,18 @@ public class Main {
                                 if (p.damageAccuracy == -1) {
 
                                     takeDamage(1);
+                                    SoundManager.playSFX("/sounds/Dammaged.wav");
 
                                 } else {
 
                                     Gnomehp -= p.damage;
                                     takeDamage(1);
+                                    SoundManager.playSFX("/sounds/Attack.wav");
                                 }
                                 break;
                             case "2":
                                 takeDamage(0);
+                                SoundManager.playSFX("/sounds/Dammaged.wav");
                                 break;
                             case "3":
 
@@ -2803,6 +3046,7 @@ public class Main {
                                     p.health = 100;
                                 }
                                 takeDamage(1);
+                                SoundManager.playSFX("/sounds/Heal.wav");
 
                                 checkHealth();
 
@@ -2824,15 +3068,18 @@ public class Main {
                                 if (p.damageAccuracy == -1) {
 
                                     takeDamage(1);
+                                    SoundManager.playSFX("/sounds/Dammaged.wav");
 
                                 } else {
 
                                     Gnomehp -= p.damage;
                                     takeDamage(1);
+                                    SoundManager.playSFX("sounds/Attack.wav");
                                 }
                                 break;
                             case "2":
                                 takeDamage(0);
+                                SoundManager.playSFX("/sounds/Dammaged.wav");
                                 break;
                             case "3":
 
@@ -2841,6 +3088,7 @@ public class Main {
                                     p.health = 100;
                                 }
                                 takeDamage(1);
+                                SoundManager.playSFX("/sounds/Heal.wav");
                                 checkHealth();
 
                                 break;
@@ -3039,6 +3287,14 @@ public class Main {
     }
 
     static void IvoryDistract() {
+        SoundManager.stopMusic();
+        SoundManager.playSFX("/sounds/Battle_Start.wav");
+        typeWriter("You entered a battle!");
+        try {
+            Thread.sleep(1500);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         SoundManager.playMusic("/sounds/From_Now_On_Battle.wav");
         System.out.println("You bravely attack the Breezes!");
 
@@ -3161,6 +3417,14 @@ public class Main {
     }
 
     static void IvoryRun() {
+        SoundManager.stopMusic();
+        SoundManager.playSFX("/sounds/Battle_Start.wav");
+        typeWriter("You entered a battle!");
+        try {
+            Thread.sleep(1500);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         SoundManager.playMusic("/sounds/From_Now_On_Battle.wav");
 
         System.out.println("You bravely attack the Breezes!");
@@ -3306,6 +3570,14 @@ public class Main {
     }
 
     static void IvoryAttack() {
+        SoundManager.stopMusic();
+        SoundManager.playSFX("/sounds/Battle_Start.wav");
+        typeWriter("You entered a battle!");
+        try {
+            Thread.sleep(1500);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         SoundManager.playMusic("/sounds/From_Now_On_Battle.wav");
 
         System.out.println("You bravely attack the Breezes!");
@@ -3672,6 +3944,12 @@ public class Main {
 
     static void AeolusFight() {
         SoundManager.stopMusic();
+        SoundManager.playSFX("/sounds/Battle_Start.wav");
+        try {
+            Thread.sleep(1500);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         SoundManager.playMusic("/sounds/GUARDIAN.wav");
         System.out.println("You are fighting Aeolus, the wind God");
 
