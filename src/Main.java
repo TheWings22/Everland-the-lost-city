@@ -83,6 +83,13 @@ public class Main {
     static boolean ObssedineSword = false;
     static boolean ObssedineArmor = false;
 
+
+    static boolean WorldEdgeAzriel = false;
+    static boolean NorthAzriel = true;
+    static boolean EastAzriel = false;
+    static boolean southAzriel = false;
+    static boolean westAzriel = false;
+
     static int Hunters = random.nextInt(3) + 1;
     static int Breeze = random.nextInt(3) + 3;
     static int LostSouls = random.nextInt(3) + 5;
@@ -161,7 +168,7 @@ public class Main {
             System.out.flush();
 
             try {
-                Thread.sleep(0); // set to 35
+                Thread.sleep(35); // set to 35
             } catch (InterruptedException e) {
                 Thread.currentThread().interrupt();
             }
@@ -1283,7 +1290,6 @@ public class Main {
     static void WorldsEdgeTavern() {
 
         SoundManager.playMusic("/sounds/The_Circus.wav");
-
         typeWriter("You enter the World's edge tavern, patrons and other people are dressed lavishly. All wearing makes\n" +
                 "Some comedy masks, some tragedy masks. The bartender a lavish man with a mask split in 2, one smiling and the other weeping");
         typeWriter("\"Welcome welcome, you're new here, what do you fancy? A glass of pure fire? A knife straight to your heart, or something else?");
@@ -1468,7 +1474,7 @@ public class Main {
 
     static void WorldsEdgeTavernTalk() {
         typeWriter("\"What do you want to ponder about?\"");
-        System.out.println("| 1 \"What is this place?\"| 2 \"Isn't illegal to hack my hp?\" | 3 \"Who are you?\"| 4 exit");
+        System.out.println("| 1 \"What is this place?\"| 2 \"Isn't illegal to hack my hp?\" | 3 \"Who are you?\"| 4 go back");
         int choice = input.nextInt();
         switch (choice) {
             case 1 -> {
@@ -1483,9 +1489,11 @@ public class Main {
             }
             case 3 -> {
                 typeWriter("\"I need not have a name, but we all are called the enlighten ones, we see far greater then that malevolent keeper\"\n" +
-                        "\"Forcing us to be traped here untill the one saver falls to the heavens and sets us free AHAH like that's going to happen\"");
+                        "\"Forcing us to be trapped here until the one saver falls to the heavens and sets us free... AHAH like that's going to happen\"");
+                WorldEdgeAzriel = true;
+                WorldsEdgeTavernTalk();
             }
-            case 4 -> WorldsEdgeTavernTalk();
+            case 4 -> WorldsEdgeTavern();
             default -> {
                 typeWriter("Invalid input.");
                 WorldsEdgeTavernTalk();
@@ -1494,8 +1502,91 @@ public class Main {
     }
 
     static void Library() {
-        typeWriter("WIP");
-        EverlandCity();
+        typeWriter("You made it to library, the smell of old books and the sound of pages turning fills the air. \n" +
+                "You climb the grand staircase and find Azriel in a secluded office in the back, his clocked body slouched over a desk with hundreds of book.");
+        typeWriter("\"Do you need anything?\"");
+        LibraryAzriel();
+    }
+
+    static void LibraryAzriel(){
+        SoundManager.playMusic("/sounds/Quiet_Autumn.wav");
+        if (WorldEdgeAzriel) {
+            System.out.println("| 1 Where do I go? | 2 What is this place? | 3 What is the World's Edge tavern? | 4 go back");
+        } else {
+            System.out.println("| 1 Where do I go? | 2 What is this place? | 3 go back");
+        }
+        int choices = input.nextInt();
+        switch (choices) {
+            case 1 -> {
+                if (NorthAzriel) {
+                    typeWriter("\"Your next place of adverts are the snowy mountains over in the northern area\"\n" +
+                            "\"Gnomes are sometimes seen there so be carefully with them, they may seem evil but they are harmless, they run the\"\n" +
+                            "\"They are the ones in charge of running the whole mining industry of Everland... but you will find the snow crystal there\"");
+                    LibraryAzriel();
+                }
+                if (EastAzriel) {
+                    typeWriter("\"Your next place of adverts is the land of wind, over in the eastern area\"\n" +
+                            "\"It's a very holy place, it is said the youngest of the twins loved the element of wins\"\n" +
+                            "\"You might encounter Gods there, They are in charge of keeping our faith and spirit in Everland and is where you will find the wind crystal\"");
+                    LibraryAzriel();
+                }
+                if (southAzriel) {
+                    typeWriter("\"Your next place of adverts are the endless abyss, over in the southern area\"\n" +
+                            "\"The abyss are uncharted territories, the dark seas are far too dangerous for any of us to venture off\"\n" +
+                            "\"But I have heard that a kingdom has emerged there, since it's not apart of Everland I sadly don't know much\"\n" +
+                            "\"But if you wish to escape. And set us free, then you must collect the shadow crystal\"");
+                    LibraryAzriel();
+                }
+                if (westAzriel) {
+                    typeWriter("\"Your next place of adverts are the eternal forest, over in the western area\"\n" +
+                            "\"The eternal forest is rather peaceful then the abyss you encountered\"\n" +
+                            "\"All of the 4 seasons are in an eternal state, so be sure to pack appropriately when visiting\"\n" +
+                            "\"The creatures there are also kind. Also are nature spirits, but tread carefully and don't disturb them and you'd be able to retrieve the bloom crystal\"");
+                    LibraryAzriel();
+                }
+            }
+            case 2 -> {
+                SoundManager.stopMusic();
+                typeWriter("Even though you can't see his full face, you can feel his presence tense");
+                typeWriter("\"Let me explain further on what exactly this place is\"");
+                typeWriterSlow("........");
+                SoundManager.playMusic("/sounds/Darkness_Falls.wav");
+                typeWriter("\"Inside of each person there is a soul, their core, their true.... self\"\n" +
+                        "\"And to any normal person their soul would act as normal, it would push them to follow their passion\"\n" +
+                        "\"A hobby, or a talent\"\n" +
+                        "\"But if a person's soul is radiant enough, reaching farther then what is known..... Then that that soul could manifest\"\n" +
+                        "\"When a soul manifest it creates its own world, a domain just for that soul.... but it's not alone\"\n" +
+                        "\"These worlds. These domains, they pop up like islands on the sea of quantum, the ever consuming sea of darkness\"\n" +
+                        "\"So in a sense, one can travel from one island to another, but it's far too dangerous.... And leaving a world open for a long time would have devastating affects\"\n" +
+                        "\"When a world manifests it would attract lost souls on the sea of quantum.... But if held longer then it would attract the souls of people who haven't manifested\"\n" +
+                        "\"Their souls longing to feel the radiant light of creation abandoning their vessels... leaving them empty... and once a human is empty... they will drift to the sea of quantum\"\n" +
+                        "\".....This is the untold dark secrets of manifesting, this world has been open for far too long, and you can save the people, you can close this world and bring the people their soul\"\n" +
+                        "\"if it's not too late if there is enough time... All of this can end, so please... Help us...\"");
+                LibraryAzriel();
+            }
+            case 3 -> {
+                if (WorldEdgeAzriel){
+                    typeWriter("\"The world’s edge tavern are home to a group called “the masked fools” \"\n" +
+                            "\"although they call themselves “the enlightened ones” on the outside they look like delusional fools. \"\n" +
+                            "They laugh at the face of sadness and cry at the face of laughter, their twisted view of the world is the byproduct of the fate of the world \"\n " +
+                            "\"“why mellow in the unshackling chains of fate when you can make your own life? Why mope at the inevitable destruction when you can laugh and drink away. All for the ever ending elation.”\"\n" +
+                            "\"Their vies saden me.... As for the “malevolent keeper”.... They're talking about me\"");
+                    typeWriterSlow("........");
+                    SoundManager.playMusic("/sounds/Darkness_Falls.wav");
+                    typeWriter("\"We never got along well... the mask fools they.... they just want to be free... to feel the sun on their skin\"\n" +
+                            "\"To feel the gentle breeze on their face, or the taps of rain.... But they have to understand that I can't let them leave\"\n" +
+                            "\"It's to dangerous to leave, to find another way... and I can't open the portal I can't... I am just apart of him\"");
+                    LibraryAzriel();
+                }else {
+                    EverlandCity();
+                }
+            }
+            case 4 -> EverlandCity();
+            default -> {
+                System.out.println("Invalid Input");
+                LibraryAzriel();
+            }
+        }
     }
 
 //endregion
@@ -1993,6 +2084,7 @@ public class Main {
             mainArea();
             return;
         }
+        NorthAzriel = false;
         SoundManager.playMusic("/sounds/006_Uwa_So_Temperate.wav");
         typeWriter("You enter the underground cave, the crystals on the wall shimmer, but it's too dark to see with the naked eye");
         System.out.print("Do you use a lamp? (Y/N): ");
@@ -3115,6 +3207,7 @@ public class Main {
                 p.level += 10;
                 North = true;
                 EastAccess = false;
+                EastAzriel = true;
                 mainArea();
 
 
@@ -3129,6 +3222,7 @@ public class Main {
         p.level += 10;
         North = true;
         EastAccess = false;
+        EastAzriel = true;
         mainArea();
     }
 
@@ -3146,6 +3240,7 @@ public class Main {
             System.out.println("The portal crystal has already been taken. There is nothing left to find here.");
             mainArea();
         }
+        EastAzriel = false;
         SoundManager.playMusic("/sounds/Dark_Place.wav");
         typeWriter("Your sore up into the land of wind, cloud mansions fill your every vison \n" +
                 "You found a lavish temple, ivory pillars as high as the heavens \n" +
@@ -4065,6 +4160,7 @@ public class Main {
         p.health = 100;
         East = true;
         SouthAccess = false;
+        southAzriel = true;
         TrainingCap = false;
         mainArea();
     }
