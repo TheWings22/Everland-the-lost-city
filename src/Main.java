@@ -1,11 +1,12 @@
-import java.sql.SQLOutput;
 import java.text.DecimalFormat;
 import java.util.Scanner;
 import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 import javax.sound.sampled.*;
-import java.io.IOException;
-import java.net.URL;
+import com.github.kwhat.jnativehook.GlobalScreen;
+import com.github.kwhat.jnativehook.keyboard.NativeKeyEvent;
+import com.github.kwhat.jnativehook.keyboard.NativeKeyListener;
+
 
 class Enemy {
     int CrystalHunters = 50;
@@ -41,9 +42,27 @@ class Player {
 }
 
 
-public class Main {
+public class Main implements NativeKeyListener {
+
+    @Override
+    public void nativeKeyPressed(NativeKeyEvent e) {
+        if (e.getKeyCode() == NativeKeyEvent.VC_SHIFT) {
+            skipText = true;
+        }
+    }
+
+    @Override
+    public void nativeKeyReleased(NativeKeyEvent e) {
+    }
+
+    @Override
+    public void nativeKeyTyped(NativeKeyEvent e) {
+    }
+
 
     static boolean Ahmed = false;
+
+    private static volatile boolean skipText = false;
 
     static Enemy enemy = new Enemy();
 
@@ -163,34 +182,59 @@ public class Main {
 //region TextOutput
 
     public static void typeWriter(String text) {
-        for (char c : text.toCharArray()) {
-            System.out.print(c);
+
+        skipText = false;
+
+        for (int i = 0; i < text.length(); i++) {
+
+            // Space was pressed → print the rest immediately
+            if (skipText) {
+                System.out.print(text.substring(i));
+                break;
+            }
+
+            System.out.print(text.charAt(i));
             System.out.flush();
 
             try {
-                Thread.sleep(35); // set to 35
+                Thread.sleep(35);
             } catch (InterruptedException e) {
                 Thread.currentThread().interrupt();
+                break;
             }
         }
+
         System.out.println();
     }
+
 
     public static void typeWriterSlow(String text) {
-        for (char c : text.toCharArray()) {
-            System.out.print(c);
+
+        skipText = false;
+
+        for (int i = 0; i < text.length(); i++) {
+
+            // Space was pressed → print the rest immediately
+            if (skipText) {
+                System.out.print(text.substring(i));
+                break;
+            }
+
+            System.out.print(text.charAt(i));
             System.out.flush();
 
             try {
-                Thread.sleep(80); // set to 80
+                Thread.sleep(80);
             } catch (InterruptedException e) {
                 Thread.currentThread().interrupt();
+                break;
             }
         }
+
         System.out.println();
     }
 
-    //endregion
+//endregion
 
 
 //region EastCode
@@ -504,6 +548,13 @@ public class Main {
 //region main class
 
     public static void main(String[] args) {
+        try {
+            GlobalScreen.registerNativeHook();
+            GlobalScreen.addNativeKeyListener(new Main());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
         System.setOut(new java.io.PrintStream(System.out, true));
 
         p.name = "";
@@ -515,7 +566,7 @@ public class Main {
         p.ElationCoin = 0;
         p.MaskOfElation = 0;
 
-
+        System.out.println("Press \"SHIFT\" to skip dialogue");
         System.out.println("Please enter your name young traveller: ");
         p.name = input.nextLine();
 
