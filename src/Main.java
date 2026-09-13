@@ -2231,7 +2231,7 @@ public class Main implements NativeKeyListener {
                 HeavyAttack++;
                 StrongAttack++;
 
-                if (HeavyAttack == 10 && StrongAttack == 5) {
+                if (HeavyAttack == 9 && StrongAttack == 4) {
                     StrongAttack = 0;
                 }
 
@@ -2305,6 +2305,7 @@ public class Main implements NativeKeyListener {
                             Dodge();
                             if (p.dodgeAccuracy == 1) {
                                 typeWriter("You dodged the attack");
+                                Adrenaline += 1.5;
                             } else {
                                 typeWriter("You failed to dodge the attack");
                                 takeDamage(EnemyAttack / 0.6);
