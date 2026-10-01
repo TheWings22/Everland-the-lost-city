@@ -572,7 +572,6 @@ public class Main implements NativeKeyListener {
         System.out.println("Please enter your name young traveller: ");
         p.name = input.nextLine();
 
-        Fight(1, 100, 1, "Goblin");
 
 
             if (p.name.equalsIgnoreCase("Ahmed") && p.name.equalsIgnoreCase("aha")) {
@@ -595,7 +594,7 @@ public class Main implements NativeKeyListener {
 
         SoundManager.playMusic("/sounds/The_Legend.wav");
 
-        //Fight(1, 100, 10);
+        Fight(1, 100, 1, "Goblin");
 
         typeWriter("If you had wings to lift you, and the second star as your guide, you'd find a land hidden beneath the aether\n" +
                 "Past the snowy peaks of the north, over the eternal season forest of the west, and under the high cloud of the east\n" +
