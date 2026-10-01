@@ -574,7 +574,7 @@ public class Main implements NativeKeyListener {
 
 
 
-            if (p.name.equalsIgnoreCase("Ahmed") && p.name.equalsIgnoreCase("aha")) {
+            if (p.name.equalsIgnoreCase("Ahmed") || p.name.equalsIgnoreCase("aha")) {
 
             Ahmed = true;
             p.level = 999;
