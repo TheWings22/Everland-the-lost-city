@@ -572,7 +572,10 @@ public class Main implements NativeKeyListener {
         System.out.println("Please enter your name young traveller: ");
         p.name = input.nextLine();
 
-        if (p.name.equalsIgnoreCase("Ahmed")) {
+        Fight(1, 100, 1, "Goblin");
+
+
+            if (p.name.equalsIgnoreCase("Ahmed") && p.name.equalsIgnoreCase("aha")) {
 
             Ahmed = true;
             p.level = 999;
@@ -2207,7 +2210,7 @@ public class Main implements NativeKeyListener {
 //endregion
 
 
-    static void Fight(int enemy, int enemyHP, int EnemyAttack) {
+    static void Fight(int NumEnemy, int enemyHP, int EnemyAttack, String EnemyName) {
         typeWriter("You entered a battle!");
         try {
             Thread.sleep(1500);
@@ -2215,7 +2218,7 @@ public class Main implements NativeKeyListener {
             e.printStackTrace();
         }
 
-        for (int i = 0; i < enemy; i++) {
+        for (int i = 0; i < NumEnemy; i++) {
             input.nextLine();
 
             int HeavyAttack = 0;
@@ -2236,14 +2239,14 @@ public class Main implements NativeKeyListener {
                 }
 
 
-                System.out.println("Enemy HP: " + EnemyHP +
+                System.out.println(EnemyName + " HP: " + EnemyHP +
                         " | Your HP: " + String.format("%.1f", p.health));
 
                 if (StrongAttack == 4) {
-                    System.out.println("Enemy is preparing a strong attack");
+                    System.out.println(EnemyName + " is preparing a strong attack");
                 }
                 if (HeavyAttack == 9) {
-                    System.out.println("Enemy is preparing a heavy attack");
+                    System.out.println(EnemyName + " is preparing a heavy attack");
                 }
 
                 System.out.println("| 1 Fight | 2 Defend | 3 Heal | 4 Dodge | Adrenaline: " + Adrenaline);
@@ -2251,7 +2254,7 @@ public class Main implements NativeKeyListener {
                 String choice = input.nextLine();
 
                 if (StrongAttack == 5) {
-                    typeWriter("Enemy unleashes a strong attack");
+                    typeWriter(EnemyName + " unleashes a strong attack");
                     switch (choice) {
                         case "1":
                             Accuracy();
@@ -2286,11 +2289,11 @@ public class Main implements NativeKeyListener {
                                     p.health = 100;
                                 }
                                 typeWriter("You tried to heal, but you faltered");
-                                SoundManager.playSFX("/sounds/Heal.wav");
+                                SoundManager.playSFX("/sounds/Dammaged.wav");
                                 takeDamage(EnemyAttack / 0.6);
 
                                 checkHealth();
-                                Adrenaline = 0;
+                                Adrenaline += -5;
                             } else {
                                 typeWriter("You don't have enough Adrenaline to heal");
                                 SoundManager.playSFX("/sounds/Dammaged.wav");
@@ -2321,7 +2324,7 @@ public class Main implements NativeKeyListener {
                 }
                 if (HeavyAttack == 10) {
                     {
-                        typeWriter("Enemy unleashes a heavy attack");
+                        typeWriter(EnemyName + " unleashes a heavy attack");
                         switch (choice) {
                             case "1":
                                 Accuracy();
@@ -2356,11 +2359,11 @@ public class Main implements NativeKeyListener {
                                         p.health = 100;
                                     }
                                     typeWriter("You tried to heal, but you faltered");
-                                    SoundManager.playSFX("/sounds/Heal.wav");
+                                    SoundManager.playSFX("/sounds/Dammaged.wav");
                                     takeDamage(EnemyAttack / 0.5);
 
                                     checkHealth();
-                                    Adrenaline = 0;
+                                    Adrenaline -= 5;
                                 } else {
                                     typeWriter("You don't have enough Adrenaline to heal");
                                     SoundManager.playSFX("/sounds/Dammaged.wav");
@@ -2375,6 +2378,7 @@ public class Main implements NativeKeyListener {
                                 Dodge();
                                 if (p.dodgeAccuracy == 1) {
                                     typeWriter("You dodged the attack");
+                                    Adrenaline += 1.5;
                                 } else {
                                     typeWriter("You failed to dodge the attack");
                                     takeDamage(EnemyAttack / 0.6);
@@ -2411,13 +2415,23 @@ public class Main implements NativeKeyListener {
                             break;
                         case "3":
 
-                            p.health += p.Healing;
-                            if (p.health > 100) {
-                                p.health = 100;
+                            if (Adrenaline >= 5) {
+
+
+                                p.health += (p.Healing / 2);
+                                if (p.health > 100) {
+                                    p.health = 100;
+                                }
+                                SoundManager.playSFX("/sounds/Heal.wav");
+                                Adrenaline -= 5;
                             }
-                            takeDamage(EnemyAttack * 0.3);
-                            SoundManager.playSFX("/sounds/Heal.wav");
-                            checkHealth();
+                            else {
+                                typeWriter("You don't have enough Adrenaline to heal");
+                                SoundManager.playSFX("/sounds/Dammaged.wav");
+                                takeDamage(EnemyAttack / 0.6);
+
+                                checkHealth();
+                            }
 
                             break;
 
@@ -2425,6 +2439,7 @@ public class Main implements NativeKeyListener {
                             Dodge();
                             if (p.dodgeAccuracy == 1) {
                                 typeWriter("You dodged the attack");
+                                Adrenaline += 1.5;
                             } else {
                                 typeWriter("You failed to dodge the attack");
                                 takeDamage(EnemyAttack);
@@ -2449,7 +2464,7 @@ public class Main implements NativeKeyListener {
 
             p.Money += randomValue;
 
-            System.out.println("Enemy dropped " + randomValue + " coins");
+            System.out.println(EnemyName + " dropped " + randomValue + " coins");
 
 
         }
