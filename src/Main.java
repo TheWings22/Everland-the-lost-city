@@ -3352,7 +3352,6 @@ public class Main implements NativeKeyListener {
     static void OrcFight() {
         SoundManager.stopMusic();
         SoundManager.playSFX("/sounds/Battle_Start.wav");
-        typeWriter("You entered a battle!");
         try {
             Thread.sleep(1500);
         } catch (InterruptedException e) {
@@ -3703,7 +3702,6 @@ public class Main implements NativeKeyListener {
     static void IvoryRun() {
         SoundManager.stopMusic();
         SoundManager.playSFX("/sounds/Battle_Start.wav");
-        typeWriter("You entered a battle!");
         try {
             Thread.sleep(1500);
         } catch (InterruptedException e) {
@@ -3729,7 +3727,6 @@ public class Main implements NativeKeyListener {
     static void IvoryAttack() {
         SoundManager.stopMusic();
         SoundManager.playSFX("/sounds/Battle_Start.wav");
-        typeWriter("You entered a battle!");
         try {
             Thread.sleep(1500);
         } catch (InterruptedException e) {
@@ -4133,6 +4130,7 @@ public class Main implements NativeKeyListener {
             mainArea();
         }
         System.out.println("WIP");
+        mainArea();
     }
 
 //endregion
@@ -4146,6 +4144,7 @@ public class Main implements NativeKeyListener {
             mainArea();
         }
         System.out.println("WIP");
+        mainArea();
     }
 
 //endregion
