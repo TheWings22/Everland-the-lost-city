@@ -3558,7 +3558,7 @@ public class Main implements NativeKeyListener {
         }
         SoundManager.playMusic("/sounds/ATRIUM.wav");
         typeWriter("You land at a cloud plateau, in front of you are three large clouds \n" +
-                "To the left is a large ivory castle. The center is a cloud adorned with rainbows. And to the left is a dark storm cloud.");
+                "To the left is a large ivory castle. The center is a cloud adorned with rainbows. And to the right is a dark storm cloud.");
         System.out.println("Which cloud do you choose? (left, center, right) ");
         char Cloud = input.next().charAt(0);
         switch (Cloud) {
