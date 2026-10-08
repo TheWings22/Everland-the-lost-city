@@ -182,7 +182,7 @@ public class Main implements NativeKeyListener {
 
     }
 
-    static int AeolusHealth = 500;
+    static int AeolusHealth = 1000;
     static int AeolusDamage = 50;
 
     static String[] RainbowL = new String[3];
@@ -3680,121 +3680,14 @@ public class Main implements NativeKeyListener {
     static void IvoryDistract() {
         SoundManager.stopMusic();
         SoundManager.playSFX("/sounds/Battle_Start.wav");
-        typeWriter("You entered a battle!");
         try {
             Thread.sleep(1500);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
         SoundManager.playMusic("/sounds/From_Now_On_Battle.wav");
-        System.out.println("You bravely attack the Breezes!");
 
-        for (int i = 0; i < Enemy.HuntersCount; i++) {
-
-            int HeavyAttack = 0;
-            double BreezesHP = Breeze.hp;
-
-            System.out.println("\nFighting Breeze " + (i + 1));
-
-            while (BreezesHP > 0) {
-
-                HeavyAttack++;
-
-                System.out.println("Breeze HP: " + BreezesHP +
-                        " | Your HP: " + String.format("%.1f", p.health));
-
-                if (HeavyAttack == 4) {
-                    typeWriter("Breeze prepares for a heavy attack");
-                }
-
-                System.out.println("| 1 Fight | 2 Defend | 3 Prayer heal");
-
-                String choice = input.nextLine();
-
-
-                if (HeavyAttack >= 5) {
-
-                    typeWriter("Breeze unleashes a heavy attack");
-
-                    switch (choice) {
-
-                        case "1":
-                            Accuracy();
-                            Attack();
-
-                            if (p.damageAccuracy == -1) {
-                                SoundManager.playSFX("/sounds/Dammaged.wav");
-                                takeDamage(25);
-                            } else {
-                                BreezesHP -= p.damage;
-                                SoundManager.playSFX("/sounds/Attack.wav");
-                                takeDamage(25);
-                            }
-                            break;
-
-                        case "2":
-                            SoundManager.playSFX("/sounds/Dammaged.wav");
-                            takeDamage(10);
-                            break;
-
-                        case "3":
-                            p.health += p.Healing / 2;
-
-                            if (p.health > 100) {
-                                p.health = 100;
-                            }
-
-                            typeWriter("You tried to heal, but you faltered");
-                            SoundManager.playSFX("/sounds/Dammaged.wav");
-                            takeDamage(10);
-                            break;
-                    }
-
-                    HeavyAttack = 0;
-
-                } else {
-
-                    switch (choice) {
-
-                        case "1":
-                            Accuracy();
-                            Attack();
-
-                            if (p.damageAccuracy == -1) {
-                                SoundManager.playSFX("/sounds/Dammaged.wav");
-                                takeDamage(20);
-                            } else {
-                                BreezesHP -= p.damage;
-                                SoundManager.playSFX("/sounds/Attack.wav");
-                                takeDamage(20);
-                            }
-                            break;
-
-                        case "2":
-                            takeDamage(5);
-                            SoundManager.playSFX("/sounds/Dammaged.wav");
-                            break;
-
-                        case "3":
-                            p.health += p.Healing;
-
-                            if (p.health > 100) {
-                                p.health = 100;
-                            }
-
-                            takeDamage(5);
-                            SoundManager.playSFX("/sounds/Heal.wav");
-                            break;
-                    }
-                }
-
-                checkHealth();
-            }
-
-            System.out.println("\nBreeze defeated!");
-        }
-
-        System.out.println("\nYou survived, your health is now " + p.health);
+       Fight(Breeze, 10);
 
         typeWriter("You obtained the missing ring piece, you head back to the cloud plateau to find the other missing pieces");
 
@@ -3818,134 +3711,7 @@ public class Main implements NativeKeyListener {
         }
         SoundManager.playMusic("/sounds/From_Now_On_Battle.wav");
 
-        System.out.println("You bravely attack the Breezes!");
-
-        for (int i = 0; i < Enemy.HuntersCount; i++) {
-
-            int HeavyAttack = 0;
-            double BreezesHP = Breeze.hp;
-
-            System.out.println("\nFighting Breeze " + (i + 1));
-
-            while (BreezesHP > 0) {
-
-                HeavyAttack++;
-
-                System.out.println("Breeze HP: " + BreezesHP +
-                        " | Your HP: " + String.format("%.1f", p.health));
-
-                if (HeavyAttack == 4) {
-                    typeWriter("Breeze prepares for a heavy attack");
-                }
-
-                System.out.println("| 1 Fight | 2 Defend | 3 Prayer heal");
-
-                String choice = input.nextLine();
-
-                if (HeavyAttack >= 5) {
-
-                    typeWriter("Breeze unleashes a heavy attack");
-
-                    switch (choice) {
-
-                        case "1":
-                            Accuracy();
-                            Attack();
-
-                            if (p.damageAccuracy == -1) {
-
-                                takeDamage(25);
-                                SoundManager.playSFX("/sounds/Dammaged.wav");
-
-                            } else {
-
-                                BreezesHP -= p.damage;
-                                takeDamage(25);
-                                SoundManager.playSFX("/sounds/Attack.wav");
-
-                            }
-                            break;
-
-
-                        case "2":
-                            takeDamage(10);
-                            SoundManager.playSFX("/sounds/Dammaged.wav");
-                            break;
-
-
-                        case "3":
-
-                            p.health += p.Healing / 2;
-
-                            if (p.health > 100) {
-                                p.health = 100;
-                            }
-
-                            typeWriter("You tried to heal, but you faltered");
-                            SoundManager.playSFX("/sounds/Dammaged.wav");
-                            takeDamage(10);
-
-                            break;
-                    }
-
-                    HeavyAttack = 0;
-
-
-                } else {
-
-
-                    switch (choice) {
-
-                        case "1":
-
-                            Accuracy();
-                            Attack();
-
-                            if (p.damageAccuracy == -1) {
-
-                                takeDamage(20);
-                                SoundManager.playSFX("/sounds/Dammaged.wav");
-
-                            } else {
-
-                                BreezesHP -= p.damage;
-                                takeDamage(20);
-                                SoundManager.playSFX("/sounds/Attack.wav");
-
-                            }
-                            break;
-
-
-                        case "2":
-                            takeDamage(5);
-                            SoundManager.playSFX("/sounds/Dammaged.wav");
-                            break;
-
-
-                        case "3":
-
-                            p.health += p.Healing;
-
-                            if (p.health > 100) {
-                                p.health = 100;
-                            }
-
-                            SoundManager.playSFX("/sounds/Heal.wav");
-                            takeDamage(5);
-
-                            break;
-                    }
-                }
-
-                checkHealth();
-            }
-
-
-            System.out.println("\nBreeze defeated!");
-        }
-
-
-        System.out.println("\nYou survived, your health is now " + p.health);
+        Fight(Breeze, 5);
 
         typeWriter("You obtained the missing ring piece, you head back to the cloud plateau to find the other missing pieces");
 
@@ -3971,112 +3737,7 @@ public class Main implements NativeKeyListener {
         }
         SoundManager.playMusic("/sounds/From_Now_On_Battle.wav");
 
-        System.out.println("You bravely attack the Breezes!");
-
-        for (int i = 0; i < Enemy.HuntersCount; i++) {
-
-            int HeavyAttack = 0;
-            double BreezesHP = Breeze.hp;
-
-            System.out.println("\nFighting Breeze " + (i + 1));
-
-            while (BreezesHP > 0) {
-
-                HeavyAttack++;
-
-                System.out.println("Breeze HP: " + BreezesHP +
-                        " | Your HP: " + String.format("%.1f", p.health));
-
-                if (HeavyAttack == 4) {
-                    typeWriter("Breeze prepares for a heavy attack");
-                }
-
-                System.out.println("| 1 Fight | 2 Defend | 3 Prayer heal");
-
-                String choice = input.nextLine();
-
-                if (HeavyAttack >= 5) {
-
-                    typeWriter("Breeze unleashes a heavy attack");
-
-                    switch (choice) {
-
-                        case "1":
-                            Accuracy();
-                            Attack();
-
-                            if (p.damageAccuracy == -1) {
-                                takeDamage(20);
-                                SoundManager.playSFX("/sounds/Dammaged.wav");
-                            } else {
-                                BreezesHP -= p.damage;
-                                takeDamage(20);
-                                SoundManager.playSFX("/sounds/Attack.wav");
-                            }
-                            break;
-
-                        case "2":
-                            takeDamage(10);
-                            SoundManager.playSFX("/sounds/Dammaged.wav");
-                            break;
-
-                        case "3":
-                            p.health += p.Healing / 2;
-
-                            if (p.health > 100) {
-                                p.health = 100;
-                            }
-
-                            typeWriter("You tried to heal, but you faltered");
-                            SoundManager.playSFX("/sounds/Dammaged.wav");
-                            takeDamage(10);
-                            break;
-                    }
-
-                    HeavyAttack = 0;
-
-                } else {
-
-                    switch (choice) {
-
-                        case "1":
-                            Accuracy();
-                            Attack();
-
-                            if (p.damageAccuracy == -1) {
-                                takeDamage(15);
-                                SoundManager.playSFX("/sounds/Dammaged.wav");
-                            } else {
-                                BreezesHP -= p.damage;
-                                takeDamage(15);
-                                SoundManager.playSFX("/sounds/Attack.wav");
-                            }
-                            break;
-
-                        case "2":
-                            takeDamage(5);
-                            break;
-
-                        case "3":
-                            p.health += p.Healing;
-
-                            if (p.health > 100) {
-                                p.health = 100;
-                            }
-
-                            takeDamage(5);
-                            SoundManager.playSFX("/sounds/Heal.wav");
-                            break;
-                    }
-                }
-
-                checkHealth();
-            }
-
-            System.out.println("\nBreeze defeated!");
-        }
-
-        System.out.println("\nYou survived, your health is now " + p.health);
+        Fight(Breeze, 0);
 
         typeWriter("You obtained the missing ring piece, you head back to the cloud plateau to find the other missing pieces");
 
