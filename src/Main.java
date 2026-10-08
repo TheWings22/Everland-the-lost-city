@@ -32,6 +32,7 @@ class Player {
     int defense = 0;
     int ArmorDef = 0;
     int Money = 0;
+    int GnomeMoney = 0;
     int ElationCoin = 0;
     int MaskOfElation = 0;
 }
@@ -41,8 +42,13 @@ public class Main implements NativeKeyListener {
 
     @Override
     public void nativeKeyPressed(NativeKeyEvent e) {
+
         if (e.getKeyCode() == NativeKeyEvent.VC_SHIFT) {
             skipText = true;
+        }
+
+        if (e.getKeyCode() == NativeKeyEvent.VC_ENTER) {
+            pressed = true;
         }
     }
 
@@ -58,6 +64,7 @@ public class Main implements NativeKeyListener {
     static boolean Ahmed = false;
 
     private static volatile boolean skipText = false;
+    private static volatile boolean pressed = false;
 
 
     static Scanner input = new Scanner(System.in);
@@ -68,10 +75,10 @@ public class Main implements NativeKeyListener {
     static Random random = new Random();
 
     static class Enemy {
-        static String name;
-        static double hp;
-        static int attack;
-        static int count;
+        String name;
+        double hp;
+        int attack;
+        int count;
 
         static int HuntersCount = random.nextInt(3) + 1;
         static int BreezeCount = random.nextInt(3) + 3;
@@ -90,6 +97,8 @@ public class Main implements NativeKeyListener {
     static Enemy Breeze = new Enemy("Breeze", 100.0, 20, Enemy.BreezeCount);
     static Enemy Mage = new Enemy("Mage", 150.0, 30, Enemy.LostSoulsCount);
     static Enemy WilloWisps = new Enemy("Willo Wisps", 200.0, 40, Enemy.WilloWispsCount);
+    static Enemy Orc = new Enemy("Orc", 250, 20, 2);
+    static Enemy GnomeChief = new Enemy("Gnome Chief", 10, 1, 1);
 
 
     static boolean North = false;
@@ -103,6 +112,7 @@ public class Main implements NativeKeyListener {
     static boolean Flowery = true;
     static boolean CaveShop = true;
     static boolean CaveShopHint = true;
+    static boolean TavernHP = false;
 
     static boolean Azriel = false;
     static boolean Name = false;
@@ -110,7 +120,6 @@ public class Main implements NativeKeyListener {
     static boolean CaveShopSword = true;
     static boolean CaveShopArmor = true;
 
-    static volatile boolean pressed = false;
     static volatile boolean Minepressed = false;
     static boolean miningExit = false;
 
@@ -605,8 +614,6 @@ public class Main implements NativeKeyListener {
 
         SoundManager.playMusic("/sounds/The_Legend.wav");
 
-        Fight(Mage, 0);
-
         typeWriter("If you had wings to lift you, and the second star as your guide, you'd find a land hidden beneath the aether\n" +
                 "Past the snowy peaks of the north, over the eternal season forest of the west, and under the high cloud of the east\n" +
                 "lies a small town at the heart of the magic a city of wonder lost to time and history. Welcome to");
@@ -777,7 +784,8 @@ public class Main implements NativeKeyListener {
         SoundManager.playMusic("/sounds/007_Anticipation.wav");
         typeWriter("Azriel takes you out of Everland and into the training grounds");
         typeWriter("\"The training ground is for.... well training, here, use this sword and use it on that dummy\"");
-        typeWriter("You stood in front the dummy raising your sword \"When fighting, try to hit when the timer is close to 0.00  to get damage bonus\"");
+        typeWriter("You stood in front the dummy raising your sword \n " +
+                "\"When fighting or dodging, hit when the timer is close to 0.00\"");
         typeWriter("Enter any button to continue");
         char enter = input.next().charAt(0);
 
@@ -790,143 +798,319 @@ public class Main implements NativeKeyListener {
         SoundManager.playMusic("/sounds/009_Enemy_Approaching.wav");
         input.nextLine();
 
-        int strongAttack = 0;
+        int StrongAttack = 0;
         int AzrielWarning = 0;
         int HeavyAttack = 0;
         int Trys = 0;
+        double Adrenaline = 0;
 
         int DummyHP = 20;
 
         System.out.println("\nFighting Dummy HP 10 ATK 5");
 
-        while (DummyHP > 0) {
 
-            HeavyAttack++;
-            strongAttack++;
+        typeWriter("You entered a battle!");
+        try {
+            Thread.sleep(1500);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
 
-            System.out.println("Dummy HP: " + DummyHP +
-                    " | Your HP: " + String.format("%.1f", p.health));
+        typeWriter("\"Fighting here is turned based, you can attack, defend, dodge, and heal \"\n" +
+                "\"To heal you need to gain adrenaline, you gain adrenaline when successfully defend or dodge\"\n" +
+                "\"You will lean spells and other mechanics along your journey \"");
 
-            if (HeavyAttack == 4) {
-                typeWriter("Dummy prepares for a strong attack");
-                if (AzrielWarning < 2) {
-                    typeWriter("Azriel \"Sometimes enemies deal a strong attacks, those are dodgeable but you must defend\"\n" +
-                            "\"And sometimes a heavy attacks, those aren't blockable and must be dodged\"");
-                    AzrielWarning++;
-                }
-            }
+        for (int i = 0; i < 1; i++) {
 
-            System.out.println("| 1 Fight | 2 Defend | 3 Dodge |4 Heal ");
+            while (DummyHP > 0) {
 
-            String choice = input.nextLine();
+                HeavyAttack++;
+                StrongAttack++;
 
-            if (HeavyAttack == 5) {
-                typeWriter("Dummy unleashes a heavy attack");
-                switch (choice) {
-                    case "1":
-                        Accuracy();
-                        Attack();
-                        if (p.damageAccuracy == -1) {
-
-                            takeDamage(10);
-                            SoundManager.playSFX("/sounds/Dammaged.wav");
-
-                            typeWriter("Azriel \"You... you should've defended\"");
-
-
-                        } else {
-
-                            SoundManager.playSFX("/sounds/Attack.wav");
-                            DummyHP -= p.damage;
-                            takeDamage(10);
-
-                            typeWriter("Azriel \"You... you should've defended\"");
-
-
-                        }
-                        break;
-                    case "2":
-                        takeDamage(3);
-                        SoundManager.playSFX("/sounds/Dammaged.wav");
-                        break;
-                    case "3":
-
-                        p.health += (p.Healing / 2);
-                        if (p.health > 100) {
-                            p.health = 100;
-                        }
-                        SoundManager.playSFX("/sounds/Heal.wav");
-                        typeWriter("You tried to heal, but you faltered");
-                        typeWriter("Azriel \"Healing in a heavy attack phase doesn't work\"");
-
-                        takeDamage(10);
-
-                        checkHealth();
-
-                        break;
-
-
+                if (HeavyAttack == 9 && StrongAttack == 4) {
+                    StrongAttack = 0;
                 }
 
-                HeavyAttack = 0;
 
-            } else {
-                switch (choice) {
-                    case "1":
-                        Accuracy();
-                        Attack();
-                        if (p.damageAccuracy == -1) {
+                System.out.println("Dummy HP: " + DummyHP +
+                        " | Your HP: " + String.format("%.1f", p.health));
 
-                            takeDamage(5);
-                            SoundManager.playSFX("/sounds/Dammaged.wav");
+                if (StrongAttack == 4) {
+                    System.out.println("Dummy is preparing a strong attack");
+                    if (AzrielWarning < 2) {
+                        typeWriter("\"Some enemies have strong attacks, you must defend on strong attacks \"\n" +
+                                "\"Strong attacks happen on the next turn, and defending will earn you adrenaline\"");
+                        AzrielWarning++;
+                    }
+                }
+                if (HeavyAttack == 9) {
+                    System.out.println("Dummy is preparing a heavy attack");
+                    if (AzrielWarning < 2) {
+                        typeWriter("\"Some enemies have heavy attacks, you must dodge on a heavy attack \"\n" +
+                                "\"Heavy attacks happen on the next turn, and dodging will earn you adrenaline\"");
+                        AzrielWarning++;
+                    }
+                }
 
-                            if (Trys == 6) {
+                System.out.println("| 1 Fight | 2 Defend | 3 Heal | 4 Dodge | Adrenaline: " + Adrenaline);
 
-                                typeWriter("Azriel \"Are you.... Are you missing on purposes\"");
-                                Trys = 0;
+                String choice = input.nextLine();
+
+                if (StrongAttack == 5) {
+                    typeWriter("Dummy unleashes a strong attack");
+                    switch (choice) {
+                        case "1":
+                            Accuracy();
+                            Attack();
+                            if (p.damageAccuracy == -1) {
+
+                                takeDamage(5 / 0.6);
+                                SoundManager.playSFX("/sounds/Dammaged.wav");
+
+                                typeWriter("Azriel \"You... you should've defended\"");
+
+
                             } else {
-                                typeWriter("Azriel \"It's okay try again!\"");
-                                Trys += 0;
+
+                                DummyHP -= p.damage;
+                                if (DummyHP > 0) {
+                                    takeDamage(5 / 0.6);
+                                    typeWriter("Azriel \"You... you should've defended\"");
+                                }
+                                SoundManager.playSFX("/sounds/Attack.wav");
+                            }
+                            break;
+                        case "2":
+                            takeDamage(5 * 0.7);
+                            SoundManager.playSFX("/sounds/Dammaged.wav");
+                            System.out.println("You gained some Adrenaline");
+                            Adrenaline += 0.5;
+                            break;
+
+                        case "3":
+
+
+                            if (Adrenaline >= 5) {
+
+
+                                p.health += (p.Healing / 2);
+                                if (p.health > 100) {
+                                    p.health = 100;
+                                }
+                                typeWriter("You tried to heal, but you faltered");
+                                SoundManager.playSFX("/sounds/Dammaged.wav");
+                                takeDamage(5 / 0.6);
+                                typeWriter("Azriel \"Healing in a strong attack phase doesn't work\"");
+
+                                checkHealth();
+                                Adrenaline += -5;
+                            } else {
+                                typeWriter("You don't have enough Adrenaline to heal");
+                                SoundManager.playSFX("/sounds/Dammaged.wav");
+                                takeDamage(5 / 0.6);
+                                typeWriter("Azriel \"Healing in a strong attack phase doesn't work\"");
+
+
+                                checkHealth();
                             }
 
-                        } else {
 
-                            SoundManager.playSFX("/sounds/Attack.wav");
-                            DummyHP -= p.damage;
-                            takeDamage(5);
-                        }
-                        break;
-                    case "2":
-                        takeDamage(2);
-                        SoundManager.playSFX("/sounds/Dammaged.wav");
-                        break;
-                    case "3":
+                            break;
+                        case "4":
+                            Dodge();
+                            if (p.dodgeAccuracy == 1) {
+                                typeWriter("You dodged the attack");
+                                Adrenaline += 1.5;
+                            } else {
+                                typeWriter("You failed to dodge the attack");
+                                takeDamage(5 / 0.6);
+                                SoundManager.playSFX("/sounds/Dammaged.wav");
+                            }
+                            break;
 
-                        typeWriter("Azriel \"Healing increases with you magic level. Just cup your hands, feel the magic around you\"\n" +
-                                "\"and let the flow of magic heal you\"");
 
-                        p.health += p.Healing;
-                        if (p.health > 100) {
-                            p.health = 100;
-                        }
-                        SoundManager.playSFX("/sounds/Heal.wav");
+                    }
 
-                        System.out.println("You we're healed for " + p.Healing);
-                        takeDamage(5);
-                        checkHealth();
-
-                        break;
-
+                    StrongAttack = 0;
 
                 }
+                else if (HeavyAttack == 10) {
+                    {
+                        typeWriter("Dummy unleashes a heavy attack");
+                        switch (choice) {
+                            case "1":
+                                Accuracy();
+                                Attack();
+                                if (p.damageAccuracy == -1) {
+
+                                    takeDamage(5 / 0.5);
+                                    SoundManager.playSFX("/sounds/Dammaged.wav");
+
+                                    typeWriter("Azriel \"You... you should've dodged\"");
+
+
+                                } else {
+
+                                    DummyHP -= p.damage;
+                                    if (DummyHP > 0) {
+                                        takeDamage(5 / 0.5);
+                                    }
+                                    SoundManager.playSFX("/sounds/Attack.wav");
+
+                                    typeWriter("Azriel \"You... you should've dodged\"");
+
+
+                                }
+                                break;
+                            case "2":
+                                takeDamage(5 / 0.5);
+                                SoundManager.playSFX("/sounds/Dammaged.wav");
+                                System.out.println("You gained some Adrenaline");
+                                typeWriter("Azriel \"You... you should've dodged\"");
+                                Adrenaline += 0.5;
+                                break;
+
+                            case "3":
+
+
+                                if (Adrenaline >= 5) {
+
+
+                                    p.health += (p.Healing / 2);
+                                    if (p.health > 100) {
+                                        p.health = 100;
+                                    }
+                                    typeWriter("You tried to heal, but you faltered");
+                                    SoundManager.playSFX("/sounds/Dammaged.wav");
+                                    typeWriter("Azriel \"Healing in a heavy attack phase doesn't work\"");
+                                    takeDamage(5 / 0.5);
+
+                                    checkHealth();
+                                    Adrenaline -= 5;
+                                } else {
+                                    typeWriter("You don't have enough Adrenaline to heal");
+                                    SoundManager.playSFX("/sounds/Dammaged.wav");
+                                    typeWriter("Azriel \"Healing in a heavy attack phase doesn't work\"");
+                                    takeDamage(5 / 0.6);
+
+                                    checkHealth();
+                                }
+
+
+                                break;
+                            case "4":
+                                Dodge();
+                                if (p.dodgeAccuracy == 1) {
+                                    typeWriter("You dodged the attack");
+                                    Adrenaline += 1.5;
+                                } else {
+                                    typeWriter("You failed to dodge the attack");
+                                    takeDamage(5 / 0.6);
+                                    SoundManager.playSFX("/sounds/Dammaged.wav");
+                                }
+                                break;
+
+
+                        }
+
+                        StrongAttack = 0;
+
+                    }
+                }
+                else {
+                    switch (choice) {
+                        case "1":
+                            Accuracy();
+                            Attack();
+                            if (p.damageAccuracy == -1) {
+
+                                takeDamage(5);
+                                SoundManager.playSFX("/sounds/Dammaged.wav");
+
+                                if (Trys == 6) {
+
+                                    typeWriter("Azriel \"Are you.... Are you missing on purposes\"");
+                                    Trys = 0;
+                                } else {
+                                    typeWriter("Azriel \"It's okay try again!\"");
+                                    Trys += 0;
+                                }
+
+                            } else {
+
+                                DummyHP -= p.damage;
+                                if (DummyHP > 0) {
+                                    takeDamage(5);
+                                }
+                                SoundManager.playSFX("/sounds/Attack.wav");
+
+                            }
+                            break;
+                        case "2":
+                            takeDamage(5 * 0.7);
+                            SoundManager.playSFX("/sounds/Dammaged.wav");
+                            break;
+                        case "3":
+
+                            if (Adrenaline >= 5) {
+
+
+                                p.health += (p.Healing / 2);
+                                if (p.health > 100) {
+                                    p.health = 100;
+                                }
+                                SoundManager.playSFX("/sounds/Heal.wav");
+                                Adrenaline -= 5;
+                            } else {
+                                typeWriter("You don't have enough Adrenaline to heal");
+                                SoundManager.playSFX("/sounds/Dammaged.wav");
+                                takeDamage(5 / 0.6);
+
+                                checkHealth();
+                            }
+
+                            break;
+
+                        case "4":
+                            Dodge();
+                            if (p.dodgeAccuracy == 1) {
+                                typeWriter("You dodged the attack");
+                                Adrenaline += 1.5;
+                            } else {
+                                typeWriter("You failed to dodge the attack");
+                                takeDamage(5);
+                                SoundManager.playSFX("/sounds/Dammaged.wav");
+                            }
+                            break;
+
+
+                    }
+                }
+
+                checkHealth();
+
+
             }
 
-            checkHealth();
-            Trys++;
+
+            int intervals = 3;
+
+            int randomValue = (random.nextInt(intervals) + 1) * 5;
+
+            p.Money += randomValue;
+
+            System.out.println("Dummy dropped " + randomValue + " coins");
 
 
         }
 
+        SoundManager.stopMusic();
+        checkHealth();
+        System.out.println("\nYou survived, your health is now " + p.health);
+
+
+        checkHealth();
+        Trys++;
 
         System.out.println("Dummy defeated!");
         SoundManager.stopMusic();
@@ -1387,6 +1571,7 @@ public class Main implements NativeKeyListener {
 
 
     static void WorldsEdgeTavernBuy() {
+        TavernHP = true;
         typeWriter("\"What will it be?\"");
         System.out.println("Your money is: " + p.Money);
         System.out.println("Available items");
@@ -1546,30 +1731,54 @@ public class Main implements NativeKeyListener {
     }
 
     static void WorldsEdgeTavernTalk() {
-        typeWriter("\"What do you want to ponder about?\"");
-        System.out.println("| 1 \"What is this place?\"| 2 \"Isn't illegal to hack my hp?\" | 3 \"Who are you?\"| 4 go back");
-        int choice = input.nextInt();
-        switch (choice) {
-            case 1 -> {
-                typeWriter("\"This is the world's edge tavern, where we dance and sing till the sun inevitable explode\"\n" +
-                        "\"Why bother will all the prophecy bullcrap when we can make our own fate\"");
-                WorldsEdgeTavernTalk();
+        if (TavernHP = true) {
+            typeWriter("\"What do you want to ponder about?\"");
+            System.out.println("| 1 \"What is this place?\"| 2 \"Isn't illegal to hack my hp?\" | 3 \"Who are you?\"| 4 go back");
+            int choice = input.nextInt();
+            switch (choice) {
+                case 1 -> {
+                    typeWriter("\"This is the world's edge tavern, where we dance and sing till the sun inevitable explode\"\n" +
+                            "\"Why bother will all the prophecy bullcrap when we can make our own fate\"");
+                    WorldsEdgeTavernTalk();
+                }
+                case 2 -> {
+                    typeWriter("\"Well you sure are a party pooper, why be constrained with such such restriction when you can be free and fly\"\n" +
+                            "\"That's what our creator wants us to be, free\"");
+                    WorldsEdgeTavernTalk();
+                }
+                case 3 -> {
+                    typeWriter("\"I need not have a name, but we all are called the enlighten ones, we see far greater then that malevolent keeper\"\n" +
+                            "\"Forcing us to be trapped here until the one saver falls to the heavens and sets us free... AHAH like that's going to happen\"");
+                    WorldEdgeAzriel = true;
+                    WorldsEdgeTavernTalk();
+                }
+                case 4 -> WorldsEdgeTavern();
+                default -> {
+                    typeWriter("Invalid input.");
+                    WorldsEdgeTavernTalk();
+                }
             }
-            case 2 -> {
-                typeWriter("\"Well you sure are a party pooper, why be constrained with such such restriction when you can be free and fly\"\n" +
-                        "\"That's what our creator wants us to be, free\"");
-                WorldsEdgeTavernTalk();
-            }
-            case 3 -> {
-                typeWriter("\"I need not have a name, but we all are called the enlighten ones, we see far greater then that malevolent keeper\"\n" +
-                        "\"Forcing us to be trapped here until the one saver falls to the heavens and sets us free... AHAH like that's going to happen\"");
-                WorldEdgeAzriel = true;
-                WorldsEdgeTavernTalk();
-            }
-            case 4 -> WorldsEdgeTavern();
-            default -> {
-                typeWriter("Invalid input.");
-                WorldsEdgeTavernTalk();
+        } else {
+            typeWriter("\"What do you want to ponder about?\"");
+            System.out.println("| 1 \"What is this place?\"| 2 \"Who are you?\"| 3 go back");
+            int choice = input.nextInt();
+            switch (choice) {
+                case 1 -> {
+                    typeWriter("\"This is the world's edge tavern, where we dance and sing till the sun inevitable explode\"\n" +
+                            "\"Why bother will all the prophecy bullcrap when we can make our own fate\"");
+                    WorldsEdgeTavernTalk();
+                }
+                case 2 -> {
+                    typeWriter("\"I need not have a name, but we all are called the enlighten ones, we see far greater then that malevolent keeper\"\n" +
+                            "\"Forcing us to be trapped here until the one saver falls to the heavens and sets us free... AHAH like that's going to happen\"");
+                    WorldEdgeAzriel = true;
+                    WorldsEdgeTavernTalk();
+                }
+                case 3 -> WorldsEdgeTavern();
+                default -> {
+                    typeWriter("Invalid input.");
+                    WorldsEdgeTavernTalk();
+                }
             }
         }
     }
@@ -1665,7 +1874,7 @@ public class Main implements NativeKeyListener {
 //endregion
 
 
-//region Damage/Attack
+//region Damage/Attack/Dodge
 
     static void takeDamage(double enemyDamage) {
 
@@ -1699,35 +1908,6 @@ public class Main implements NativeKeyListener {
 
         DecimalFormat df = new DecimalFormat("0.00");
 
-
-        Thread inputThread = new Thread(() -> {
-            try {
-
-                while (!pressed) {
-
-                    if (System.in.available() > 0) {
-
-                        int key = System.in.read();
-
-                        if (key == '\n' || key == '\r') {
-                            pressed = true;
-                            break;
-                        }
-                    }
-
-                    Thread.sleep(1);
-                }
-
-            } catch (Exception e) {
-
-            }
-
-        });
-
-
-        inputThread.start();
-
-
         while (time >= 0.00 && !pressed) {
 
             System.out.print("\rTime: " + df.format(time));
@@ -1742,16 +1922,7 @@ public class Main implements NativeKeyListener {
             time = Math.round((time - 0.01) * 100.0) / 100.0;
         }
 
-
-        try {
-            inputThread.join(100);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-
-
         System.out.println();
-
 
         if (pressed) {
 
@@ -1772,7 +1943,6 @@ public class Main implements NativeKeyListener {
             else
                 p.damageAccuracy = 10;
 
-
         } else {
 
             p.damageAccuracy = -1;
@@ -1780,18 +1950,7 @@ public class Main implements NativeKeyListener {
 
         }
 
-
-        // Clear leftover Enter key
-        try {
-
-            while (System.in.available() > 0) {
-                System.in.read();
-            }
-
-        } catch (Exception e) {
-
-        }
-
+        pressed = false;
     }
 
     static void Attack() {
@@ -1807,10 +1966,6 @@ public class Main implements NativeKeyListener {
         }
     }
 
-
-//endregion
-
-
     static void Dodge() {
 
         pressed = false;
@@ -1818,35 +1973,6 @@ public class Main implements NativeKeyListener {
         double time = 2.00;
 
         DecimalFormat df = new DecimalFormat("0.00");
-
-
-        Thread inputThread = new Thread(() -> {
-            try {
-
-                while (!pressed) {
-
-                    if (System.in.available() > 0) {
-
-                        int key = System.in.read();
-
-                        if (key == '\n' || key == '\r') {
-                            pressed = true;
-                            break;
-                        }
-                    }
-
-                    Thread.sleep(1);
-                }
-
-            } catch (Exception e) {
-
-            }
-
-        });
-
-
-        inputThread.start();
-
 
         while (time >= 0.00 && !pressed) {
 
@@ -1862,34 +1988,16 @@ public class Main implements NativeKeyListener {
             time = Math.round((time - 0.01) * 100.0) / 100.0;
         }
 
-
-        try {
-            inputThread.join(100);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-
-
         System.out.println();
-
 
         if (pressed) {
 
             double accuracy = Math.abs(time);
 
-            if (accuracy <= 0.05)
+            if (accuracy <= 0.50)
                 p.dodgeAccuracy = 1;
-            else if (accuracy <= 0.10)
-                p.dodgeAccuracy = 1;
-            else if (accuracy <= 0.20)
-                p.dodgeAccuracy = 1;
-            else if (accuracy <= 0.50)
-                p.dodgeAccuracy = 1;
-            else if (accuracy <= 0.80)
-                p.dodgeAccuracy = -1;
             else
                 p.dodgeAccuracy = -1;
-
 
         } else {
 
@@ -1898,19 +2006,10 @@ public class Main implements NativeKeyListener {
 
         }
 
-
-        // Clear leftover Enter key
-        try {
-
-            while (System.in.available() > 0) {
-                System.in.read();
-            }
-
-        } catch (Exception e) {
-
-        }
-
+        pressed = false;
     }
+
+//endregion
 
 
 //region GnomeMine
@@ -2220,17 +2319,15 @@ public class Main implements NativeKeyListener {
 //endregion
 
 
+
+//region Fight
+
     static void Fight(Enemy enemy, int Buff) {
         typeWriter("You entered a battle!");
-        try {
-            Thread.sleep(1500);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
 
-        for (int i = 0; i < Enemy.count; i++) {
-            input.nextLine();
+        for (int i = 0; i < enemy.count; i++) {
 
+            int Turn = 1;
             int HeavyAttack = 0;
             int StrongAttack = 0;
             double Adrenaline = 0;
@@ -2241,50 +2338,52 @@ public class Main implements NativeKeyListener {
 
             while (EnemyHP > 0) {
 
+                System.out.println("Turn: " + Turn);
                 HeavyAttack++;
                 StrongAttack++;
+
 
                 if (HeavyAttack == 9 && StrongAttack == 4) {
                     StrongAttack = 0;
                 }
 
 
-                System.out.println(Enemy.name + " HP: " + EnemyHP +
+                System.out.println(enemy.name + " HP: " + EnemyHP +
                         " | Your HP: " + String.format("%.1f", p.health));
 
                 if (StrongAttack == 4) {
-                    System.out.println(Enemy.name + " is preparing a strong attack");
+                    System.out.println(enemy.name + " is preparing a strong attack");
                 }
                 if (HeavyAttack == 9) {
-                    System.out.println(Enemy.name + " is preparing a heavy attack");
+                    System.out.println(enemy.name + " is preparing a heavy attack");
                 }
 
                 System.out.println("| 1 Fight | 2 Defend | 3 Heal | 4 Dodge | Adrenaline: " + Adrenaline);
 
-                String choice = input.nextLine();
+                String choice = input.next();
 
                 if (StrongAttack == 5) {
-                    typeWriter(Enemy.name + " unleashes a strong attack");
+                    typeWriter(enemy.name + " unleashes a strong attack");
                     switch (choice) {
                         case "1":
                             Accuracy();
                             Attack();
                             if (p.damageAccuracy == -1) {
 
-                                takeDamage(Enemy.attack / 0.6 + Buff);
+                                takeDamage(enemy.attack / 0.6 + Buff);
                                 SoundManager.playSFX("/sounds/Dammaged.wav");
 
                             } else {
 
                                 EnemyHP -= p.damage;
                                 if (EnemyHP > 0) {
-                                    takeDamage(Enemy.attack / 0.6 + Buff);
-                                    SoundManager.playSFX("/sounds/Attack.wav");
+                                    takeDamage(enemy.attack / 0.6 + Buff);
                                 }
+                                SoundManager.playSFX("/sounds/Attack.wav");
                             }
                             break;
                         case "2":
-                            takeDamage(Enemy.attack * 0.7 + Buff);
+                            takeDamage(enemy.attack * 0.7 + Buff);
                             SoundManager.playSFX("/sounds/Dammaged.wav");
                             System.out.println("You gained some Adrenaline");
                             Adrenaline += 0.5;
@@ -2302,14 +2401,14 @@ public class Main implements NativeKeyListener {
                                 }
                                 typeWriter("You tried to heal, but you faltered");
                                 SoundManager.playSFX("/sounds/Dammaged.wav");
-                                takeDamage(Enemy.attack / 0.6 + Buff);
+                                takeDamage(enemy.attack / 0.6 + Buff);
 
                                 checkHealth();
                                 Adrenaline += -5;
                             } else {
                                 typeWriter("You don't have enough Adrenaline to heal");
                                 SoundManager.playSFX("/sounds/Dammaged.wav");
-                                takeDamage(Enemy.attack / 0.6 + Buff);
+                                takeDamage(enemy.attack / 0.6 + Buff);
 
                                 checkHealth();
                             }
@@ -2323,7 +2422,7 @@ public class Main implements NativeKeyListener {
                                 Adrenaline += 1.5;
                             } else {
                                 typeWriter("You failed to dodge the attack");
-                                takeDamage(Enemy.attack / 0.6 + Buff);
+                                takeDamage(enemy.attack / 0.6 + Buff);
                                 SoundManager.playSFX("/sounds/Dammaged.wav");
                             }
                             break;
@@ -2334,29 +2433,30 @@ public class Main implements NativeKeyListener {
                     StrongAttack = 0;
 
                 }
-                if (HeavyAttack == 10) {
+                else if (HeavyAttack == 10) {
                     {
-                        typeWriter(Enemy.name + " unleashes a heavy attack");
+                        typeWriter(enemy.name + " unleashes a heavy attack");
                         switch (choice) {
                             case "1":
                                 Accuracy();
                                 Attack();
                                 if (p.damageAccuracy == -1) {
 
-                                    takeDamage(Enemy.attack / 0.5 + Buff);
+                                    takeDamage(enemy.attack / 0.5 + Buff);
                                     SoundManager.playSFX("/sounds/Dammaged.wav");
 
                                 } else {
 
                                     EnemyHP -= p.damage;
                                     if (EnemyHP > 0) {
-                                        takeDamage(Enemy.attack / 0.5 + Buff);
-                                        SoundManager.playSFX("/sounds/Attack.wav");
+                                        takeDamage(enemy.attack / 0.5 + Buff);
                                     }
+                                    SoundManager.playSFX("/sounds/Attack.wav");
+
                                 }
                                 break;
                             case "2":
-                                takeDamage(Enemy.attack / 0.5 + Buff);
+                                takeDamage(enemy.attack / 0.5 + Buff);
                                 SoundManager.playSFX("/sounds/Dammaged.wav");
                                 System.out.println("You gained some Adrenaline");
                                 Adrenaline += 0.5;
@@ -2374,14 +2474,14 @@ public class Main implements NativeKeyListener {
                                     }
                                     typeWriter("You tried to heal, but you faltered");
                                     SoundManager.playSFX("/sounds/Dammaged.wav");
-                                    takeDamage(Enemy.attack / 0.5 + Buff);
+                                    takeDamage(enemy.attack / 0.5 + Buff);
 
                                     checkHealth();
                                     Adrenaline -= 5;
                                 } else {
                                     typeWriter("You don't have enough Adrenaline to heal");
                                     SoundManager.playSFX("/sounds/Dammaged.wav");
-                                    takeDamage(Enemy.attack / 0.6 + Buff);
+                                    takeDamage(enemy.attack / 0.6 + Buff);
 
                                     checkHealth();
                                 }
@@ -2395,7 +2495,7 @@ public class Main implements NativeKeyListener {
                                     Adrenaline += 1.5;
                                 } else {
                                     typeWriter("You failed to dodge the attack");
-                                    takeDamage(Enemy.attack / 0.6 + Buff);
+                                    takeDamage(enemy.attack / 0.6 + Buff);
                                     SoundManager.playSFX("/sounds/Dammaged.wav");
                                 }
                                 break;
@@ -2406,27 +2506,29 @@ public class Main implements NativeKeyListener {
                         StrongAttack = 0;
 
                     }
-                } else {
+                }
+                else {
                     switch (choice) {
                         case "1":
                             Accuracy();
                             Attack();
                             if (p.damageAccuracy == -1) {
 
-                                takeDamage(Enemy.attack);
+                                takeDamage(enemy.attack);
                                 SoundManager.playSFX("/sounds/Dammaged.wav");
 
                             } else {
 
                                 EnemyHP -= p.damage;
                                 if (EnemyHP > 0) {
-                                    takeDamage(Enemy.attack);
-                                    SoundManager.playSFX("/sounds/Attack.wav");
+                                    takeDamage(enemy.attack);
                                 }
+                                SoundManager.playSFX("/sounds/Attack.wav");
+
                             }
                             break;
                         case "2":
-                            takeDamage(Enemy.attack * 0.7 + Buff);
+                            takeDamage(enemy.attack * 0.7 + Buff);
                             SoundManager.playSFX("/sounds/Dammaged.wav");
                             break;
                         case "3":
@@ -2443,7 +2545,7 @@ public class Main implements NativeKeyListener {
                             } else {
                                 typeWriter("You don't have enough Adrenaline to heal");
                                 SoundManager.playSFX("/sounds/Dammaged.wav");
-                                takeDamage(Enemy.attack / 0.6 + Buff);
+                                takeDamage(enemy.attack / 0.6 + Buff);
 
                                 checkHealth();
                             }
@@ -2457,7 +2559,7 @@ public class Main implements NativeKeyListener {
                                 Adrenaline += 1.5;
                             } else {
                                 typeWriter("You failed to dodge the attack");
-                                takeDamage(Enemy.attack + Buff);
+                                takeDamage(enemy.attack + Buff);
                                 SoundManager.playSFX("/sounds/Dammaged.wav");
                             }
                             break;
@@ -2467,6 +2569,7 @@ public class Main implements NativeKeyListener {
                 }
 
                 checkHealth();
+                Turn ++;
 
 
             }
@@ -2479,7 +2582,7 @@ public class Main implements NativeKeyListener {
 
             p.Money += randomValue;
 
-            System.out.println(Enemy.name + " dropped " + randomValue + " coins");
+            System.out.println(enemy.name + " dropped " + randomValue + " coins");
 
 
         }
@@ -2488,6 +2591,9 @@ public class Main implements NativeKeyListener {
         checkHealth();
         System.out.println("\nYou survived, your health is now " + p.health);
     }
+
+//endregion
+
 
 
 //region Training
@@ -2553,13 +2659,9 @@ public class Main implements NativeKeyListener {
         typeWriter("You lit the lamp making you see everything \n" +
                 "But oh no! You were spotted by " + Enemy.HuntersCount + " crystal hunters \n" +
                 "Crystals hunters have " + CrystalHunter.hp + " health points\n");
-        CaveAttack();
-    }
 
-    static void CaveAttack() {
         SoundManager.stopMusic();
         SoundManager.playSFX("/sounds/Battle_Start.wav");
-        typeWriter("You entered a battle!");
         try {
             Thread.sleep(1500);
         } catch (InterruptedException e) {
@@ -2567,129 +2669,15 @@ public class Main implements NativeKeyListener {
         }
 
         SoundManager.playMusic("/sounds/Rude Buster.wav");
+        CaveAttack();
+    }
 
-        for (int i = 0; i < Enemy.HuntersCount; i++) {
-
-            int HeavyAttack = 0;
-
-            double CrystalHuntersHP = CrystalHunter.hp;
-
-            System.out.println("\nFighting Hunter " + (i + 1));
-
-            while (CrystalHuntersHP > 0) {
-
-                HeavyAttack++;
+    static void CaveAttack() {
 
 
-                System.out.println("Crystal HP: " + CrystalHuntersHP +
-                        " | Your HP: " + String.format("%.1f", p.health));
-
-                if (HeavyAttack == 4) {
-                    typeWriter("Crystal hunter prepares for a heavy attack");
-                }
-
-                System.out.println("| 1 Fight | 2 Defend | 3 Prayer heal ");
-
-                String choice = input.nextLine();
-
-                if (HeavyAttack == 5) {
-                    typeWriter("Crystal hunter unleashes a heavy attack");
-                    switch (choice) {
-                        case "1":
-                            Accuracy();
-                            Attack();
-                            if (p.damageAccuracy == -1) {
-
-                                takeDamage(10);
-                                SoundManager.playSFX("/sounds/Dammaged.wav");
-
-                            } else {
-
-                                CrystalHuntersHP -= p.damage;
-                                takeDamage(10);
-                                SoundManager.playSFX("/sounds/Attack.wav");
-                            }
-                            break;
-                        case "2":
-                            takeDamage(3);
-                            SoundManager.playSFX("/sounds/Dammaged.wav");
-                            break;
-                        case "3":
-
-                            p.health += (p.Healing / 2);
-                            if (p.health > 100) {
-                                p.health = 100;
-                            }
-                            typeWriter("You tried to heal, but you faltered");
-                            SoundManager.playSFX("/sounds/Heal.wav");
-                            takeDamage(10);
-
-                            checkHealth();
-
-                            break;
-
-
-                    }
-
-                    HeavyAttack = 0;
-
-                } else {
-                    switch (choice) {
-                        case "1":
-                            Accuracy();
-                            Attack();
-                            if (p.damageAccuracy == -1) {
-
-                                takeDamage(5);
-                                SoundManager.playSFX("/sounds/Dammaged.wav");
-
-                            } else {
-
-                                CrystalHuntersHP -= p.damage;
-                                takeDamage(5);
-                                SoundManager.playSFX("/sounds/Attack.wav");
-                            }
-                            break;
-                        case "2":
-                            takeDamage(2);
-                            SoundManager.playSFX("/sounds/Dammaged.wav");
-                            break;
-                        case "3":
-
-                            p.health += p.Healing;
-                            if (p.health > 100) {
-                                p.health = 100;
-                            }
-                            takeDamage(5);
-                            SoundManager.playSFX("/sounds/Heal.wav");
-                            checkHealth();
-
-                            break;
-
-
-                    }
-                }
-
-                checkHealth();
-
-
-            }
-
-            System.out.println("\nHunter defeated!");
-
-            int intervals = 3;
-
-            int randomValue = (random.nextInt(intervals) + 1) * 5;
-
-            p.Money += randomValue;
-
-            System.out.println("Hunter dropped " + randomValue + " coins");
-
-
-        }
+        Fight(CrystalHunter, 0);
 
         SoundManager.stopMusic();
-        System.out.println("\nYou survived, your health is now " + p.health);
 
         typeWriter("You picked up the armor the hunters have been wearing, your defence increased by 10");
         p.bonusDefense += 10;
@@ -3005,7 +2993,8 @@ public class Main implements NativeKeyListener {
                         "Obsidian: " + Obsidian + "\n" +
                         "Amethyst: " + Amethyst + "\n" +
                         "Diamond: " + Diamond + "\n" +
-                        "Ruby: " + Ruby);
+                        "Ruby: " + Ruby + "\n" +
+                        "Gnome Buck: " + p.GnomeMoney);
                 GnomeCave();
             }
             default -> {
@@ -3041,7 +3030,8 @@ public class Main implements NativeKeyListener {
                         "Obsidian: " + Obsidian + "\n" +
                         "Amethyst: " + Amethyst + "\n" +
                         "Diamond: " + Diamond + "\n" +
-                        "Ruby: " + Ruby);
+                        "Ruby: " + Ruby + "\n" +
+                        "Gnome Buck: " + p.GnomeMoney);
                 GnomeMines();
             }
             default -> {
@@ -3068,7 +3058,8 @@ public class Main implements NativeKeyListener {
                         "Obsidian: " + Obsidian + "\n" +
                         "Amethyst: " + Amethyst + "\n" +
                         "Diamond: " + Diamond + "\n" +
-                        "Ruby: " + Ruby);
+                        "Ruby: " + Ruby + "\n" +
+                        "Gnome Buck: " + p.GnomeMoney);
                 GnomeMines();
             }
             default -> {
@@ -3097,9 +3088,9 @@ public class Main implements NativeKeyListener {
 
                 if (pickaxeTier < 1) {
 
-                    if (p.Money >= 50) {
+                    if (p.GnomeMoney >= 50) {
 
-                        p.Money -= 50;
+                        p.GnomeMoney -= 50;
                         pickaxeLuck = 10;
                         pickaxeTier = 1;
 
@@ -3124,9 +3115,9 @@ public class Main implements NativeKeyListener {
 
                 if (pickaxeTier < 2) {
 
-                    if (p.Money >= 100) {
+                    if (p.GnomeMoney >= 100) {
 
-                        p.Money -= 100;
+                        p.GnomeMoney -= 100;
                         pickaxeLuck = 15;
                         pickaxeTier = 2;
 
@@ -3151,9 +3142,9 @@ public class Main implements NativeKeyListener {
 
                 if (pickaxeTier < 3) {
 
-                    if (p.Money >= 200) {
+                    if (p.GnomeMoney >= 200) {
 
-                        p.Money -= 200;
+                        p.GnomeMoney -= 200;
                         pickaxeLuck = 20;
                         pickaxeTier = 3;
 
@@ -3178,9 +3169,9 @@ public class Main implements NativeKeyListener {
 
                 if (pickaxeTier < 4) {
 
-                    if (p.Money >= 250) {
+                    if (p.GnomeMoney >= 250) {
 
-                        p.Money -= 250;
+                        p.GnomeMoney -= 250;
                         pickaxeLuck = 25;
                         pickaxeTier = 4;
 
@@ -3205,9 +3196,9 @@ public class Main implements NativeKeyListener {
 
                 if (pickaxeTier < 5) {
 
-                    if (p.Money >= 350) {
+                    if (p.GnomeMoney >= 350) {
 
-                        p.Money -= 350;
+                        p.GnomeMoney -= 350;
                         pickaxeLuck = 30;
                         pickaxeTier = 5;
 
@@ -3230,8 +3221,8 @@ public class Main implements NativeKeyListener {
             }
             case '6' -> {
                 if (CharoitePik) {
-                    if (p.Money >= 1000) {
-                        p.Money -= 1000;
+                    if (p.GnomeMoney >= 1000) {
+                        p.GnomeMoney -= 1000;
                         typeWriter("You held the Charoite pickaxe feeling it's power. You existed the shop to go tested out\n" +
                                 "But before you made it 5 feet from the shop, the pickaxe shattered because Charoite if fragile\n" +
                                 "As you stare at the broken pieces, you can hear the shopkeeper snickering");
@@ -3298,7 +3289,7 @@ public class Main implements NativeKeyListener {
         System.out.println("You sold your ores for " + totalMoney + " coins!");
 
 
-        p.Money += totalMoney;
+        p.GnomeMoney += totalMoney;
 
 
         // Empty inventory after selling
@@ -3311,7 +3302,7 @@ public class Main implements NativeKeyListener {
         Ruby = 0;
 
 
-        System.out.println("You now have " + p.Money + " coins.");
+        System.out.println("You now have " + p.GnomeMoney + " Gnome bucks.");
         GnomeTown();
 
     }
@@ -3319,15 +3310,15 @@ public class Main implements NativeKeyListener {
 
     static void GnomeChief() {
         typeWriter("You head up the grand tower, the chief gnome on his throne. But above him is the North crystal, he catches you eyeing it and laughs");
-        typeWriter("\"Pretty isn't it? found it at the top of the icy mounts. If you want it, well, give me 100,000$ and it's yours. Otherwise it's mine");
+        typeWriter("\"Pretty isn't it? found it at the top of the icy mounts. If you want it, well, give me 50,000$ and it's yours. Otherwise it's mine");
         System.out.println("| 1 give the money | 2 fight him and steal it by force | 3 head back");
         int choice = input.nextInt();
         input.nextLine();
 
         switch (choice) {
             case 1 -> {
-                if (p.Money >= 100000) {
-                    p.Money -= 100000;
+                if (p.GnomeMoney >= 50000) {
+                    p.GnomeMoney -= 50000;
                     typeWriter("You gave the gnome chief the money. He laughs happily");
                     typeWriter("\"As intended here");
                     System.out.println("North crystal was added to you items");
@@ -3368,138 +3359,12 @@ public class Main implements NativeKeyListener {
             e.printStackTrace();
         }
         SoundManager.playMusic("/sounds/Chaos King.wav");
-        int Orc = 250;
-        typeWriter("Orcs have 250hp. 20 ATK");
 
-        for (int i = 0; i < 2; i++) {
+        Fight(Orc, 0);
 
-            int HeavyAttack = 0;
-
-            int OrcHP = Orc;
-
-            System.out.println("\nFighting Orc " + (i + 1));
-
-            while (OrcHP > 0) {
-
-                HeavyAttack++;
-
-
-                System.out.println("Orc HP: " + OrcHP +
-                        " | Your HP: " + String.format("%.1f", p.health));
-
-                if (HeavyAttack == 4) {
-                    typeWriter("Orc prepares for a heavy attack");
-                }
-
-                System.out.println("| 1 Fight | 2 Defend | 3 Prayer heal ");
-
-                String choice = input.nextLine().trim();
-
-                if (HeavyAttack == 5) {
-                    typeWriter("Orc unleashes a heavy attack");
-                    switch (choice) {
-                        case "1":
-                            Accuracy();
-                            Attack();
-                            if (p.damageAccuracy == -1) {
-
-                                takeDamage(30);
-                                SoundManager.playSFX("/sounds/Dammaged.wav");
-
-                            } else {
-
-                                OrcHP -= p.damage;
-                                takeDamage(30);
-                                SoundManager.playSFX("/sounds/Attack.wav");
-
-                            }
-                            break;
-                        case "2":
-                            takeDamage(5);
-                            SoundManager.playSFX("/sounds/Dammaged.wav");
-                            break;
-                        case "3":
-
-                            p.health += p.Healing / 2;
-                            if (p.health > 100) {
-                                p.health = 100;
-                            }
-                            typeWriter("You tried to heal, but you faltered");
-                            SoundManager.playSFX("/sounds/Dammaged.wav");
-                            takeDamage(10);
-
-                            checkHealth();
-
-                            break;
-
-
-                    }
-
-                    HeavyAttack = 0;
-
-                } else {
-                    switch (choice) {
-                        case "1":
-                            Accuracy();
-                            Attack();
-                            if (p.damageAccuracy == -1) {
-
-                                takeDamage(20);
-                                SoundManager.playSFX("/sounds/Dammaged.wav");
-
-                            } else {
-
-                                OrcHP -= p.damage;
-                                takeDamage(20);
-                                SoundManager.playSFX("/sounds/Attack.wav");
-
-                            }
-                            break;
-                        case "2":
-                            takeDamage(5);
-                            SoundManager.playSFX("/sounds/Dammaged.wav");
-                            break;
-                        case "3":
-
-                            p.health += p.Healing;
-                            if (p.health > 100) {
-                                p.health = 100;
-                            }
-                            takeDamage(5);
-                            SoundManager.playSFX("/sounds/Heal.wav");
-                            checkHealth();
-
-                            break;
-
-
-                    }
-                }
-
-                checkHealth();
-
-
-            }
-
-            System.out.println("\nOrc defeated!");
-
-            int intervals = 20;
-
-            int randomValue = (random.nextInt(intervals) + 1) * 5;
-
-            p.Money += randomValue;
-
-            System.out.println("Orc dropped " + randomValue + " coins");
-
-
-        }
-
-        checkHealth();
-
-        System.out.println("\nYou survived, your health is now " + p.health);
         GnomeFight();
 
     }
-
 
     static void GnomeFight() {
         SoundManager.stopMusic();
@@ -3543,14 +3408,14 @@ public class Main implements NativeKeyListener {
                     HeavyAttack++;
 
 
-                    System.out.println("Crystal HP: " + Gnomehp +
+                    System.out.println("Gnome HP: " + Gnomehp +
                             " | Your HP: " + String.format("%.1f", p.health));
 
                     if (HeavyAttack == 4) {
                         typeWriter("Gnome chief prepares for a heavy attack");
                     }
 
-                    System.out.println("| 1 Fight | 2 Defend | 3 Prayer heal | 4 show mercy ");
+                    System.out.println("| 1 Fight | 2 Defend | 3 show mercy ");
 
                     String option = input.nextLine();
 
@@ -3577,19 +3442,6 @@ public class Main implements NativeKeyListener {
                                 SoundManager.playSFX("/sounds/Dammaged.wav");
                                 break;
                             case "3":
-
-                                p.health += p.Healing;
-                                if (p.health > 100) {
-                                    p.health = 100;
-                                }
-                                takeDamage(1);
-                                SoundManager.playSFX("/sounds/Heal.wav");
-
-                                checkHealth();
-
-                                break;
-
-                            case "4":
                                 GnomeMercy();
 
 
@@ -3619,17 +3471,6 @@ public class Main implements NativeKeyListener {
                                 SoundManager.playSFX("/sounds/Dammaged.wav");
                                 break;
                             case "3":
-
-                                p.health += p.Healing;
-                                if (p.health > 100) {
-                                    p.health = 100;
-                                }
-                                takeDamage(1);
-                                SoundManager.playSFX("/sounds/Heal.wav");
-                                checkHealth();
-
-                                break;
-                            case "4":
                                 GnomeMercy();
 
                         }
@@ -3648,7 +3489,15 @@ public class Main implements NativeKeyListener {
 
                 typeWriter("The gnome tribe kicked you out, not after taking all your money, but before that you managed to snag the real ice crystal");
                 p.crystals += 1;
-                p.Money -= 100000;
+                if (p.GnomeMoney > 50000) {
+                    p.GnomeMoney -= 50000;
+                } else {
+                    p.GnomeMoney = 0;
+                }
+                if (p.Money > 0) {
+                    p.Money += p.GnomeMoney;
+                    typeWriter("Gnome bucks were converted to coins, you now have " + p.Money + " coins");
+                }
                 p.level += 10;
                 North = true;
                 EastAccess = false;
@@ -3665,6 +3514,8 @@ public class Main implements NativeKeyListener {
         typeWriter("You laid your sword down. The chief gnome scrambled away, after a while he came back handing you the true ice crystal before running away");
         p.crystals += 1;
         p.level += 10;
+        p.Money += p.GnomeMoney;
+        typeWriter("Gnome bucks were converted to coins, you now have " + p.Money + " coins");
         North = true;
         EastAccess = false;
         EastAzriel = true;
