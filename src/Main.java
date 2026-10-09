@@ -802,6 +802,7 @@ public class Main implements NativeKeyListener {
         int AzrielWarning = 0;
         int HeavyAttack = 0;
         int Trys = 0;
+        int Turn = 1;
         double Adrenaline = 0;
 
         int DummyHP = 20;
@@ -824,6 +825,7 @@ public class Main implements NativeKeyListener {
 
             while (DummyHP > 0) {
 
+                System.out.println("Turn: " + Turn);
                 HeavyAttack++;
                 StrongAttack++;
 
@@ -854,7 +856,7 @@ public class Main implements NativeKeyListener {
 
                 System.out.println("| 1 Fight | 2 Defend | 3 Heal | 4 Dodge | Adrenaline: " + Adrenaline);
 
-                String choice = input.nextLine();
+                String choice = input.next();
 
                 if (StrongAttack == 5) {
                     typeWriter("Dummy unleashes a strong attack");
@@ -933,8 +935,7 @@ public class Main implements NativeKeyListener {
 
                     StrongAttack = 0;
 
-                }
-                else if (HeavyAttack == 10) {
+                } else if (HeavyAttack == 10) {
                     {
                         typeWriter("Dummy unleashes a heavy attack");
                         switch (choice) {
@@ -1016,8 +1017,7 @@ public class Main implements NativeKeyListener {
                         StrongAttack = 0;
 
                     }
-                }
-                else {
+                } else {
                     switch (choice) {
                         case "1":
                             Accuracy();
@@ -1087,6 +1087,7 @@ public class Main implements NativeKeyListener {
                     }
                 }
 
+                Turn++;
                 checkHealth();
 
 
@@ -2319,7 +2320,6 @@ public class Main implements NativeKeyListener {
 //endregion
 
 
-
 //region Fight
 
     static void Fight(Enemy enemy, int Buff) {
@@ -2432,8 +2432,7 @@ public class Main implements NativeKeyListener {
 
                     StrongAttack = 0;
 
-                }
-                else if (HeavyAttack == 10) {
+                } else if (HeavyAttack == 10) {
                     {
                         typeWriter(enemy.name + " unleashes a heavy attack");
                         switch (choice) {
@@ -2506,8 +2505,7 @@ public class Main implements NativeKeyListener {
                         StrongAttack = 0;
 
                     }
-                }
-                else {
+                } else {
                     switch (choice) {
                         case "1":
                             Accuracy();
@@ -2569,7 +2567,7 @@ public class Main implements NativeKeyListener {
                 }
 
                 checkHealth();
-                Turn ++;
+                Turn++;
 
 
             }
@@ -2593,7 +2591,6 @@ public class Main implements NativeKeyListener {
     }
 
 //endregion
-
 
 
 //region Training
@@ -2657,8 +2654,7 @@ public class Main implements NativeKeyListener {
 
     static void lampPath() {
         typeWriter("You lit the lamp making you see everything \n" +
-                "But oh no! You were spotted by " + Enemy.HuntersCount + " crystal hunters \n" +
-                "Crystals hunters have " + CrystalHunter.hp + " health points\n");
+                "But oh no! You were spotted by " + Enemy.HuntersCount + " crystal hunters");
 
         SoundManager.stopMusic();
         SoundManager.playSFX("/sounds/Battle_Start.wav");
@@ -3397,6 +3393,7 @@ public class Main implements NativeKeyListener {
         switch (choice) {
             case 1 -> {
 
+                int Turns = 0;
                 int HeavyAttack = 0;
                 int Gnomehp = 10;
 
@@ -3404,6 +3401,7 @@ public class Main implements NativeKeyListener {
 
                 while (Gnomehp > 0) {
 
+                    System.out.println("Turns: " + Turns);
                     HeavyAttack++;
 
 
@@ -3416,7 +3414,7 @@ public class Main implements NativeKeyListener {
 
                     System.out.println("| 1 Fight | 2 Defend | 3 show mercy ");
 
-                    String option = input.nextLine();
+                    String option = input.next();
 
                     if (HeavyAttack == 5) {
                         typeWriter("Gnome chief attempts to launch a heavy attack. But it does nothing");
@@ -3475,6 +3473,7 @@ public class Main implements NativeKeyListener {
                         }
                     }
 
+                    Turns++;
                     checkHealth();
 
 
@@ -3551,9 +3550,22 @@ public class Main implements NativeKeyListener {
 
     static void CloudCrossway() {
         if (p.WindRing == 3) {
-            System.out.println("You have collected all 3 pieces of the Wind Ring, you return to Aeolus");
-            WindRing = true;
-            Aeolus();
+            SoundManager.stopMusic();
+            SoundManager.playMusic("/sounds/ATRIUM.wav");
+            typeWriter("You have collected all 3 pieces of the Wind Ring\n" +
+                    "Do you wish to go to Aeolus, or go back an explore more?");
+            System.out.println("1 go back | 2 go to Aeolus");
+            String choice = input.next();
+            switch (choice) {
+                case "1": {
+                    CloudCroswayFinal();
+                }
+                case "2": {
+                    SoundManager.stopMusic();
+                    WindRing = true;
+                    Aeolus();
+                }
+            }
         }
         SoundManager.playMusic("/sounds/ATRIUM.wav");
         typeWriter("You land at a cloud plateau, in front of you are three large clouds \n" +
@@ -3578,6 +3590,225 @@ public class Main implements NativeKeyListener {
                 CloudCrossway();
             }
         }
+    }
+
+    static void CloudCroswayFinal() {
+        typeWriter("Which area would you like to visit?");
+        System.out.println("L the Ivory Castle | C the rainbow clouds | R the Thunder Cloud | E go to Aeolus");
+        String choice = input.next();
+        switch (choice) {
+            case "L", "l": {
+                IvoryCastleFinal();
+            }
+            case "C", "c": {
+                RainbowCloudFinal();
+            }
+            case "R", "r": {
+                StormCloudFinal();
+            }
+            case "E", "e": {
+
+            }
+            default: {
+                System.out.println("Invalid choice");
+                CloudCroswayFinal();
+            }
+        }
+    }
+
+    static void IvoryCastleFinal() {
+        typeWriter("You return to the Ivory Castle, columns fill your vision once more\n" +
+                "As you return to the great hall, you noticed a hidden door under underneath the stairwell\n" +
+                "As you pushed the door opened, you found a grand library, the scent of old books filed the air\n" +
+                "At the very back a clocked man was hunched over a deck");
+        typeWriter("\"Who's there?\"");
+        System.out.println(" 1 \"I am " + p.name + "\" | 2 \"the prophesied hero\" | 3 \"I am no one\"");
+        String choice = input.next();
+        switch (choice) {
+            case "1", "2": {
+                typeWriter("\"So you are the descender that God's pet (Azrial) was talking about?\"\n");
+                OldLibrary();
+            }
+            case "3": {
+                typeWriter("\"You do not look from this world, are you the descender that God's pet (Azrial) was talking about? \"\n");
+                OldLibrary();
+            }
+            default: {
+                System.out.println("Invalid choice");
+                IvoryCastleFinal();
+            }
+        }
+    }
+
+    static void OldLibrary() {
+        typeWriter("\"I recon you're here for the wind crystal are ye not?\"\n" +
+                "\"Gyaa Ha Ha!! look at you, Aeolus would ripe you to shred. That old god has lost his mind After the incident....\"\n" +
+                "\"If you even want a chance to face him, you need to learn his skill");
+        typeWriter(p.name + "\"How do I learn it?\"");
+        typeWriter("\"Do you think I'd hand it out for free? Gyaa Ha Ha!, come back to me when you've proven you can understand magic");
+        WindMagic();
+    }
+
+    static void WindMagic() {
+        typeWriter("You return to the rows of books, there must be a book to help you weld magic");
+        System.out.println("Where do you go? | 1 the rows of book shelf | 2 the alchemy table |");
+        String choice = input.next();
+        switch (choice) {
+            case "1": {
+                BookShelfs();
+            }
+            case "2": {
+                AlchemyTable();
+            }
+            default: {
+                System.out.println("Invalid choice");
+                WindMagic();
+            }
+        }
+    }
+
+    static void BookShelfs() {
+        typeWriter("The endless rows fill your vision, books of history, animals, gods, magic, and many more");
+        typeWriter("Which ail do you visit first?");
+        System.out.println("| 1 History | 2 Gods and Deities | 3 Fiction | 4 Alchemy | 5 Arcane | 6 go back");
+        String choice = input.next();
+        switch (choice) {
+            case "1": {
+                typeWriter("You head to the History sections");
+                HistoryBook();
+            }
+            case "2": {
+                GodsBook();
+            }
+            case "3": {
+                FictonBook();
+            }
+            case "4": {
+                AlchemyBook();
+            }
+        }
+    }
+
+    static void HistoryBook() {
+        typeWriter("You head to the History sections, which row would you like to pick from?");
+        System.out.println("| 1 row A | 2 row B | 3 Row C | 4 go back");
+        String choice = input.next();
+        switch (choice) {
+            case "1": {
+                typeWriter("You pick up a book titled \"The bygone era\"");
+                typeWriter("You flipped through the pages, some of them ripped or crossed out");
+                typeWriter("\"Before the creators █████ and █████ created Eve███and they we're once\n" +
+                        "██████ from a distend land, their will were ever so strong that it could split mounts and wield\n" +
+                        "███ ████████ ██ █ells\"");
+                typeWriter("You closed the book");
+                HistoryBook();
+            }
+            case "2": {
+                typeWriter("You pick up a book titled \"The Two Continents\"");
+                typeWriter("You flipped through the pages, some of them ripped or crossed out");
+                typeWriter("\"When █████ was betrayed by █████ They lifted their great sword and split Everland in two\n" +
+                        "the Major for █████ and the Minor for ██████ this shows how power full wind it to ███████\n" +
+                        "███ ████████ ██ █o many wanted to wield this, the people of ██████ found █ ████\n" +
+                        "By mixing equal █████ of Lavender and █nflower oil, and a throne from a plant\n" +
+                        "Never mix it from the thorn of Ghost Or██id\"");
+                typeWriter("You closed the book");
+                HistoryBook();
+            }
+            case "3": {
+                typeWriter("You pick up a book titled \"The City Beyond the Seas\"");
+                typeWriter("You flipped through the pages, some of them ripped or crossed out");
+                typeWriter("\"Beyond the sea of Sou██ Lies a city under the shadows, when █████ took the Moon and took all of Magic\n" +
+                        "The people were left to defend themself, that's when Queen ███████ sought to make a new moon to █████ her people\n" +
+                        "███ ██████ no one knows if she was successful or not, but no ██████ from ████\n" +
+                        "We're ever seen before █████ the city\"");
+                typeWriter("You closed the book");
+                HistoryBook();
+            }
+            case "4": {
+                BookShelfs();
+            }
+            default: {
+                System.out.println("Invalid choice");
+                HistoryBook();
+            }
+        }
+    }
+
+    static void GodsBook() {
+        typeWriter("You head to the Gods and Deities sections, which row would you like to pick from?");
+        System.out.println("| 1 row A | 2 row B | 3 Row C | 4 go back");
+        String choice = input.next();
+        switch (choice) {
+            case "1": {
+                typeWriter("You pick up a book titled \"The Creators\"");
+                typeWriter("You flipped through the pages, some of them ripped or crossed out");
+                typeWriter("\" The two creators ██████ the youngest, and ██████ the oldest. They made Everland and a home to it's people\n" +
+                        "██████ the youngest holds over the moon and winds, while ██████ the oldest over the sun and light\n" +
+                        "It's thanks to █████ that we have magic, and ██████ for time.. but after the betrayal, the sky itself closed\n" +
+                        "by the will of ███████\"");
+                typeWriter("You closed the book");
+                GodsBook();
+            }
+            case "2": {
+                typeWriter("You pick up a book titled \"The Sanctuary of winds\"");
+                typeWriter("You flipped through the pages, some of them ripped or crossed out");
+                typeWriter("\"When ████████ took over the domain of wind, he granted divinity to other gods\n" +
+                        "To be with the people and carry blessings, the gods were ████, █████, and Aeolus\n" +
+                        "but after the sky was shut and their voices grew quite, ██████ demanded that all blessings be stopped\n" +
+                        "And thus the Sanctuary of Wind lost it's citizens, all driven out by the commands of the gods they once trusted\"");
+                typeWriter("You closed the book");
+                GodsBook();
+            }
+            case "3": {
+                typeWriter("You picked up a book titled  \"Life and Death\"");
+                typeWriter("\"If you wish to see the phases of life grow, where abundance grows with every step\n" +
+                        "the faces of █████ is the place to go, a garden of wonder and beauty. But recently she has shut her garden\n" +
+                        "No one knows why, people suspect the queen of ██████ is to blame, she owns over the death and decay\n" +
+                        "the ebb and flow of magic she wishes to usurp from ███████\"");
+                typeWriter("You closed the book");
+                GodsBook();
+
+            }
+            case "4": {
+                BookShelfs();
+            }
+            default: {
+                System.out.println("Invalid choice");
+                GodsBook();
+            }
+        }
+    }
+
+    static void FictonBook() {
+        typeWriter("There is only one book here, the cover is train going across a planet\n" +
+                "You flipped throw the pages, reading about Gods and Planets, adventures across an endless sea\n" +
+                "Where the protagonist blazes a trail across the seas, meeting friends and foe, \n" +
+                "And a god threatening to steal the belly button of the protagonist\"");
+        typeWriter("You return the book thinking it is nothing but nonsense");
+        BookShelfs();
+    }
+
+    static void AlchemyBook(){
+        typeWriter("You head to the Alchemy sections, which row would you like to pick from?");
+        System.out.println("| 1 row A | 2 row B | 3 Row C | 4 go back");
+        String choice = input.next();
+        switch (choice) {
+            case "1": {
+                typeWriter("You pick up a book titled \"How to perform an Alchemical Marriage\"");
+                typeWriter("You flipped through the pages, some of them ripped or crossed out");
+                typeWriter("\"For one to achieve an Alchemical ████iage, one must dissolve and coagulate\n" +
+                        "█hen confront ones shadow. Finally ███████\"");
+                typeWriter("You closed the book");
+                AlchemyBook();
+            }
+            case "2": {
+
+            }
+        }
+    }
+
+    static void AlchemyTable() {
+
     }
 
     static void IvoryCastle() {
@@ -3686,7 +3917,7 @@ public class Main implements NativeKeyListener {
         }
         SoundManager.playMusic("/sounds/From_Now_On_Battle.wav");
 
-       Fight(Breeze, 10);
+        Fight(Breeze, 10);
 
         typeWriter("You obtained the missing ring piece, you head back to the cloud plateau to find the other missing pieces");
 
@@ -3745,6 +3976,11 @@ public class Main implements NativeKeyListener {
 
         checkHealth();
         CloudCrossway();
+    }
+
+
+    static void RainbowCloudFinal() {
+
     }
 
 
@@ -3859,6 +4095,11 @@ public class Main implements NativeKeyListener {
         RainbowCloud = true;
         SoundManager.stopMusic();
         CloudCrossway();
+    }
+
+
+    static void StormCloudFinal() {
+
     }
 
 
