@@ -795,6 +795,13 @@ public class Main implements NativeKeyListener {
     }
 
     static void TutorialAttack() {
+        System.out.println("You entered a battle!");
+        SoundManager.playSFX("/sounds/Battle_Start.wav");
+        try {
+            Thread.sleep(1500);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         SoundManager.playMusic("/sounds/009_Enemy_Approaching.wav");
         input.nextLine();
 
@@ -810,16 +817,9 @@ public class Main implements NativeKeyListener {
         System.out.println("\nFighting Dummy HP 10 ATK 5");
 
 
-        typeWriter("You entered a battle!");
-        try {
-            Thread.sleep(1500);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-
-        typeWriter("\"Fighting here is turned based, you can attack, defend, dodge, and heal \"\n" +
-                "\"To heal you need to gain adrenaline, you gain adrenaline when successfully defend or dodge\"\n" +
-                "\"You will lean spells and other mechanics along your journey \"");
+        typeWriter("\"Fighting here is turned based, you can attack, defend, dodge, and heal\"\n" +
+                "\"To heal you need 5 adrenaline points, you gain adrenaline when successfully defend or dodge and attacking\"\n" +
+                "\"You will lean spells and other mechanics along your journey\"");
 
         for (int i = 0; i < 1; i++) {
 
@@ -840,8 +840,9 @@ public class Main implements NativeKeyListener {
                 if (StrongAttack == 4) {
                     System.out.println("Dummy is preparing a strong attack");
                     if (AzrielWarning < 2) {
-                        typeWriter("\"Some enemies have strong attacks, you must defend on strong attacks \"\n" +
-                                "\"Strong attacks happen on the next turn, and defending will earn you adrenaline\"");
+                        typeWriter("\"Some enemies have strong attacks, you must defend on strong attacks\"\n" +
+                                "\"Strong attacks happen on the next turn, and defending will earn you adrenaline\"\n" +
+                                "Remember strong attacks happen on intervals of 5 turns, unless the next turn is a strong attack, they take priorities");
                         AzrielWarning++;
                     }
                 }
@@ -849,7 +850,8 @@ public class Main implements NativeKeyListener {
                     System.out.println("Dummy is preparing a heavy attack");
                     if (AzrielWarning < 2) {
                         typeWriter("\"Some enemies have heavy attacks, you must dodge on a heavy attack \"\n" +
-                                "\"Heavy attacks happen on the next turn, and dodging will earn you adrenaline\"");
+                                "\"Heavy attacks happen on the next turn, and dodging will earn you adrenaline\n" +
+                                "Remember heavy attacks happen on intervals of 10 turns");
                         AzrielWarning++;
                     }
                 }
@@ -886,7 +888,7 @@ public class Main implements NativeKeyListener {
                             takeDamage(5 * 0.7);
                             SoundManager.playSFX("/sounds/Dammaged.wav");
                             System.out.println("You gained some Adrenaline");
-                            Adrenaline += 0.5;
+                            Adrenaline += 2.5;
                             break;
 
                         case "3":
@@ -935,7 +937,8 @@ public class Main implements NativeKeyListener {
 
                     StrongAttack = 0;
 
-                } else if (HeavyAttack == 10) {
+                }
+                else if (HeavyAttack == 10) {
                     {
                         typeWriter("Dummy unleashes a heavy attack");
                         switch (choice) {
@@ -968,7 +971,7 @@ public class Main implements NativeKeyListener {
                                 SoundManager.playSFX("/sounds/Dammaged.wav");
                                 System.out.println("You gained some Adrenaline");
                                 typeWriter("Azriel \"You... you should've dodged\"");
-                                Adrenaline += 0.5;
+                                Adrenaline += 3;
                                 break;
 
                             case "3":
@@ -1017,7 +1020,8 @@ public class Main implements NativeKeyListener {
                         StrongAttack = 0;
 
                     }
-                } else {
+                }
+                else {
                     switch (choice) {
                         case "1":
                             Accuracy();
@@ -1041,6 +1045,7 @@ public class Main implements NativeKeyListener {
                                 DummyHP -= p.damage;
                                 if (DummyHP > 0) {
                                     takeDamage(5);
+                                    Adrenaline += 1;
                                 }
                                 SoundManager.playSFX("/sounds/Attack.wav");
 
@@ -2386,7 +2391,7 @@ public class Main implements NativeKeyListener {
                             takeDamage(enemy.attack * 0.7 + Buff);
                             SoundManager.playSFX("/sounds/Dammaged.wav");
                             System.out.println("You gained some Adrenaline");
-                            Adrenaline += 0.5;
+                            Adrenaline += 2.5;
                             break;
 
                         case "3":
@@ -2458,7 +2463,7 @@ public class Main implements NativeKeyListener {
                                 takeDamage(enemy.attack / 0.5 + Buff);
                                 SoundManager.playSFX("/sounds/Dammaged.wav");
                                 System.out.println("You gained some Adrenaline");
-                                Adrenaline += 0.5;
+                                Adrenaline += 3;
                                 break;
 
                             case "3":
@@ -2520,6 +2525,7 @@ public class Main implements NativeKeyListener {
                                 EnemyHP -= p.damage;
                                 if (EnemyHP > 0) {
                                     takeDamage(enemy.attack);
+                                    Adrenaline += 1;
                                 }
                                 SoundManager.playSFX("/sounds/Attack.wav");
 
