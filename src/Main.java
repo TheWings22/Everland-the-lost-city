@@ -589,10 +589,11 @@ public class Main implements NativeKeyListener {
         p.ElationCoin = 0;
         p.MaskOfElation = 0;
 
+        Fight(Orc, 1000);
+
         System.out.println("Press \"SHIFT\" to skip dialogue");
         System.out.println("Please enter your name young traveller: ");
         p.name = input.nextLine();
-
 
         if (p.name.equalsIgnoreCase("Ahmed") || p.name.equalsIgnoreCase("aha")) {
 
@@ -784,7 +785,7 @@ public class Main implements NativeKeyListener {
         SoundManager.playMusic("/sounds/007_Anticipation.wav");
         typeWriter("Azriel takes you out of Everland and into the training grounds");
         typeWriter("\"The training ground is for.... well training, here, use this sword and use it on that dummy\"");
-        typeWriter("You stood in front the dummy raising your sword \n " +
+        typeWriter("You stood in front the dummy raising your sword \n" +
                 "\"When fighting or dodging, hit when the timer is close to 0.00\"");
         typeWriter("Enter any button to continue");
         char enter = input.next().charAt(0);
@@ -842,16 +843,16 @@ public class Main implements NativeKeyListener {
                     if (AzrielWarning < 2) {
                         typeWriter("\"Some enemies have strong attacks, you must defend on strong attacks\"\n" +
                                 "\"Strong attacks happen on the next turn, and defending will earn you adrenaline\"\n" +
-                                "Remember strong attacks happen on intervals of 5 turns, unless the next turn is a strong attack, they take priorities");
+                                "\"Remember strong attacks happen on intervals of 5 turns, unless the next turn is a strong attack, they take priorities\"");
                         AzrielWarning++;
                     }
                 }
                 if (HeavyAttack == 9) {
                     System.out.println("Dummy is preparing a heavy attack");
                     if (AzrielWarning < 2) {
-                        typeWriter("\"Some enemies have heavy attacks, you must dodge on a heavy attack \"\n" +
+                        typeWriter("\"Some enemies have heavy attacks, you must dodge on a heavy attack\"\n" +
                                 "\"Heavy attacks happen on the next turn, and dodging will earn you adrenaline\n" +
-                                "Remember heavy attacks happen on intervals of 10 turns");
+                                "\"Remember heavy attacks happen on intervals of 10 turns\"");
                         AzrielWarning++;
                     }
                 }
@@ -886,8 +887,7 @@ public class Main implements NativeKeyListener {
                             break;
                         case "2":
                             takeDamage(5 * 0.7);
-                            SoundManager.playSFX("/sounds/Dammaged.wav");
-                            System.out.println("You gained some Adrenaline");
+                            SoundManager.playSFX("/sounds/Deffend.wav");
                             Adrenaline += 2.5;
                             break;
 
@@ -923,6 +923,7 @@ public class Main implements NativeKeyListener {
                         case "4":
                             Dodge();
                             if (p.dodgeAccuracy == 1) {
+                                SoundManager.playSFX("/sounds/Dodge.wav");
                                 typeWriter("You dodged the attack");
                                 Adrenaline += 1.5;
                             } else {
@@ -968,8 +969,7 @@ public class Main implements NativeKeyListener {
                                 break;
                             case "2":
                                 takeDamage(5 / 0.5);
-                                SoundManager.playSFX("/sounds/Dammaged.wav");
-                                System.out.println("You gained some Adrenaline");
+                                SoundManager.playSFX("/sounds/Deffend.wav");
                                 typeWriter("Azriel \"You... you should've dodged\"");
                                 Adrenaline += 3;
                                 break;
@@ -1005,6 +1005,7 @@ public class Main implements NativeKeyListener {
                             case "4":
                                 Dodge();
                                 if (p.dodgeAccuracy == 1) {
+                                    SoundManager.playSFX("/sounds/Dodge.wav");
                                     typeWriter("You dodged the attack");
                                     Adrenaline += 1.5;
                                 } else {
@@ -1052,8 +1053,8 @@ public class Main implements NativeKeyListener {
                             }
                             break;
                         case "2":
+                            SoundManager.playSFX("/sounds/Deffend.wav");
                             takeDamage(5 * 0.7);
-                            SoundManager.playSFX("/sounds/Dammaged.wav");
                             break;
                         case "3":
 
@@ -1079,6 +1080,7 @@ public class Main implements NativeKeyListener {
                         case "4":
                             Dodge();
                             if (p.dodgeAccuracy == 1) {
+                                SoundManager.playSFX("/sounds/Dodge.wav");
                                 typeWriter("You dodged the attack");
                                 Adrenaline += 1.5;
                             } else {
@@ -2249,6 +2251,32 @@ public class Main implements NativeKeyListener {
 
     static void checkHealth() {
         if (p.health <= 0) {
+            try {
+
+                Thread.sleep(1500);
+
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+            }
+            SoundManager.stopMusic();
+            SoundManager.playSFX("/sounds/Soul_Shattering.wav");
+            try {
+                System.out.print("❤️");
+                System.out.flush();
+                Thread.sleep(1200);
+
+                System.out.print("\r💔");
+                System.out.flush();
+                Thread.sleep(1500);
+
+                // Erase the broken heart
+                System.out.print("\r  \r");
+                System.out.flush();
+
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+            }
+            SoundManager.playMusic("/sounds/GameOver.wav");
             System.out.println();
             System.out.println("=================================");
             System.out.println("          GAME OVER");
@@ -2263,11 +2291,12 @@ public class Main implements NativeKeyListener {
                 p.bonusDefense = 0;
                 p.bonusDamage = 0;
                 updateStats();
+                SoundManager.stopMusic();
                 mainArea();
 
             } else {
                 System.out.println("You have chosen to give up.");
-                System.exit(0); // Ends the program
+                System.exit(0);
             }
         }
     }
@@ -2389,8 +2418,7 @@ public class Main implements NativeKeyListener {
                             break;
                         case "2":
                             takeDamage(enemy.attack * 0.7 + Buff);
-                            SoundManager.playSFX("/sounds/Dammaged.wav");
-                            System.out.println("You gained some Adrenaline");
+                            SoundManager.playSFX("/sounds/Deffend.wav");
                             Adrenaline += 2.5;
                             break;
 
@@ -2423,7 +2451,7 @@ public class Main implements NativeKeyListener {
                         case "4":
                             Dodge();
                             if (p.dodgeAccuracy == 1) {
-                                typeWriter("You dodged the attack");
+                                SoundManager.playSFX("/sounds/Dodge.wav");
                                 Adrenaline += 1.5;
                             } else {
                                 typeWriter("You failed to dodge the attack");
@@ -2437,7 +2465,8 @@ public class Main implements NativeKeyListener {
 
                     StrongAttack = 0;
 
-                } else if (HeavyAttack == 10) {
+                }
+                else if (HeavyAttack == 10) {
                     {
                         typeWriter(enemy.name + " unleashes a heavy attack");
                         switch (choice) {
@@ -2461,7 +2490,7 @@ public class Main implements NativeKeyListener {
                                 break;
                             case "2":
                                 takeDamage(enemy.attack / 0.5 + Buff);
-                                SoundManager.playSFX("/sounds/Dammaged.wav");
+                                SoundManager.playSFX("/sounds/Deffend.wav");
                                 System.out.println("You gained some Adrenaline");
                                 Adrenaline += 3;
                                 break;
@@ -2495,7 +2524,7 @@ public class Main implements NativeKeyListener {
                             case "4":
                                 Dodge();
                                 if (p.dodgeAccuracy == 1) {
-                                    typeWriter("You dodged the attack");
+                                    SoundManager.playSFX("/sounds/Dodge.wav");
                                     Adrenaline += 1.5;
                                 } else {
                                     typeWriter("You failed to dodge the attack");
@@ -2510,21 +2539,22 @@ public class Main implements NativeKeyListener {
                         StrongAttack = 0;
 
                     }
-                } else {
+                }
+                else {
                     switch (choice) {
                         case "1":
                             Accuracy();
                             Attack();
                             if (p.damageAccuracy == -1) {
 
-                                takeDamage(enemy.attack);
+                                takeDamage(enemy.attack + Buff);
                                 SoundManager.playSFX("/sounds/Dammaged.wav");
 
                             } else {
 
                                 EnemyHP -= p.damage;
                                 if (EnemyHP > 0) {
-                                    takeDamage(enemy.attack);
+                                    takeDamage(enemy.attack + Buff);
                                     Adrenaline += 1;
                                 }
                                 SoundManager.playSFX("/sounds/Attack.wav");
@@ -2533,7 +2563,7 @@ public class Main implements NativeKeyListener {
                             break;
                         case "2":
                             takeDamage(enemy.attack * 0.7 + Buff);
-                            SoundManager.playSFX("/sounds/Dammaged.wav");
+                            SoundManager.playSFX("/sounds/Deffend.wav");
                             break;
                         case "3":
 
@@ -2559,7 +2589,7 @@ public class Main implements NativeKeyListener {
                         case "4":
                             Dodge();
                             if (p.dodgeAccuracy == 1) {
-                                typeWriter("You dodged the attack");
+                                SoundManager.playSFX("/sounds/Dodge.wav");
                                 Adrenaline += 1.5;
                             } else {
                                 typeWriter("You failed to dodge the attack");
