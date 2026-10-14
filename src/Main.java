@@ -589,8 +589,6 @@ public class Main implements NativeKeyListener {
         p.ElationCoin = 0;
         p.MaskOfElation = 0;
 
-        Fight(Orc, 1000);
-
         System.out.println("Press \"SHIFT\" to skip dialogue");
         System.out.println("Please enter your name young traveller: ");
         p.name = input.nextLine();
