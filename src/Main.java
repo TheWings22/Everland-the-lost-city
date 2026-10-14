@@ -3585,21 +3585,23 @@ public class Main implements NativeKeyListener {
     static void CloudCrossway() {
         if (p.WindRing == 3) {
             SoundManager.stopMusic();
-            SoundManager.playMusic("/sounds/ATRIUM.wav");
             typeWriter("You have collected all 3 pieces of the Wind Ring\n" +
-                    "Do you wish to go to Aeolus, or go back an explore more?");
-            System.out.println("1 go back | 2 go to Aeolus");
-            String choice = input.next();
-            switch (choice) {
-                case "1": {
-                    CloudCroswayFinal();
-                }
-                case "2": {
-                    SoundManager.stopMusic();
-                    WindRing = true;
-                    Aeolus();
-                }
-            }
+                    "You head back to Aeolus");
+            Aeolus();
+            //typeWriter("You have collected all 3 pieces of the Wind Ring\n" +
+                    //"Do you wish to go to Aeolus, or go back an explore more?");
+            //System.out.println("1 go back | 2 go to Aeolus");
+            //String choice = input.next();
+            //switch (choice) {
+                //case "1": {
+                    //();
+                //}
+                //case "2": {
+                    //SoundManager.stopMusic();
+                    //WindRing = true;
+                    //Aeolus();
+                //}
+            //}
         }
         SoundManager.playMusic("/sounds/ATRIUM.wav");
         typeWriter("You land at a cloud plateau, in front of you are three large clouds \n" +
