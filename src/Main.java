@@ -936,8 +936,7 @@ public class Main implements NativeKeyListener {
 
                     StrongAttack = 0;
 
-                }
-                else if (HeavyAttack == 10) {
+                } else if (HeavyAttack == 10) {
                     {
                         typeWriter("Dummy unleashes a heavy attack");
                         switch (choice) {
@@ -1019,8 +1018,7 @@ public class Main implements NativeKeyListener {
                         StrongAttack = 0;
 
                     }
-                }
-                else {
+                } else {
                     switch (choice) {
                         case "1":
                             Accuracy();
@@ -2249,6 +2247,7 @@ public class Main implements NativeKeyListener {
 
     static void checkHealth() {
         if (p.health <= 0) {
+            SoundManager.stopMusic();
             try {
 
                 Thread.sleep(1500);
@@ -2256,19 +2255,17 @@ public class Main implements NativeKeyListener {
             } catch (InterruptedException e) {
                 Thread.currentThread().interrupt();
             }
-            SoundManager.stopMusic();
             SoundManager.playSFX("/sounds/Soul_Shattering.wav");
             try {
-                System.out.print("❤️");
+                System.out.print("<3");
                 System.out.flush();
                 Thread.sleep(1200);
 
-                System.out.print("\r💔");
+                System.out.print("\r</3");
                 System.out.flush();
                 Thread.sleep(1500);
 
-                // Erase the broken heart
-                System.out.print("\r  \r");
+                System.out.print("\r              \r");
                 System.out.flush();
 
             } catch (InterruptedException e) {
@@ -2282,19 +2279,26 @@ public class Main implements NativeKeyListener {
             System.out.println("You have succumbed to your situation... As you let the cold embrace of death to take you");
             System.out.println("Do you give up? Or restart");
             System.out.println("Give Up or Restart (G|R)");
-            char choice = input.next().charAt(0);
-            if (choice == 'R' || choice == 'r') {
+            String choice = input.next();
+            switch (choice) {
+                case "R", "r" -> {
 
-                p.health = 100.0;
-                p.bonusDefense = 0;
-                p.bonusDamage = 0;
-                updateStats();
-                SoundManager.stopMusic();
-                mainArea();
+                    p.health = 100.0;
+                    p.bonusDefense = 0;
+                    p.bonusDamage = 0;
+                    updateStats();
+                    SoundManager.stopMusic();
+                    mainArea();
 
-            } else {
-                System.out.println("You have chosen to give up.");
-                System.exit(0);
+                }
+                case "G", "g" -> {
+                    System.out.println("You have chosen to give up.");
+                    System.exit(0);
+                }
+                default -> {
+                    System.out.println("You have chosen to give up.");
+                    System.exit(0);
+                }
             }
         }
     }
@@ -2463,8 +2467,7 @@ public class Main implements NativeKeyListener {
 
                     StrongAttack = 0;
 
-                }
-                else if (HeavyAttack == 10) {
+                } else if (HeavyAttack == 10) {
                     {
                         typeWriter(enemy.name + " unleashes a heavy attack");
                         switch (choice) {
@@ -2537,8 +2540,7 @@ public class Main implements NativeKeyListener {
                         StrongAttack = 0;
 
                     }
-                }
-                else {
+                } else {
                     switch (choice) {
                         case "1":
                             Accuracy();
@@ -3589,18 +3591,18 @@ public class Main implements NativeKeyListener {
                     "You head back to Aeolus");
             Aeolus();
             //typeWriter("You have collected all 3 pieces of the Wind Ring\n" +
-                    //"Do you wish to go to Aeolus, or go back an explore more?");
+            //"Do you wish to go to Aeolus, or go back an explore more?");
             //System.out.println("1 go back | 2 go to Aeolus");
             //String choice = input.next();
             //switch (choice) {
-                //case "1": {
-                    //();
-                //}
-                //case "2": {
-                    //SoundManager.stopMusic();
-                    //WindRing = true;
-                    //Aeolus();
-                //}
+            //case "1": {
+            //();
+            //}
+            //case "2": {
+            //SoundManager.stopMusic();
+            //WindRing = true;
+            //Aeolus();
+            //}
             //}
         }
         SoundManager.playMusic("/sounds/ATRIUM.wav");
@@ -3824,7 +3826,7 @@ public class Main implements NativeKeyListener {
         BookShelfs();
     }
 
-    static void AlchemyBook(){
+    static void AlchemyBook() {
         typeWriter("You head to the Alchemy sections, which row would you like to pick from?");
         System.out.println("| 1 row A | 2 row B | 3 Row C | 4 go back");
         String choice = input.next();
