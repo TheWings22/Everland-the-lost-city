@@ -105,6 +105,7 @@ public class Main implements NativeKeyListener {
     static boolean IvoryCastle = false;
     static boolean RainbowCloud = false;
     static boolean StormCloud = false;
+    static boolean Boreas = false;
     static boolean WindRing = false;
     static boolean East = false;
     static boolean West = false;
@@ -134,6 +135,7 @@ public class Main implements NativeKeyListener {
     static boolean WorldEdgeAzriel = false;
     static boolean NorthAzriel = true;
     static boolean EastAzriel = false;
+    static boolean AeolusAzriel = false;
     static boolean southAzriel = false;
     static boolean westAzriel = false;
 
@@ -589,11 +591,15 @@ public class Main implements NativeKeyListener {
         p.ElationCoin = 0;
         p.MaskOfElation = 0;
 
+        SoundManager.playMusic("/sounds/MainMenu.wav");
+
         System.out.println("Press \"SHIFT\" to skip dialogue");
         System.out.println("Please enter your name young traveller: ");
         p.name = input.nextLine();
 
         if (p.name.equalsIgnoreCase("Ahmed") || p.name.equalsIgnoreCase("aha")) {
+
+            SoundManager.stopMusic();
 
             Ahmed = true;
             p.level = 999;
@@ -610,6 +616,10 @@ public class Main implements NativeKeyListener {
                 e.printStackTrace();
             }
         }
+
+        CloudCroswayFinal();
+
+        SoundManager.stopMusic();
 
         SoundManager.playMusic("/sounds/The_Legend.wav");
 
@@ -1796,7 +1806,11 @@ public class Main implements NativeKeyListener {
 
     static void LibraryAzriel() {
         SoundManager.playMusic("/sounds/Quiet_Autumn.wav");
-        if (WorldEdgeAzriel) {
+        if (AeolusAzriel && WorldEdgeAzriel) {
+            System.out.println("| 1 Where do I go? | 2 What is this place? | 3 Talk about Aeolus | 4 What is the World's Edge tavern? | 5 go back");
+        } else if (AeolusAzriel) {
+            System.out.println("| 1 Where do I go? | 2 What is this place? | 3 Talk about Aeolus | 4 go back");
+        } else if (WorldEdgeAzriel) {
             System.out.println("| 1 Where do I go? | 2 What is this place? | 3 What is the World's Edge tavern? | 4 go back");
         } else {
             System.out.println("| 1 Where do I go? | 2 What is this place? | 3 go back");
@@ -1806,14 +1820,15 @@ public class Main implements NativeKeyListener {
             case 1 -> {
                 if (NorthAzriel) {
                     typeWriter("\"Your next place of adverts are the snowy mountains over in the northern area\"\n" +
-                            "\"Gnomes are sometimes seen there so be carefully with them, they may seem evil but they are harmless, they run the\"\n" +
+                            "\"Gnomes are sometimes seen there so be carefully with them, they may seem evil but they are harmless\"\n" +
                             "\"They are the ones in charge of running the whole mining industry of Everland... but you will find the snow crystal there\"");
                     LibraryAzriel();
                 }
                 if (EastAzriel) {
                     typeWriter("\"Your next place of adverts is the land of wind, over in the eastern area\"\n" +
-                            "\"It's a very holy place, it is said the youngest of the twins loved the element of wins\"\n" +
-                            "\"You might encounter Gods there, They are in charge of keeping our faith and spirit in Everland and is where you will find the wind crystal\"");
+                            "\"It's a very holy place, The youngest of the twins's domains is wins\"\n" +
+                            "\"You might encounter Gods there, They are in charge of keeping our faith and spirit in Everland\"\n" +
+                            "\"....but they are never the same since he forbid the gifts of blessings\"");
                     LibraryAzriel();
                 }
                 if (southAzriel) {
@@ -1824,10 +1839,11 @@ public class Main implements NativeKeyListener {
                     LibraryAzriel();
                 }
                 if (westAzriel) {
-                    typeWriter("\"Your next place of adverts are the eternal forest, over in the western area\"\n" +
-                            "\"The eternal forest is rather peaceful then the abyss you encountered\"\n" +
+                    typeWriter("\"Your next place of adverts are the garden of gia, over in the western area\"\n" +
+                            "\"The garden is rather peaceful then the abyss you encountered\"\n" +
                             "\"All of the 4 seasons are in an eternal state, so be sure to pack appropriately when visiting\"\n" +
-                            "\"The creatures there are also kind. Also are nature spirits, but tread carefully and don't disturb them and you'd be able to retrieve the bloom crystal\"");
+                            "\"But no one has seen her after the closing of the sky, frankly no one has been inside the garden after that\"\n" +
+                            "\"But you need to retrieve the bloom crystal if you wish to escape\"");
                     LibraryAzriel();
                 }
             }
@@ -1842,21 +1858,30 @@ public class Main implements NativeKeyListener {
                         "\"A hobby, or a talent\"\n" +
                         "\"But if a person's soul is radiant enough, reaching farther then what is known..... Then that that soul could manifest\"\n" +
                         "\"When a soul manifest it creates its own world, a domain just for that soul.... but it's not alone\"\n" +
-                        "\"These worlds. These domains, they pop up like islands on the sea of quantum, the ever consuming sea of darkness\"\n" +
-                        "\"So in a sense, one can travel from one island to another, but it's far too dangerous.... And leaving a world open for a long time would have devastating affects\"\n" +
-                        "\"When a world manifests it would attract lost souls on the sea of quantum.... But if held longer then it would attract the souls of people who haven't manifested\"\n" +
-                        "\"Their souls longing to feel the radiant light of creation abandoning their vessels... leaving them empty... and once a human is empty... they will drift to the sea of quantum\"\n" +
-                        "\".....This is the untold dark secrets of manifesting, this world has been open for far too long, and you can save the people, you can close this world and bring the people their soul\"\n" +
+                        "\"These worlds. These domains, they pop up like islands on the sea of souls, the ever consuming sea of darkness\"\n" +
+                        "\"So in a sense, one can travel from one island to another, but it's far too dangerous.... \"\n" +
+                        "\"and leaving a world open for a long time would have devastating affects\"\n" +
+                        "\"When a world manifests it would attract lost souls on the sea of souls....\"\n" +
+                        "\"But if held longer then it would attract the souls of people who haven't manifested\"\n" +
+                        "\"Their souls longing to feel the radiant light of creation abandoning their vessels... leaving them empty... \"\n" +
+                        "\"and once a human is empty... they will drift to the sea of souls\"\n" +
+                        "\".....This is the untold dark secrets of manifesting, this world has been open for far too long\"\n" +
+                        "\"and you can save the people, you can close this world and bring the people their soul\"\n" +
                         "\"if it's not too late if there is enough time... All of this can end, so please... Help us...\"");
                 LibraryAzriel();
             }
             case 3 -> {
-                if (WorldEdgeAzriel) {
+                if (AeolusAzriel && WorldEdgeAzriel) {
+
+                } else if (AeolusAzriel) {
+
+                } else if (WorldEdgeAzriel) {
                     typeWriter("\"The world’s edge tavern are home to a group called “the masked fools” \"\n" +
                             "\"although they call themselves “the enlightened ones” on the outside they look like delusional fools. \"\n" +
                             "They laugh at the face of sadness and cry at the face of laughter, their twisted view of the world is the byproduct of the fate of the world \"\n " +
-                            "\"“why mellow in the unshackling chains of fate when you can make your own life? Why mope at the inevitable destruction when you can laugh and drink away. All for the ever ending elation.”\"\n" +
-                            "\"Their vies saden me.... As for the “malevolent keeper”.... They're talking about me\"");
+                            "\"“why mellow in the unshackling chains of fate when you can make your own life? \n" +
+                            "Why mope at the inevitable destruction when you can laugh and drink away. All for the ever ending elation.”\"\n" +
+                            "\"Their views saden me.... As for the “malevolent keeper”.... They're talking about me\"");
                     typeWriterSlow("........");
                     SoundManager.playMusic("/sounds/Darkness_Falls.wav");
                     typeWriter("\"We never got along well... the mask fools they.... they just want to be free... to feel the sun on their skin\"\n" +
@@ -1867,7 +1892,24 @@ public class Main implements NativeKeyListener {
                     EverlandCity();
                 }
             }
-            case 4 -> EverlandCity();
+            case 4 -> {
+                if (AeolusAzriel && WorldEdgeAzriel) {
+                    typeWriter("\"The world’s edge tavern are home to a group called “the masked fools” \"\n" +
+                            "\"although they call themselves “the enlightened ones” on the outside they look like delusional fools. \"\n" +
+                            "They laugh at the face of sadness and cry at the face of laughter, their twisted view of the world is the byproduct of the fate of the world \"\n " +
+                            "\"“why mellow in the unshackling chains of fate when you can make your own life? \n" +
+                            "Why mope at the inevitable destruction when you can laugh and drink away. All for the ever ending elation.”\"\n" +
+                            "\"Their views saden me.... As for the “malevolent keeper”.... They're talking about me\"");
+                    typeWriterSlow("........");
+                    SoundManager.playMusic("/sounds/Darkness_Falls.wav");
+                    typeWriter("\"We never got along well... the mask fools they.... they just want to be free... to feel the sun on their skin\"\n" +
+                            "\"To feel the gentle breeze on their face, or the taps of rain.... But they have to understand that I can't let them leave\"\n" +
+                            "\"It's to dangerous to leave, to find another way... and I can't open the portal I can't... I am just apart of him\"");
+                    LibraryAzriel();
+                } else {
+                    EverlandCity();
+                }
+            }
             default -> {
                 System.out.println("Invalid Input");
                 LibraryAzriel();
@@ -3010,7 +3052,7 @@ public class Main implements NativeKeyListener {
     static void GnomeCave() {
 
         typeWriter("You can go left to the mines, right to town center, or forward to the gnome's chief\n");
-        System.out.println("|L left | C center | R light | B head back | I inventory (Works everywhere in gnome cave)");
+        System.out.println("|L left | C center | R right | B head back | I inventory (Works everywhere in gnome cave)");
         char direction = input.next().charAt(0);
         switch (direction) {
             case 'L', 'l' -> GnomeMines();
@@ -3588,22 +3630,19 @@ public class Main implements NativeKeyListener {
         if (p.WindRing == 3) {
             SoundManager.stopMusic();
             typeWriter("You have collected all 3 pieces of the Wind Ring\n" +
-                    "You head back to Aeolus");
-            Aeolus();
-            //typeWriter("You have collected all 3 pieces of the Wind Ring\n" +
-            //"Do you wish to go to Aeolus, or go back an explore more?");
-            //System.out.println("1 go back | 2 go to Aeolus");
-            //String choice = input.next();
-            //switch (choice) {
-            //case "1": {
-            //();
-            //}
-            //case "2": {
-            //SoundManager.stopMusic();
-            //WindRing = true;
-            //Aeolus();
-            //}
-            //}
+                    "Do you wish to go to Aeolus, or go back an explore more?");
+            System.out.println("1 go back | 2 go to Aeolus");
+            String choice = input.next();
+            switch (choice) {
+                case "1": {
+                    CloudCroswayFinal();
+                }
+                case "2": {
+                    SoundManager.stopMusic();
+                    WindRing = true;
+                    Aeolus();
+                }
+            }
         }
         SoundManager.playMusic("/sounds/ATRIUM.wav");
         typeWriter("You land at a cloud plateau, in front of you are three large clouds \n" +
@@ -3631,6 +3670,8 @@ public class Main implements NativeKeyListener {
     }
 
     static void CloudCroswayFinal() {
+        SoundManager.playMusic("/sounds/ATRIUM.wav");
+        AeolusAzriel = true;
         typeWriter("Which area would you like to visit?");
         System.out.println("L the Ivory Castle | C the rainbow clouds | R the Thunder Cloud | E go to Aeolus");
         String choice = input.next();
@@ -3655,20 +3696,26 @@ public class Main implements NativeKeyListener {
     }
 
     static void IvoryCastleFinal() {
+        if (Boreas) {
+            System.out.println("The ivory castle has already been explored. There is nothing left to find here.");
+            CloudCroswayFinal();
+        }
+        SoundManager.stopMusic();
+        SoundManager.playMusic("/sounds/Fireplace.wav");
         typeWriter("You return to the Ivory Castle, columns fill your vision once more\n" +
                 "As you return to the great hall, you noticed a hidden door under underneath the stairwell\n" +
                 "As you pushed the door opened, you found a grand library, the scent of old books filed the air\n" +
-                "At the very back a clocked man was hunched over a deck");
-        typeWriter("\"Who's there?\"");
+                "At the very back an old rugged man hunched over a deck, his hair frosted over with fine ice");
+        typeWriter("He turns around at the sound of you walking. \"Who's there?\"");
         System.out.println(" 1 \"I am " + p.name + "\" | 2 \"the prophesied hero\" | 3 \"I am no one\"");
         String choice = input.next();
         switch (choice) {
             case "1", "2": {
-                typeWriter("\"So you are the descender that God's pet (Azrial) was talking about?\"\n");
+                typeWriter("\"So you are the descender that God's pet (Azriel) was talking about?\"\n");
                 OldLibrary();
             }
             case "3": {
-                typeWriter("\"You do not look from this world, are you the descender that God's pet (Azrial) was talking about? \"\n");
+                typeWriter("\"You do not look from this world, are you the descender that God's pet (Azriel) was talking about? \"\n");
                 OldLibrary();
             }
             default: {
@@ -3682,12 +3729,12 @@ public class Main implements NativeKeyListener {
         typeWriter("\"I recon you're here for the wind crystal are ye not?\"\n" +
                 "\"Gyaa Ha Ha!! look at you, Aeolus would ripe you to shred. That old god has lost his mind After the incident....\"\n" +
                 "\"If you even want a chance to face him, you need to learn his skill");
-        typeWriter(p.name + "\"How do I learn it?\"");
+        typeWriter(p.name + ": \"How do I learn it?\"");
         typeWriter("\"Do you think I'd hand it out for free? Gyaa Ha Ha!, come back to me when you've proven you can understand magic");
-        WindMagic();
+        LibraryHall();
     }
 
-    static void WindMagic() {
+    static void LibraryHall() {
         typeWriter("You return to the rows of books, there must be a book to help you weld magic");
         System.out.println("Where do you go? | 1 the rows of book shelf | 2 the alchemy table |");
         String choice = input.next();
@@ -3700,7 +3747,7 @@ public class Main implements NativeKeyListener {
             }
             default: {
                 System.out.println("Invalid choice");
-                WindMagic();
+                LibraryHall();
             }
         }
     }
@@ -3723,6 +3770,16 @@ public class Main implements NativeKeyListener {
             }
             case "4": {
                 AlchemyBook();
+            }
+            case "5": {
+                ArcaneBook();
+            }
+            case "6":{
+                LibraryHall();
+            }
+            default: {
+                typeWriter("Invalid choice");
+                BookShelfs();
             }
         }
     }
@@ -3747,7 +3804,7 @@ public class Main implements NativeKeyListener {
                 typeWriter("\"When █████ was betrayed by █████ They lifted their great sword and split Everland in two\n" +
                         "the Major for █████ and the Minor for ██████ this shows how power full wind it to ███████\n" +
                         "███ ████████ ██ █o many wanted to wield this, the people of ██████ found █ ████\n" +
-                        "By mixing equal █████ of Lavender and █nflower oil, and a throne from a plant\n" +
+                        "By mixing equal █████ of Lavender and █nflower oil, and a throne from a flower\n" +
                         "Never mix it from the thorn of Ghost Or██id\"");
                 typeWriter("You closed the book");
                 HistoryBook();
@@ -3840,14 +3897,304 @@ public class Main implements NativeKeyListener {
                 AlchemyBook();
             }
             case "2": {
+                typeWriter("You pick up a book titled \"Crystals and Gems\"");
+                typeWriter("You flipped through the pages, some of them ripped or crossed out");
+                typeWriter("\"Crystals and Gems are the blood of ██████ with many casting different properties\n" +
+                        "█████ for cleansing █████ for healing Clear Quartz for empowering ██ fire Agate for volatile bursts of energy\n\"");
+                typeWriter("You closed the book");
+                AlchemyBook();
+            }
+            case "3": {
+                typeWriter("You pick up a book titled \"Herbs and spells\"");
+                typeWriter("You flipped through the pages, some of them ripped or crossed out");
+                typeWriter("\"Herbs are a common tool for █████ with each one making a spell ██████\n" +
+                        "█████ to make it smooth █████ to make it fast ██ And sage to cleanse and empower\n" +
+                        "But never use white █████ alw██ blue ██████\"");
+                typeWriter("You closed the book");
+                AlchemyBook();
+            }
+            case "4": {
+                BookShelfs();
+            }
+            default: {
+                System.out.println("Invalid choice");
+                AlchemyBook();
+            }
+        }
+    }
 
+    static void ArcaneBook() {
+        typeWriter("You head to the Arcane sections, which row would you like to pick from?");
+        System.out.println("| 1 row A | 2 row B | 3 Row C | 4 go back");
+        String choice = input.next();
+        switch (choice) {
+            case "1": {
+                typeWriter("You pick up a book titled \"Sigils and Runes\"");
+                typeWriter("You flipped through the pages, some of them ripped or crossed out");
+                typeWriter("\"Sigils and ████ and very dif██████ Signals are made by the user\n" +
+                        "███████ are pre existence symbols of ███████ and goddesses, for one to use a power they ██████" +
+                        "the sigill of that element █████ draw what they want the spell to do\"");
+                typeWriter("You closed the book");
+                ArcaneBook();
+            }
+            case "2": {
+                typeWriter("You pick up a book titled \"Embodiment\"");
+                typeWriter("You flipped through the pages, some of them ripped or crossed out");
+                typeWriter("\"When one performs ██████ magic, they must embed their spell into an ██████\n" +
+                        "█████ on what the spell is, healing can be embed in █████ wisdom in books, damage in swords\n\"");
+                typeWriter("You closed the book");
+                ArcaneBook();
+            }
+            case "3": {
+                typeWriter("You pick up a book titled \"Old Arcane\"");
+                typeWriter("You flipped through the pages, some of them ripped or crossed out");
+                typeWriter("\"Before when █████ and █████ used to walk the ground, magic and spell works were █████where\n" +
+                        "But after the ██████ they were forbidden █████ selected few could continue practicing\n" +
+                        "that is if queen ██████ stole back ███ moon for the people and made ███████ free\"");
+                typeWriter("You closed the book");
+                ArcaneBook();
+            }
+            case "4": {
+                BookShelfs();
+            }
+            default: {
+                System.out.println("Invalid choice");
+                ArcaneBook();
             }
         }
     }
 
     static void AlchemyTable() {
+        typeWriter("You head over to the Alchemy Table, crystals, runes, sigill, scattered on the desk\n" +
+                "Do you wish to make the wind spell? Or look back for more clues");
+        System.out.println("| 1 Make the spell | 2 go back |");
+        String choice = input.next();
+        switch (choice){
+            case "1":{
+                SpellMake();
+            }
+            case "2":{
+                typeWriter("You head back");
+                LibraryHall();
+            }
+        }
+    }
+
+    static void SpellMake(){
+        String SpellAnswer = "221331211231232";
+        String Spell = "";
+        typeWriter("You approached the Alchemy table, what intention do you put yourself in?");
+        System.out.println("| 1 relaxed will | 2 strong will | 3 determined will |");
+        String choice = input.next();
+        if (choice.equals("1") || choice.equals("2") || choice.equals("3")) {
+            Spell += choice;
+
+        } else {
+            Spell = "";
+            typeWriter("Invalid choice. Restarting");
+            AlchemyTable();
+            return;
+        }
+        typeWriter("What should the proportion of oil should be?");
+        System.out.println("| 1 less A and more B | 2 Equal parts of A and B | 3 more A and less B |");
+        String choice2 = input.next();
+        if (choice2.equals("1") || choice2.equals("2") || choice2.equals("3")) {
+            Spell += choice2;
+
+        } else {
+            Spell = "";
+            typeWriter("Invalid choice. Restarting");
+            AlchemyTable();
+            return;
+        }
+        typeWriter("What should oil A be?");
+        System.out.println("| 1 Lavender | 2 Dandelion | 3 Juniper |");
+        String choice3 = input.next();
+        if (choice3.equals("1") || choice3.equals("2") || choice3.equals("3")) {
+            Spell += choice3;
+
+        } else {
+            Spell = "";
+            typeWriter("Invalid choice. Restarting");
+            AlchemyTable();
+            return;
+        }
+        typeWriter("What should oil B be?");
+        System.out.println("| 1 Rosemary | 2 Rose | 3 Sunflower |");
+        String choice4 = input.next();
+        if (choice4.equals("1") || choice4.equals("2") || choice4.equals("3")) {
+            Spell += choice4;
+
+        } else {
+            Spell = "";
+            typeWriter("Invalid choice. Restarting");
+            AlchemyTable();
+            return;
+        }
+        typeWriter("What herbs should you use?");
+        System.out.println("| 1 Alfalfa | 2 White Sage | 3 Blue Sage |");
+        String choice5 = input.next();
+        if (choice5.equals("1") || choice5.equals("2") || choice5.equals("3")) {
+            Spell += choice5;
+
+        } else {
+            Spell = "";
+            typeWriter("Invalid choice. Restarting");
+            AlchemyTable();
+            return;
+        }
+        typeWriter("What herbs should you use?");
+        System.out.println("| 1 Thorn of a plant | 2 cinnamon | 3 There is no second herb |");
+        String choice6 = input.next();
+        if (choice6.equals("1") || choice6.equals("2") || choice6.equals("3")) {
+            Spell += choice6;
+
+        } else {
+            Spell = "";
+            typeWriter("Invalid choice. Restarting");
+            AlchemyTable();
+            return;
+        }
+        typeWriter("What Crystal should you use?");
+        System.out.println("| 1 Selenite  | 2 Clear Quartz | 3 Amethyst |");
+        String choice7 = input.next();
+        if (choice7.equals("1") || choice7.equals("2") || choice7.equals("3")) {
+            Spell += choice7;
+
+        } else {
+            Spell = "";
+            typeWriter("Invalid choice. Restarting");
+            AlchemyTable();
+            return;
+        }
+        typeWriter("What Crystal should you use?");
+        System.out.println("| 1 Fire Agate | 2 Obsidian | 3 There is no second crystal |");
+        String choice8 = input.next();
+        if (choice8.equals("1") || choice8.equals("2") || choice8.equals("3")) {
+            Spell += choice8;
+
+        } else {
+            Spell = "";
+            typeWriter("Invalid choice. Restarting");
+            AlchemyTable();
+            return;
+        }
+        typeWriter("What Rune should you use?");
+        System.out.println("| 1 Crescent Moon rune | 2 Sun rune | 3 Star rune |");
+        String choice9 = input.next();
+        if (choice9.equals("1") || choice9.equals("2") || choice9.equals("3")) {
+            Spell += choice9;
+
+        } else {
+            Spell = "";
+            typeWriter("Invalid choice. Restarting");
+            AlchemyTable();
+            return;
+        }
+        typeWriter("What Sigil should you use?");
+        System.out.println("| 1 Eath Sigill | 2 Wind Sigill | 3 Water Sigill |");
+        String choice10 = input.next();
+        if (choice10.equals("1") || choice10.equals("2") || choice10.equals("3")) {
+            Spell += choice10;
+
+        } else {
+            Spell = "";
+            typeWriter("Invalid choice. Restarting");
+            AlchemyTable();
+            return;
+        }
+        typeWriter("What Sigil should you use?");
+        System.out.println("| 1 Healing Sigill | 2 Binding Sigill | 3 Damage Sigill |");
+        String choice11 = input.next();
+        if (choice11.equals("1") || choice11.equals("2") || choice11.equals("3")) {
+            Spell += choice11;
+
+        } else {
+            Spell = "";
+            typeWriter("Invalid choice. Restarting");
+            AlchemyTable();
+            return;
+        }
+        typeWriter("Step 1 | What do you do with the materials?");
+        System.out.println("| 1 Dissolve and Coagulate | 2 Burn them | 3 Smash them |");
+        String choice12 = input.next();
+        if (choice12.equals("1") || choice12.equals("2") || choice12.equals("3")) {
+            Spell += choice12;
+
+        } else {
+            Spell = "";
+            typeWriter("Invalid choice. Restarting");
+            AlchemyTable();
+            return;
+        }
+        typeWriter("Step 2 | What do you do with the materials?");
+        System.out.println("| 1 Freeze them | 2 Confront your shadows | 3 plant them |");
+        String choice13 = input.next();
+        if (choice13.equals("1") || choice13.equals("2") || choice13.equals("3")) {
+            Spell += choice13;
+
+        } else {
+            Spell = "";
+            typeWriter("Invalid choice. Restarting");
+            AlchemyTable();
+            return;
+        }
+        typeWriter("Step 3 | What do you do with the materials?");
+        System.out.println("| 1 throw them | 2 bind them | 3 unite the material |");
+        String choice14 = input.next();
+        if (choice14.equals("1") || choice14.equals("2") || choice14.equals("3")) {
+            Spell += choice14;
+
+        } else {
+            Spell = "";
+            typeWriter("Invalid choice. Restarting");
+            AlchemyTable();
+            return;
+        }
+        typeWriter("What do you bind the spell to?");
+        System.out.println("| 1 A wand | 2 A sword | 3 A book |");
+        String choice15 = input.next();
+        if (choice15.equals("1") || choice15.equals("2") || choice15.equals("3")) {
+            Spell += choice15;
+
+        } else {
+            Spell = "";
+            typeWriter("Invalid choice. Restarting");
+            AlchemyTable();
+            return;
+        }
+
+        if (Spell.equals(SpellAnswer)){
+            WindDOT();
+        }
+        else {
+            typeWriter("You waited for the spark and smoke, but nothing happened\n" +
+                    "You scrapped the failed spell and returned to the library, determination flowing in your blood");
+        }
+
 
     }
+
+    static void WindDOT(){
+
+        SoundManager.playSFX("/sounds/SpellSuccess.wav");
+        typeWriter("Shimmer erupted, howling winds nicked at your skin, the spell was a success\n" +
+                "You now can wield wind DOT, when in battle you can hit enemies with that spell to cause damage over time\n" +
+                "and you just sit and relax and watch them take damage");
+        typeWriter("\"Well, turns out you really had it in you, Gyaa ha ha!, my name is Boreas, God of the north winds\n" +
+                "Aeolus is what you can say the king of us 4 winds, but everything changed after his owner abandoned us Gyaa ha ha!\n" +
+                "He was kind, surprising I know, he would give out blessings like it was candy on Halloween Gyaa ha ha!\n" +
+                "But after the elder left, it all changed...... If you were to face Aeolus in battle\n" +
+                "I Boreas son of Eos, keeper of the north winds, bearer of the icy winds will lend you my aid in battle\"");
+        typeWriter("You thanked Boreas with the new acquired sword");
+        Boreas = true;
+        SoundManager.stopMusic();
+        CloudCroswayFinal();
+
+    }
+
+
+
 
     static void IvoryCastle() {
         if (IvoryCastle) {
@@ -4017,7 +4364,62 @@ public class Main implements NativeKeyListener {
     }
 
 
+
+
+
     static void RainbowCloudFinal() {
+        SoundManager.stopMusic();
+        SoundManager.playMusic("/sounds/Old wooden rafters.wav");
+        typeWriter("You returned to the Rainbow cloud, lavish beams of light scatter your eyes, but the empress of light is no where to be seen\n" +
+                "You head to the alter where you repaired the rainbow spell, and there you noticed something, there is a pathway behind it\n" +
+                "As you push throw the leaves and bushes you entered into a lavish garden, golden threads weaved across the sky\n" +
+                "Flowers blooming in abundance, with the feeling of joy filing the air. But... there is no one, that is");
+        SoundManager.stopMusic();
+        typeWriter("You hear a sharp clap, cutting the air");
+        SoundManager.playMusic("/sounds/GardenOfGrace.wav");
+        typeWriter("At the edge of the garden are 3 iconic columns, with 3 figures in elegant poses, their voices blend like the hymns of harmony");
+        typeWriterSlow("??? : \"Dear mortal who entered our sanctuary, allow us to introduce ourselves\"");
+        typeWriterSlow("Aglaia: \"For I am Aglaia, the one adored in splendor, bathed in gold\"");
+        typeWriterSlow("Euphrosyne: \"Euphrosyne, crowned in laughter, masked in elation\"");
+        typeWriterSlow("Thalia: \"And Thalia, draped in blossom, woven in ivory\"");
+        typeWriterSlow("All: \"For we are the 3 graces, to what we owe the please thy mortal?\"");
+        System.out.println("| 1 \"....huh\" | 2 \"I come to seek blessings\" | 3 \"I need help with Aeolus\"");
+        String choice = input.next();
+        switch (choice) {
+            case "1": {
+                typeWriter("Aglaia: \"Worry not mortal, for we are the 3 graces\"");
+                typeWriter("Thalia: \"the Charites\"");
+                typeWriter("Aglaia: \"The Goddesses of beauty, charm, nature, human creativity, and fertility\"");
+                typeWriter("Euphrosyne: \"We have seen your journey and we are impressed, though we aren't the 9 muses, we sure are amused\"");
+                break;
+
+            }
+            case "2": {
+                typeWriter("Aglaia: \"Does thy mortal wishes to gain the blessings from the 3 grace?\"");
+                typeWriter("Thalia: \"We do not give our blessings anymore\"");
+                typeWriter("Aglaia: \"Unless we do it this time\"");
+                typeWriter("Euphrosyne: \"Sister do you wish to evoke the great God?\"");
+                typeWriter("Aglaia: \"If we wish to bring the golden era then we must\"");
+                break;
+
+            }
+            case "3": {
+                typeWriter("Thalia: \"Aeolus.... I haven't heard another mortal speak his name\"");
+                typeWriter("Thalia: \"Not after what happened\"");
+                typeWriter("Aglaia: \"Lighten up sister, our prophesied hero has finally arrived!\"");
+                break;
+            }
+            default: {
+                typeWriter("Invalid choice");
+                RainbowCloudFinal();
+                break;
+            }
+        }
+        typeWriter("Aglaia: \"And judging by you mortal, you faced trouble with Aeolus, that airhead God has driven ever mortal out after the decree\"");
+        typeWriter("Euphrosyne: \"If you want our blessings and aid if you ever faced trouble, then you have to prove yourself worthy\"");
+        typeWriter("Thalia: \"We are placing our divinity on the line by giving you blessings without the great Moon to see with his watchful eyes\"");
+        typeWriter("Aglaia: \"You may follow us deeper into the garden to discuss this more\"");
+
 
     }
 
