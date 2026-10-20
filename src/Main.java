@@ -140,6 +140,11 @@ public class Main implements NativeKeyListener {
     static boolean westAzriel = false;
 
 
+    static boolean MixSpell1 = true;
+    static boolean MixSpell2 = true;
+    static boolean MixSpell3 = true;
+
+
     static int Coal = 0;
     static int Iron = 0;
     static int Gold = 0;
@@ -3695,6 +3700,7 @@ public class Main implements NativeKeyListener {
         }
     }
 
+
     static void IvoryCastleFinal() {
         if (Boreas) {
             System.out.println("The ivory castle has already been explored. There is nothing left to find here.");
@@ -3754,12 +3760,11 @@ public class Main implements NativeKeyListener {
 
     static void BookShelfs() {
         typeWriter("The endless rows fill your vision, books of history, animals, gods, magic, and many more");
-        typeWriter("Which ail do you visit first?");
+        typeWriter("Which aisle do you visit first?");
         System.out.println("| 1 History | 2 Gods and Deities | 3 Fiction | 4 Alchemy | 5 Arcane | 6 go back");
         String choice = input.next();
         switch (choice) {
             case "1": {
-                typeWriter("You head to the History sections");
                 HistoryBook();
             }
             case "2": {
@@ -3774,7 +3779,7 @@ public class Main implements NativeKeyListener {
             case "5": {
                 ArcaneBook();
             }
-            case "6":{
+            case "6": {
                 LibraryHall();
             }
             default: {
@@ -3804,7 +3809,7 @@ public class Main implements NativeKeyListener {
                 typeWriter("\"When █████ was betrayed by █████ They lifted their great sword and split Everland in two\n" +
                         "the Major for █████ and the Minor for ██████ this shows how power full wind it to ███████\n" +
                         "███ ████████ ██ █o many wanted to wield this, the people of ██████ found █ ████\n" +
-                        "By mixing equal █████ of Lavender and █nflower oil, and a throne from a flower\n" +
+                        "By mixing equal █████ of Lavender and █nflower oil, and a thorn from a flower\n" +
                         "Never mix it from the thorn of Ghost Or██id\"");
                 typeWriter("You closed the book");
                 HistoryBook();
@@ -3892,7 +3897,7 @@ public class Main implements NativeKeyListener {
                 typeWriter("You pick up a book titled \"How to perform an Alchemical Marriage\"");
                 typeWriter("You flipped through the pages, some of them ripped or crossed out");
                 typeWriter("\"For one to achieve an Alchemical ████iage, one must dissolve and coagulate\n" +
-                        "█hen confront ones shadow. Finally ███████\"");
+                        "█hen confront ones shadow. Finally uni██\"");
                 typeWriter("You closed the book");
                 AlchemyBook();
             }
@@ -3931,9 +3936,9 @@ public class Main implements NativeKeyListener {
             case "1": {
                 typeWriter("You pick up a book titled \"Sigils and Runes\"");
                 typeWriter("You flipped through the pages, some of them ripped or crossed out");
-                typeWriter("\"Sigils and ████ and very dif██████ Signals are made by the user\n" +
-                        "███████ are pre existence symbols of ███████ and goddesses, for one to use a power they ██████" +
-                        "the sigill of that element █████ draw what they want the spell to do\"");
+                typeWriter("\"Sigils and ████ and very dif██████ Sigils are made by the user\n" +
+                        "Ru██ are pre existence symbols of ███████ and goddesses, for one to use their power they ██████\n" +
+                        "the sigill of that element th██ draw what they want the spell to do\"");
                 typeWriter("You closed the book");
                 ArcaneBook();
             }
@@ -3969,220 +3974,275 @@ public class Main implements NativeKeyListener {
                 "Do you wish to make the wind spell? Or look back for more clues");
         System.out.println("| 1 Make the spell | 2 go back |");
         String choice = input.next();
-        switch (choice){
-            case "1":{
-                SpellMake();
+        switch (choice) {
+            case "1": {
+                SpellMake1();
             }
-            case "2":{
+            case "2": {
                 typeWriter("You head back");
                 LibraryHall();
             }
         }
     }
 
-    static void SpellMake(){
-        String SpellAnswer = "221331211231232";
-        String Spell = "";
-        typeWriter("You approached the Alchemy table, what intention do you put yourself in?");
-        System.out.println("| 1 relaxed will | 2 strong will | 3 determined will |");
-        String choice = input.next();
-        if (choice.equals("1") || choice.equals("2") || choice.equals("3")) {
-            Spell += choice;
+
+    static void SpellMake1() {
+        if (MixSpell1) {
+            typeWriter("To exit the spell mixing, enter any number that isn't 1-3.\n" +
+                    "The spell is split into 3 parts with savepoint at the end.");
+            String SpellAnswer = "22133";
+            String Spell = "";
+            typeWriter("You approached the Alchemy table, what intention do you put yourself in?");
+            System.out.println("| 1 relaxed will | 2 strong will | 3 determined will |");
+            String choice = input.next();
+            if (choice.equals("1") || choice.equals("2") || choice.equals("3")) {
+                Spell += choice;
+
+
+            } else {
+                Spell = "";
+                typeWriter("You exited the spell making process");
+                AlchemyTable();
+                return;
+            }
+            typeWriter("What should the proportion of oil should be?");
+            System.out.println("| 1 less A and more B | 2 Equal parts of A and B | 3 more A and less B |");
+            String choice2 = input.next();
+            if (choice2.equals("1") || choice2.equals("2") || choice2.equals("3")) {
+                Spell += choice2;
+
+            } else {
+                Spell = "";
+                typeWriter("You exited the spell making process");
+                AlchemyTable();
+                return;
+            }
+            typeWriter("What should oil A be?");
+            System.out.println("| 1 Lavender | 2 Dandelion | 3 Juniper |");
+            String choice3 = input.next();
+            if (choice3.equals("1") || choice3.equals("2") || choice3.equals("3")) {
+                Spell += choice3;
+
+            } else {
+                Spell = "";
+                typeWriter("You exited the spell making process");
+                AlchemyTable();
+                return;
+            }
+            typeWriter("What should oil B be?");
+            System.out.println("| 1 Rosemary | 2 Rose | 3 Sunflower |");
+            String choice4 = input.next();
+            if (choice4.equals("1") || choice4.equals("2") || choice4.equals("3")) {
+                Spell += choice4;
+
+            } else {
+                Spell = "";
+                typeWriter("You exited the spell making process");
+                AlchemyTable();
+                return;
+            }
+            typeWriter("What herbs should you use?");
+            System.out.println("| 1 Alfalfa | 2 White Sage | 3 Blue Sage |");
+            String choice5 = input.next();
+            if (choice5.equals("1") || choice5.equals("2") || choice5.equals("3")) {
+                Spell += choice5;
+
+            } else {
+                Spell = "";
+                typeWriter("You exited the spell making process");
+                AlchemyTable();
+                return;
+            }
+
+            if (Spell.equals(SpellAnswer)) {
+                MixSpell1 = false;
+                SoundManager.playSFX("/sounds/Sparkle.wav");
+                typeWriter("The elements shimmered and sparked");
+                SpellMake2();
+            } else {
+                Spell = "";
+                typeWriter("The elements fizzled, but nothing happened. Restarting");
+                SpellMake1();
+                return;
+            }
+
 
         } else {
-            Spell = "";
-            typeWriter("Invalid choice. Restarting");
-            AlchemyTable();
-            return;
+            SpellMake2();
         }
-        typeWriter("What should the proportion of oil should be?");
-        System.out.println("| 1 less A and more B | 2 Equal parts of A and B | 3 more A and less B |");
-        String choice2 = input.next();
-        if (choice2.equals("1") || choice2.equals("2") || choice2.equals("3")) {
-            Spell += choice2;
-
-        } else {
-            Spell = "";
-            typeWriter("Invalid choice. Restarting");
-            AlchemyTable();
-            return;
-        }
-        typeWriter("What should oil A be?");
-        System.out.println("| 1 Lavender | 2 Dandelion | 3 Juniper |");
-        String choice3 = input.next();
-        if (choice3.equals("1") || choice3.equals("2") || choice3.equals("3")) {
-            Spell += choice3;
-
-        } else {
-            Spell = "";
-            typeWriter("Invalid choice. Restarting");
-            AlchemyTable();
-            return;
-        }
-        typeWriter("What should oil B be?");
-        System.out.println("| 1 Rosemary | 2 Rose | 3 Sunflower |");
-        String choice4 = input.next();
-        if (choice4.equals("1") || choice4.equals("2") || choice4.equals("3")) {
-            Spell += choice4;
-
-        } else {
-            Spell = "";
-            typeWriter("Invalid choice. Restarting");
-            AlchemyTable();
-            return;
-        }
-        typeWriter("What herbs should you use?");
-        System.out.println("| 1 Alfalfa | 2 White Sage | 3 Blue Sage |");
-        String choice5 = input.next();
-        if (choice5.equals("1") || choice5.equals("2") || choice5.equals("3")) {
-            Spell += choice5;
-
-        } else {
-            Spell = "";
-            typeWriter("Invalid choice. Restarting");
-            AlchemyTable();
-            return;
-        }
-        typeWriter("What herbs should you use?");
-        System.out.println("| 1 Thorn of a plant | 2 cinnamon | 3 There is no second herb |");
-        String choice6 = input.next();
-        if (choice6.equals("1") || choice6.equals("2") || choice6.equals("3")) {
-            Spell += choice6;
-
-        } else {
-            Spell = "";
-            typeWriter("Invalid choice. Restarting");
-            AlchemyTable();
-            return;
-        }
-        typeWriter("What Crystal should you use?");
-        System.out.println("| 1 Selenite  | 2 Clear Quartz | 3 Amethyst |");
-        String choice7 = input.next();
-        if (choice7.equals("1") || choice7.equals("2") || choice7.equals("3")) {
-            Spell += choice7;
-
-        } else {
-            Spell = "";
-            typeWriter("Invalid choice. Restarting");
-            AlchemyTable();
-            return;
-        }
-        typeWriter("What Crystal should you use?");
-        System.out.println("| 1 Fire Agate | 2 Obsidian | 3 There is no second crystal |");
-        String choice8 = input.next();
-        if (choice8.equals("1") || choice8.equals("2") || choice8.equals("3")) {
-            Spell += choice8;
-
-        } else {
-            Spell = "";
-            typeWriter("Invalid choice. Restarting");
-            AlchemyTable();
-            return;
-        }
-        typeWriter("What Rune should you use?");
-        System.out.println("| 1 Crescent Moon rune | 2 Sun rune | 3 Star rune |");
-        String choice9 = input.next();
-        if (choice9.equals("1") || choice9.equals("2") || choice9.equals("3")) {
-            Spell += choice9;
-
-        } else {
-            Spell = "";
-            typeWriter("Invalid choice. Restarting");
-            AlchemyTable();
-            return;
-        }
-        typeWriter("What Sigil should you use?");
-        System.out.println("| 1 Eath Sigill | 2 Wind Sigill | 3 Water Sigill |");
-        String choice10 = input.next();
-        if (choice10.equals("1") || choice10.equals("2") || choice10.equals("3")) {
-            Spell += choice10;
-
-        } else {
-            Spell = "";
-            typeWriter("Invalid choice. Restarting");
-            AlchemyTable();
-            return;
-        }
-        typeWriter("What Sigil should you use?");
-        System.out.println("| 1 Healing Sigill | 2 Binding Sigill | 3 Damage Sigill |");
-        String choice11 = input.next();
-        if (choice11.equals("1") || choice11.equals("2") || choice11.equals("3")) {
-            Spell += choice11;
-
-        } else {
-            Spell = "";
-            typeWriter("Invalid choice. Restarting");
-            AlchemyTable();
-            return;
-        }
-        typeWriter("Step 1 | What do you do with the materials?");
-        System.out.println("| 1 Dissolve and Coagulate | 2 Burn them | 3 Smash them |");
-        String choice12 = input.next();
-        if (choice12.equals("1") || choice12.equals("2") || choice12.equals("3")) {
-            Spell += choice12;
-
-        } else {
-            Spell = "";
-            typeWriter("Invalid choice. Restarting");
-            AlchemyTable();
-            return;
-        }
-        typeWriter("Step 2 | What do you do with the materials?");
-        System.out.println("| 1 Freeze them | 2 Confront your shadows | 3 plant them |");
-        String choice13 = input.next();
-        if (choice13.equals("1") || choice13.equals("2") || choice13.equals("3")) {
-            Spell += choice13;
-
-        } else {
-            Spell = "";
-            typeWriter("Invalid choice. Restarting");
-            AlchemyTable();
-            return;
-        }
-        typeWriter("Step 3 | What do you do with the materials?");
-        System.out.println("| 1 throw them | 2 bind them | 3 unite the material |");
-        String choice14 = input.next();
-        if (choice14.equals("1") || choice14.equals("2") || choice14.equals("3")) {
-            Spell += choice14;
-
-        } else {
-            Spell = "";
-            typeWriter("Invalid choice. Restarting");
-            AlchemyTable();
-            return;
-        }
-        typeWriter("What do you bind the spell to?");
-        System.out.println("| 1 A wand | 2 A sword | 3 A book |");
-        String choice15 = input.next();
-        if (choice15.equals("1") || choice15.equals("2") || choice15.equals("3")) {
-            Spell += choice15;
-
-        } else {
-            Spell = "";
-            typeWriter("Invalid choice. Restarting");
-            AlchemyTable();
-            return;
-        }
-
-        if (Spell.equals(SpellAnswer)){
-            WindDOT();
-        }
-        else {
-            typeWriter("You waited for the spark and smoke, but nothing happened\n" +
-                    "You scrapped the failed spell and returned to the library, determination flowing in your blood");
-        }
-
-
     }
 
-    static void WindDOT(){
+    static void SpellMake2() {
+        if (MixSpell2) {
+            String SpellAnswer = "12112";
+            String Spell = "";
+            typeWriter("What herbs should you use?");
+            System.out.println("| 1 Thorn of a plant | 2 cinnamon | 3 There is no second herb |");
+            String choice6 = input.next();
+            if (choice6.equals("1") || choice6.equals("2") || choice6.equals("3")) {
+                Spell += choice6;
+
+            } else {
+                Spell = "";
+                typeWriter("You exited the spell making process");
+                AlchemyTable();
+                return;
+            }
+            typeWriter("What Crystal should you use?");
+            System.out.println("| 1 Selenite  | 2 Clear Quartz | 3 Amethyst |");
+            String choice7 = input.next();
+            if (choice7.equals("1") || choice7.equals("2") || choice7.equals("3")) {
+                Spell += choice7;
+
+            } else {
+                Spell = "";
+                typeWriter("You exited the spell making process");
+                AlchemyTable();
+                return;
+            }
+            typeWriter("What Crystal should you use?");
+            System.out.println("| 1 Fire Agate | 2 Obsidian | 3 There is no second crystal |");
+            String choice8 = input.next();
+            if (choice8.equals("1") || choice8.equals("2") || choice8.equals("3")) {
+                Spell += choice8;
+
+            } else {
+                Spell = "";
+                typeWriter("You exited the spell making process");
+                AlchemyTable();
+                return;
+            }
+            typeWriter("What Rune should you use?");
+            System.out.println("| 1 Crescent Moon rune | 2 Sun rune | 3 Star rune |");
+            String choice9 = input.next();
+            if (choice9.equals("1") || choice9.equals("2") || choice9.equals("3")) {
+                Spell += choice9;
+
+            } else {
+                Spell = "";
+                typeWriter("You exited the spell making process");
+                AlchemyTable();
+                return;
+            }
+            typeWriter("What Sigil should you use?");
+            System.out.println("| 1 Eath Sigill | 2 Wind Sigill | 3 Water Sigill |");
+            String choice10 = input.next();
+            if (choice10.equals("1") || choice10.equals("2") || choice10.equals("3")) {
+                Spell += choice10;
+
+            } else {
+                Spell = "";
+                typeWriter("You exited the spell making process");
+                AlchemyTable();
+                return;
+            }
+
+            if (Spell.equals(SpellAnswer)) {
+                MixSpell2 = false;
+                SoundManager.playSFX("/sounds/Sparkle.wav");
+                typeWriter("The elements shimmered and sparked");
+                SpellMake3();
+            } else {
+                Spell = "";
+                typeWriter("The elements fizzled, but nothing happened. Restarting");
+                SpellMake2();
+                return;
+            }
+        } else {
+            SpellMake3();
+        }
+    }
+
+    static void SpellMake3() {
+        if (MixSpell3) {
+            String SpellAnswer = "31232";
+            String Spell = "";
+            typeWriter("What Sigil should you use?");
+            System.out.println("| 1 Healing Sigill | 2 Binding Sigill | 3 Damage Sigill |");
+            String choice11 = input.next();
+            if (choice11.equals("1") || choice11.equals("2") || choice11.equals("3")) {
+                Spell += choice11;
+
+            } else {
+                Spell = "";
+                typeWriter("You exited the spell making process");
+                AlchemyTable();
+                return;
+            }
+            typeWriter("Step 1 | What do you do with the materials?");
+            System.out.println("| 1 Dissolve and Coagulate | 2 Burn them | 3 Smash them |");
+            String choice12 = input.next();
+            if (choice12.equals("1") || choice12.equals("2") || choice12.equals("3")) {
+                Spell += choice12;
+
+            } else {
+                Spell = "";
+                typeWriter("You exited the spell making process");
+                AlchemyTable();
+                return;
+            }
+            typeWriter("Step 2 | What do you do with the materials?");
+            System.out.println("| 1 Freeze them | 2 Confront your shadows | 3 plant them |");
+            String choice13 = input.next();
+            if (choice13.equals("1") || choice13.equals("2") || choice13.equals("3")) {
+                Spell += choice13;
+
+            } else {
+                Spell = "";
+                typeWriter("You exited the spell making process");
+                AlchemyTable();
+                return;
+            }
+            typeWriter("Step 3 | What do you do with the materials?");
+            System.out.println("| 1 throw them | 2 bind them | 3 unite the material |");
+            String choice14 = input.next();
+            if (choice14.equals("1") || choice14.equals("2") || choice14.equals("3")) {
+                Spell += choice14;
+
+            } else {
+                Spell = "";
+                typeWriter("You exited the spell making process");
+                AlchemyTable();
+                return;
+            }
+            typeWriter("What do you bind the spell to?");
+            System.out.println("| 1 A wand | 2 A sword | 3 A book |");
+            String choice15 = input.next();
+            if (choice15.equals("1") || choice15.equals("2") || choice15.equals("3")) {
+                Spell += choice15;
+
+            } else {
+                Spell = "";
+                typeWriter("You exited the spell making process");
+                AlchemyTable();
+                return;
+            }
+
+            if (Spell.equals(SpellAnswer)) {
+                MixSpell3 = false;
+                SoundManager.playSFX("/sounds/Sparkle.wav");
+                typeWriter("The elements shimmered and sparked");
+                WindDOT();
+            } else {
+                Spell = "";
+                typeWriter("The elements fizzled, but nothing happened. Restarting");
+                SpellMake3();
+                return;
+            }
+        } else {
+            WindDOT();
+        }
+    }
+
+
+    static void WindDOT() {
 
         SoundManager.playSFX("/sounds/SpellSuccess.wav");
         typeWriter("Shimmer erupted, howling winds nicked at your skin, the spell was a success\n" +
                 "You now can wield wind DOT, when in battle you can hit enemies with that spell to cause damage over time\n" +
                 "and you just sit and relax and watch them take damage");
         typeWriter("\"Well, turns out you really had it in you, Gyaa ha ha!, my name is Boreas, God of the north winds\n" +
-                "Aeolus is what you can say the king of us 4 winds, but everything changed after his owner abandoned us Gyaa ha ha!\n" +
+                "Aeolus is what you can say the king of us 4 winds, but everything changed after his owner abandoned us...\n" +
                 "He was kind, surprising I know, he would give out blessings like it was candy on Halloween Gyaa ha ha!\n" +
                 "But after the elder left, it all changed...... If you were to face Aeolus in battle\n" +
                 "I Boreas son of Eos, keeper of the north winds, bearer of the icy winds will lend you my aid in battle\"");
@@ -4192,8 +4252,6 @@ public class Main implements NativeKeyListener {
         CloudCroswayFinal();
 
     }
-
-
 
 
     static void IvoryCastle() {
@@ -4362,9 +4420,6 @@ public class Main implements NativeKeyListener {
         checkHealth();
         CloudCrossway();
     }
-
-
-
 
 
     static void RainbowCloudFinal() {
