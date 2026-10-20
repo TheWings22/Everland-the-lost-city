@@ -8,5 +8,11 @@ if you wish to see the raw code it's inside src Main.java
 
 insta @_the_wings22
 
+
+Unless stated otherwise, all songs 
+and sound effects are sourced from 
+Undertale and Deltarune
+All rights belong to Toby Fox
+
 Without further ado
 Hope you all enjoy it
