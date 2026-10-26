@@ -4437,7 +4437,7 @@ public class Main implements NativeKeyListener {
         typeWriterSlow("Aglaia: \"For I am Aglaia, the one adored in splendor, bathed in gold\"");
         typeWriterSlow("Euphrosyne: \"Euphrosyne, crowned in laughter, masked in elation\"");
         typeWriterSlow("Thalia: \"And Thalia, draped in blossom, woven in ivory\"");
-        typeWriterSlow("All: \"For we are the 3 graces, to what we owe the please thy mortal?\"");
+        typeWriterSlow("All: \"For we are the 3 graces, to what we owe the pleaser thy mortal?\"");
         System.out.println("| 1 \"....huh\" | 2 \"I come to seek blessings\" | 3 \"I need help with Aeolus\"");
         String choice = input.next();
         switch (choice) {
