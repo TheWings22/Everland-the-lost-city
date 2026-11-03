@@ -101,6 +101,42 @@ public class Main implements NativeKeyListener {
     static Enemy GnomeChief = new Enemy("Gnome Chief", 10, 1, 1);
 
 
+
+    static boolean FightTurn = false;
+
+    static boolean Abrasion = false;
+    static boolean Erosion = false;
+    static boolean FireStorm = false;
+    static boolean Conduction = false;
+    static boolean OverLoad = false;
+    static boolean SuperCharge = false;
+    static boolean Melt = false;
+    static boolean Vapor = false;
+    static boolean Ionize = false;
+    static boolean Frost = false;
+    static boolean Flex = false;
+    static boolean Cold = false;
+    static boolean Freeze = false;
+
+
+    static boolean Wind = false;
+    static boolean Water = false;
+    static boolean Lightning = false;
+    static boolean Fire = false;
+    static boolean Ice = false;
+
+
+    static boolean Umbra = false;
+    static boolean Lux = false;
+
+    static boolean EverLand = false;
+
+
+
+
+
+
+
     static boolean North = false;
     static boolean IvoryCastle = false;
     static boolean RainbowCloud = false;
@@ -622,7 +658,9 @@ public class Main implements NativeKeyListener {
             }
         }
 
-        CloudCroswayFinal();
+        Fight(Orc, 1);
+
+        //CloudCroswayFinal();
 
         SoundManager.stopMusic();
 
@@ -2405,6 +2443,56 @@ public class Main implements NativeKeyListener {
 
 //region Fight
 
+
+    static String SpellBook() {
+        String spell = "";
+        System.out.println("| 0 return to battle | 1 Wind | 2 Fire | 3 Water | 4 Ice | 5 Lightning |");
+        spell = input.next();
+
+        return spell;
+
+    }
+
+    static void EnemyElement(int enemyHP, int Turn) {
+        String spell = SpellBook();
+
+        switch (spell) {
+            case "0" -> {
+                return;
+            }
+            case "1" -> {
+                Wind = true;
+                FightTurn = true;
+            }
+            case "2" -> {
+                Fire = true;
+            }
+            case "3" -> {
+                Water = true;
+            }
+            case "4" -> {
+                Ice = true;
+            }
+            case "5" -> {
+                Lightning = true;
+            }
+        }
+
+
+        if (Wind) {
+            if (FightTurn){
+                int DOT = Turn + 4;
+                while (DOT < Turn + 4) {
+                    enemyHP -= 5;
+                }
+            }
+
+        }
+
+
+
+    }
+
     static void Fight(Enemy enemy, int Buff) {
         typeWriter("You entered a battle!");
 
@@ -2514,7 +2602,8 @@ public class Main implements NativeKeyListener {
 
                     StrongAttack = 0;
 
-                } else if (HeavyAttack == 10) {
+                }
+                else if (HeavyAttack == 10) {
                     {
                         typeWriter(enemy.name + " unleashes a heavy attack");
                         switch (choice) {
@@ -2587,7 +2676,8 @@ public class Main implements NativeKeyListener {
                         StrongAttack = 0;
 
                     }
-                } else {
+                }
+                else {
                     switch (choice) {
                         case "1":
                             Accuracy();
