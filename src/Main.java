@@ -2,7 +2,6 @@ import java.text.DecimalFormat;
 import java.util.Scanner;
 import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
-import javax.sound.sampled.*;
 
 import com.github.kwhat.jnativehook.GlobalScreen;
 import com.github.kwhat.jnativehook.keyboard.NativeKeyEvent;
@@ -104,19 +103,13 @@ public class Main implements NativeKeyListener {
 
     static boolean FightTurn = false;
 
-    static boolean Abrasion = false;
-    static boolean Erosion = false;
-    static boolean FireStorm = false;
-    static boolean Conduction = false;
-    static boolean OverLoad = false;
-    static boolean SuperCharge = false;
-    static boolean Melt = false;
-    static boolean Vapor = false;
-    static boolean Ionize = false;
-    static boolean Frost = false;
-    static boolean Flex = false;
+    static int Abrasion = 0;
+    static int Frost = 0;
     static boolean Cold = false;
-    static boolean Freeze = false;
+    static boolean Ignite = false;
+    static boolean Ionize = false;
+    static boolean Flex = false;
+    static boolean Conduction = false;
 
 
     static boolean Wind = false;
@@ -2453,43 +2446,7 @@ public class Main implements NativeKeyListener {
 
     }
 
-    static void EnemyElement(int enemyHP, int Turn) {
-        String spell = SpellBook();
-
-        switch (spell) {
-            case "0" -> {
-                return;
-            }
-            case "1" -> {
-                Wind = true;
-                FightTurn = true;
-            }
-            case "2" -> {
-                Fire = true;
-            }
-            case "3" -> {
-                Water = true;
-            }
-            case "4" -> {
-                Ice = true;
-            }
-            case "5" -> {
-                Lightning = true;
-            }
-        }
-
-
-        if (Wind) {
-            if (FightTurn){
-                int DOT = Turn + 4;
-                while (DOT < Turn + 4) {
-                    enemyHP -= 5;
-                }
-            }
-
-        }
-
-
+    static void StatusAffect(){
 
     }
 
@@ -2502,12 +2459,35 @@ public class Main implements NativeKeyListener {
             int HeavyAttack = 0;
             int StrongAttack = 0;
             double Adrenaline = 0;
+            String SpellChoice = null;
+            String Elament = null;
 
             double EnemyHP = enemy.hp;
 
             System.out.println("\nFighting Enemy " + (i + 1));
 
             while (EnemyHP > 0) {
+
+                Elament += SpellChoice;
+
+                if (SpellChoice != null) {
+                    if (SpellChoice.equals("0")) {
+                        SpellChoice = null;
+                    } else {
+
+                        switch (SpellChoice){
+                            case "1" -> {
+                                Wind = true;
+                                Abrasion += 1;
+
+                                if (Abrasion == 4) {
+                                    Wind = false;
+                                }
+
+                            }
+                        }
+                    }
+                }
 
                 System.out.println("Turn: " + Turn);
                 HeavyAttack++;
@@ -2529,7 +2509,7 @@ public class Main implements NativeKeyListener {
                     System.out.println(enemy.name + " is preparing a heavy attack");
                 }
 
-                System.out.println("| 1 Fight | 2 Defend | 3 Heal | 4 Dodge | Adrenaline: " + Adrenaline);
+                System.out.println("| 1 Fight | 2 Defend | 3 Heal | 4 Dodge | 5 Spells | Adrenaline: " + Adrenaline);
 
                 String choice = input.next();
 
@@ -2735,9 +2715,15 @@ public class Main implements NativeKeyListener {
                             }
                             break;
 
+                            case "5":
+                                SpellChoice = SpellBook();
 
                     }
                 }
+
+
+
+
 
                 checkHealth();
                 Turn++;
