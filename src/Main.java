@@ -100,16 +100,13 @@ public class Main implements NativeKeyListener {
     static Enemy GnomeChief = new Enemy("Gnome Chief", 10, 1, 1);
 
 
-
-    static boolean FightTurn = false;
+    static boolean HeavyAttackCheck = false;
+    static boolean StrongAttackCheck = false;
 
     static int Abrasion = 0;
     static int Frost = 0;
+    static int Ionize = 0;
     static boolean Cold = false;
-    static boolean Ignite = false;
-    static boolean Ionize = false;
-    static boolean Flex = false;
-    static boolean Conduction = false;
 
 
     static boolean Wind = false;
@@ -123,11 +120,6 @@ public class Main implements NativeKeyListener {
     static boolean Lux = false;
 
     static boolean EverLand = false;
-
-
-
-
-
 
 
     static boolean North = false;
@@ -2439,14 +2431,10 @@ public class Main implements NativeKeyListener {
 
     static String SpellBook() {
         String spell = "";
-        System.out.println("| 0 return to battle | 1 Wind | 2 Fire | 3 Water | 4 Ice | 5 Lightning |");
+        System.out.println("| 0 return to battle | 1 Wind | 2 Ice | 3 Fire | 4 Lightning |");
         spell = input.next();
 
         return spell;
-
-    }
-
-    static void StatusAffect(){
 
     }
 
@@ -2456,11 +2444,12 @@ public class Main implements NativeKeyListener {
         for (int i = 0; i < enemy.count; i++) {
 
             int Turn = 1;
+
             int HeavyAttack = 0;
             int StrongAttack = 0;
+
             double Adrenaline = 0;
             String SpellChoice = null;
-            String Elament = null;
 
             double EnemyHP = enemy.hp;
 
@@ -2468,30 +2457,75 @@ public class Main implements NativeKeyListener {
 
             while (EnemyHP > 0) {
 
-                Elament += SpellChoice;
 
                 if (SpellChoice != null) {
                     if (SpellChoice.equals("0")) {
                         SpellChoice = null;
                     } else {
 
-                        switch (SpellChoice){
+                        switch (SpellChoice) {
                             case "1" -> {
                                 Wind = true;
-                                Abrasion += 1;
-
-                                if (Abrasion == 4) {
-                                    Wind = false;
-                                }
-
+                                break;
                             }
+                            case "2" -> {
+                                Ice = true;
+                                break;
+                            }
+                            case "3" -> {
+                                Fire = true;
+                                break;
+                            }
+                            case "4" -> {
+                                Lightning = true;
+                                break;
+                            }
+
                         }
                     }
                 }
 
+                if (Wind) {
+                    Abrasion += 1;
+                    SpellChoice = null;
+                    if (Abrasion == 5) {
+                        Wind = false;
+                    }
+                }
+                if (Ice) {
+                    Frost += 1;
+                    if (Frost == 5) {
+                        Ice = false;
+                        Cold = true;
+                    }
+                }
+                if (Lightning) {
+                    Ionize += 1;
+                    SpellChoice = null;
+                    if (Ionize == 3) {
+                        Lightning = false;
+                    }
+                }
+
+
                 System.out.println("Turn: " + Turn);
-                HeavyAttack++;
+
                 StrongAttack++;
+                HeavyAttack++;
+
+
+                if (Cold) {
+                    StrongAttack = -3;
+                    HeavyAttack = -3;
+                }
+                else {
+                    if (StrongAttack == 5) {
+                        StrongAttackCheck = true;
+                    }
+                    if (HeavyAttack == 10) {
+                        HeavyAttackCheck = true;
+                    }
+                }
 
 
                 if (HeavyAttack == 9 && StrongAttack == 4) {
@@ -2502,7 +2536,8 @@ public class Main implements NativeKeyListener {
                 System.out.println(enemy.name + " HP: " + EnemyHP +
                         " | Your HP: " + String.format("%.1f", p.health));
 
-                if (StrongAttack == 4) {
+
+                if (StrongAttack == 4){
                     System.out.println(enemy.name + " is preparing a strong attack");
                 }
                 if (HeavyAttack == 9) {
@@ -2513,7 +2548,7 @@ public class Main implements NativeKeyListener {
 
                 String choice = input.next();
 
-                if (StrongAttack == 5) {
+                if (StrongAttackCheck) {
                     typeWriter(enemy.name + " unleashes a strong attack");
                     switch (choice) {
                         case "1":
@@ -2527,6 +2562,8 @@ public class Main implements NativeKeyListener {
                             } else {
 
                                 EnemyHP -= p.damage;
+
+
                                 if (EnemyHP > 0) {
                                     takeDamage(enemy.attack / 0.6 + Buff);
                                 }
@@ -2580,10 +2617,10 @@ public class Main implements NativeKeyListener {
 
                     }
 
-                    StrongAttack = 0;
+                    StrongAttackCheck = false;
 
                 }
-                else if (HeavyAttack == 10) {
+                else if (HeavyAttackCheck) {
                     {
                         typeWriter(enemy.name + " unleashes a heavy attack");
                         switch (choice) {
@@ -2653,7 +2690,7 @@ public class Main implements NativeKeyListener {
 
                         }
 
-                        StrongAttack = 0;
+                        HeavyAttackCheck = false;
 
                     }
                 }
@@ -2670,6 +2707,7 @@ public class Main implements NativeKeyListener {
                             } else {
 
                                 EnemyHP -= p.damage;
+
                                 if (EnemyHP > 0) {
                                     takeDamage(enemy.attack + Buff);
                                     Adrenaline += 1;
@@ -2710,23 +2748,45 @@ public class Main implements NativeKeyListener {
                                 Adrenaline += 1.5;
                             } else {
                                 typeWriter("You failed to dodge the attack");
-                                takeDamage(enemy.attack + Buff);
-                                SoundManager.playSFX("/sounds/Dammaged.wav");
+
+                                if (Lightning){
+                                    System.out.println("Ionize");
+
+                                }else {
+                                    takeDamage(enemy.attack + Buff);
+                                    SoundManager.playSFX("/sounds/Dammaged.wav");
+                                }
                             }
+
+                            if (Wind) {
+                                System.out.println("Abrasion");
+                                EnemyHP -= 15;
+                            }
+                            if (Ice) {
+                                System.out.println("Frost " + Frost);
+                                EnemyHP -= 5;
+                            }
+                            if (Cold) {
+                                System.out.println("Cold");
+                            }
+                            if (Fire){
+                                System.out.println("Combustion");
+                                EnemyHP -= 10;
+                            }
+
                             break;
 
-                            case "5":
-                                SpellChoice = SpellBook();
+                        case "5":
+                            SpellChoice = SpellBook();
 
                     }
                 }
 
 
-
-
-
                 checkHealth();
                 Turn++;
+                Cold = false;
+                Fire = false;
 
 
             }
