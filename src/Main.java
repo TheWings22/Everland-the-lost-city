@@ -105,6 +105,7 @@ public class Main implements NativeKeyListener {
 
     static int Abrasion = 0;
     static int Frost = 0;
+    static boolean FrostStatus = false;
     static int Ionize = 0;
     static boolean Cold = false;
 
@@ -630,6 +631,7 @@ public class Main implements NativeKeyListener {
             Ahmed = true;
             p.level = 999;
             p.damage = 999;
+            p.health = 999;
             p.Healing = 999;
             p.Money = 999;
             p.defense = 999;
@@ -2431,7 +2433,7 @@ public class Main implements NativeKeyListener {
 
     static String SpellBook() {
         String spell = "";
-        System.out.println("| 0 return to battle | 1 Wind | 2 Ice | 3 Fire | 4 Lightning |");
+        System.out.println("| 0 return to battle | 1 Wind | 2 Ice | 3 Fire | 4 Lightning | 5 Adrenaline each");
         spell = input.next();
 
         return spell;
@@ -2448,6 +2450,9 @@ public class Main implements NativeKeyListener {
             int HeavyAttack = 0;
             int StrongAttack = 0;
 
+            int FrostTime = 5;
+
+            double SpellCost = 0;
             double Adrenaline = 0;
             String SpellChoice = null;
 
@@ -2461,7 +2466,7 @@ public class Main implements NativeKeyListener {
                 if (SpellChoice != null) {
                     if (SpellChoice.equals("0")) {
                         SpellChoice = null;
-                    } else {
+                    } else if (Adrenaline >= SpellCost) {
 
                         switch (SpellChoice) {
                             case "1" -> {
@@ -2482,17 +2487,26 @@ public class Main implements NativeKeyListener {
                             }
 
                         }
+
+                        Adrenaline -= SpellCost;
+
+                    } else {
+                        System.out.println("Not enough Adrenaline!");
                     }
+
+                    SpellChoice = null;
+
                 }
 
                 if (Wind) {
                     Abrasion += 1;
-                    SpellChoice = null;
-                    if (Abrasion == 5) {
+                    if (Abrasion >= 5) {
                         Wind = false;
                     }
                 }
                 if (Ice) {
+                    FrostStatus = true;
+                    FrostTime = 5;
                     Frost += 1;
                     if (Frost == 5) {
                         Ice = false;
@@ -2501,9 +2515,16 @@ public class Main implements NativeKeyListener {
                 }
                 if (Lightning) {
                     Ionize += 1;
-                    SpellChoice = null;
-                    if (Ionize == 3) {
+                    if (Ionize == 4) {
                         Lightning = false;
+                    }
+                }
+
+                if (FrostStatus) {
+                    FrostTime -= 1;
+                    if (FrostTime <= 0) {
+                        FrostStatus = false;
+                        Frost = 0;
                     }
                 }
 
@@ -2517,8 +2538,8 @@ public class Main implements NativeKeyListener {
                 if (Cold) {
                     StrongAttack = -3;
                     HeavyAttack = -3;
-                }
-                else {
+                    FrostStatus = false;
+                } else {
                     if (StrongAttack == 5) {
                         StrongAttackCheck = true;
                     }
@@ -2537,7 +2558,7 @@ public class Main implements NativeKeyListener {
                         " | Your HP: " + String.format("%.1f", p.health));
 
 
-                if (StrongAttack == 4){
+                if (StrongAttack == 4) {
                     System.out.println(enemy.name + " is preparing a strong attack");
                 }
                 if (HeavyAttack == 9) {
@@ -2556,8 +2577,15 @@ public class Main implements NativeKeyListener {
                             Attack();
                             if (p.damageAccuracy == -1) {
 
-                                takeDamage(enemy.attack / 0.6 + Buff);
-                                SoundManager.playSFX("/sounds/Dammaged.wav");
+
+                                if (Lightning) {
+                                    System.out.println("Ionize");
+                                    SoundManager.playSFX("/sounds/Ionize.wav");
+
+                                } else {
+                                    takeDamage(enemy.attack / 0.6 + Buff);
+                                    SoundManager.playSFX("/sounds/Dammaged.wav");
+                                }
 
                             } else {
 
@@ -2565,15 +2593,74 @@ public class Main implements NativeKeyListener {
 
 
                                 if (EnemyHP > 0) {
-                                    takeDamage(enemy.attack / 0.6 + Buff);
+
+                                    if (Lightning) {
+                                        System.out.println("Ionize");
+                                        SoundManager.playSFX("/sounds/Ionize.wav");
+
+                                    } else {
+                                        takeDamage(enemy.attack / 0.6 + Buff);
+                                        SoundManager.playSFX("/sounds/Attack.wav");
+                                    }
                                 }
-                                SoundManager.playSFX("/sounds/Attack.wav");
+
                             }
+
+
+                            if (Wind) {
+                                System.out.println("Abrasion");
+                                SoundManager.playSFX("/sounds/Abrasion.wav");
+                                EnemyHP -= 15;
+                            }
+                            if (FrostStatus) {
+                                System.out.println("Frost " + Frost);
+                                SoundManager.playSFX("/sounds/Frost.wav");
+                                EnemyHP -= 5;
+                            }
+                            if (Cold) {
+                                System.out.println("Cold");
+                                SoundManager.playSFX("/sounds/Cold.wav");
+                            }
+                            if (Fire) {
+                                System.out.println("Combustion");
+                                SoundManager.playSFX("/sounds/Combustion.wav");
+                                EnemyHP -= 10;
+                            }
+
                             break;
                         case "2":
-                            takeDamage(enemy.attack * 0.7 + Buff);
-                            SoundManager.playSFX("/sounds/Deffend.wav");
+
+                            if (Lightning) {
+                                System.out.println("Ionize");
+                                SoundManager.playSFX("/sounds/Ionize.wav");
+
+                            } else {
+                                takeDamage(enemy.attack * 0.7 + Buff);
+                                SoundManager.playSFX("/sounds/Deffend.wav");
+                            }
                             Adrenaline += 2.5;
+
+                            if (Wind) {
+                                System.out.println("Abrasion");
+                                SoundManager.playSFX("/sounds/Abrasion.wav");
+
+                                EnemyHP -= 15;
+                            }
+                            if (FrostStatus) {
+                                System.out.println("Frost " + Frost);
+                                SoundManager.playSFX("/sounds/Frost.wav");
+                                EnemyHP -= 5;
+                            }
+                            if (Cold) {
+                                System.out.println("Cold");
+                                SoundManager.playSFX("/sounds/Cold.wav");
+                            }
+                            if (Fire) {
+                                System.out.println("Combustion");
+                                SoundManager.playSFX("/sounds/Combustion.wav");
+                                EnemyHP -= 10;
+                            }
+
                             break;
 
                         case "3":
@@ -2587,17 +2674,51 @@ public class Main implements NativeKeyListener {
                                     p.health = 100;
                                 }
                                 typeWriter("You tried to heal, but you faltered");
-                                SoundManager.playSFX("/sounds/Dammaged.wav");
-                                takeDamage(enemy.attack / 0.6 + Buff);
+
+                                if (Lightning) {
+                                    System.out.println("Ionize");
+                                    SoundManager.playSFX("/sounds/Ionize.wav");
+
+                                } else {
+                                    SoundManager.playSFX("/sounds/Dammaged.wav");
+                                    takeDamage(enemy.attack / 0.6 + Buff);
+                                }
 
                                 checkHealth();
                                 Adrenaline += -5;
                             } else {
                                 typeWriter("You don't have enough Adrenaline to heal");
-                                SoundManager.playSFX("/sounds/Dammaged.wav");
-                                takeDamage(enemy.attack / 0.6 + Buff);
+
+                                if (Lightning) {
+                                    System.out.println("Ionize");
+                                    SoundManager.playSFX("/sounds/Ionize.wav");
+
+                                } else {
+                                    SoundManager.playSFX("/sounds/Dammaged.wav");
+                                    takeDamage(enemy.attack / 0.6 + Buff);
+                                }
 
                                 checkHealth();
+                            }
+
+                            if (Wind) {
+                                System.out.println("Abrasion");
+                                SoundManager.playSFX("/sounds/Abrasion.wav");
+                                EnemyHP -= 15;
+                            }
+                            if (FrostStatus) {
+                                System.out.println("Frost " + Frost);
+                                SoundManager.playSFX("/sounds/Frost.wav");
+                                EnemyHP -= 5;
+                            }
+                            if (Cold) {
+                                System.out.println("Cold");
+                                SoundManager.playSFX("/sounds/Cold.wav");
+                            }
+                            if (Fire) {
+                                System.out.println("Combustion");
+                                SoundManager.playSFX("/sounds/Combustion.wav");
+                                EnemyHP -= 10;
                             }
 
 
@@ -2608,11 +2729,77 @@ public class Main implements NativeKeyListener {
                                 SoundManager.playSFX("/sounds/Dodge.wav");
                                 Adrenaline += 1.5;
                             } else {
-                                typeWriter("You failed to dodge the attack");
+
+                                if (Lightning) {
+                                    System.out.println("Ionize");
+                                    SoundManager.playSFX("/sounds/Ionize.wav");
+
+                                } else {
+                                    typeWriter("You failed to dodge the attack");
+                                    takeDamage(enemy.attack / 0.6 + Buff);
+                                    SoundManager.playSFX("/sounds/Dammaged.wav");
+                                }
+                            }
+
+
+                            if (Wind) {
+                                System.out.println("Abrasion");
+                                SoundManager.playSFX("/sounds/Abrasion.wav");
+                                EnemyHP -= 15;
+                            }
+                            if (FrostStatus) {
+                                System.out.println("Frost " + Frost);
+                                SoundManager.playSFX("/sounds/Frost.wav");
+                                EnemyHP -= 5;
+                            }
+                            if (Cold) {
+                                System.out.println("Cold");
+                                SoundManager.playSFX("/sounds/Cold.wav");
+
+                            }
+                            if (Fire) {
+                                System.out.println("Combustion");
+                                SoundManager.playSFX("/sounds/Combustion.wav");
+                                EnemyHP -= 10;
+                            }
+
+                            break;
+
+
+                        case "5":
+                            SpellChoice = SpellBook();
+
+                            if (Lightning) {
+                                System.out.println("Ionize");
+                                SoundManager.playSFX("/sounds/Ionize.wav");
+
+                            } else {
                                 takeDamage(enemy.attack / 0.6 + Buff);
                                 SoundManager.playSFX("/sounds/Dammaged.wav");
                             }
+
+                            if (Wind) {
+                                System.out.println("Abrasion");
+                                SoundManager.playSFX("/sounds/Abrasion.wav");
+                                EnemyHP -= 15;
+                            }
+                            if (FrostStatus) {
+                                System.out.println("Frost " + Frost);
+                                SoundManager.playSFX("/sounds/Frost.wav");
+                                EnemyHP -= 5;
+                            }
+                            if (Cold) {
+                                System.out.println("Cold");
+                                SoundManager.playSFX("/sounds/Cold.wav");
+                            }
+                            if (Fire) {
+                                System.out.println("Combustion");
+                                SoundManager.playSFX("/sounds/Combustion.wav");
+                                EnemyHP -= 10;
+                            }
+
                             break;
+
 
 
                     }
@@ -2629,24 +2816,84 @@ public class Main implements NativeKeyListener {
                                 Attack();
                                 if (p.damageAccuracy == -1) {
 
-                                    takeDamage(enemy.attack / 0.5 + Buff);
-                                    SoundManager.playSFX("/sounds/Dammaged.wav");
+                                    if (Lightning) {
+                                        System.out.println("Ionize");
+                                        SoundManager.playSFX("/sounds/Ionize.wav");
+
+                                    } else {
+                                        takeDamage(enemy.attack / 0.5 + Buff);
+                                        SoundManager.playSFX("/sounds/Dammaged.wav");
+                                    }
 
                                 } else {
 
                                     EnemyHP -= p.damage;
                                     if (EnemyHP > 0) {
-                                        takeDamage(enemy.attack / 0.5 + Buff);
-                                    }
-                                    SoundManager.playSFX("/sounds/Attack.wav");
+                                        if (Lightning) {
+                                            System.out.println("Ionize");
+                                            SoundManager.playSFX("/sounds/Ionize.wav");
 
+                                        } else {
+                                            takeDamage(enemy.attack / 0.5 + Buff);
+                                            SoundManager.playSFX("/sounds/Attack.wav");
+                                        }
+                                    }
+
+                                }
+
+                                if (Wind) {
+                                    System.out.println("Abrasion");
+                                    SoundManager.playSFX("/sounds/Abrasion.wav");
+                                    EnemyHP -= 15;
+                                }
+                                if (FrostStatus) {
+                                    System.out.println("Frost " + Frost);
+                                    SoundManager.playSFX("/sounds/Frost.wav");
+                                    EnemyHP -= 5;
+                                }
+                                if (Cold) {
+                                    System.out.println("Cold");
+                                    SoundManager.playSFX("/sounds/Cold.wav");
+                                }
+                                if (Fire) {
+                                    System.out.println("Combustion");
+                                    SoundManager.playSFX("/sounds/Combustion.wav");
+                                    EnemyHP -= 10;
                                 }
                                 break;
                             case "2":
-                                takeDamage(enemy.attack / 0.5 + Buff);
+
+                                if (Lightning) {
+                                    System.out.println("Ionize");
+                                    SoundManager.playSFX("/sounds/Ionize.wav");
+
+                                } else {
+                                    takeDamage(enemy.attack / 0.5 + Buff);
+                                }
                                 SoundManager.playSFX("/sounds/Deffend.wav");
                                 System.out.println("You gained some Adrenaline");
                                 Adrenaline += 3;
+
+                                if (Wind) {
+                                    System.out.println("Abrasion");
+                                    SoundManager.playSFX("/sounds/Abrasion.wav");
+                                    EnemyHP -= 15;
+                                }
+                                if (FrostStatus) {
+                                    System.out.println("Frost " + Frost);
+                                    SoundManager.playSFX("/sounds/Frost.wav");
+                                    EnemyHP -= 5;
+                                }
+                                if (Cold) {
+                                    System.out.println("Cold");
+                                    SoundManager.playSFX("/sounds/Cold.wav");
+                                }
+                                if (Fire) {
+                                    System.out.println("Combustion");
+                                    SoundManager.playSFX("/sounds/Combustion.wav");
+                                    EnemyHP -= 10;
+                                }
+
                                 break;
 
                             case "3":
@@ -2660,17 +2907,50 @@ public class Main implements NativeKeyListener {
                                         p.health = 100;
                                     }
                                     typeWriter("You tried to heal, but you faltered");
-                                    SoundManager.playSFX("/sounds/Dammaged.wav");
-                                    takeDamage(enemy.attack / 0.5 + Buff);
+
+                                    if (Lightning) {
+                                        System.out.println("Ionize");
+                                        SoundManager.playSFX("/sounds/Ionize.wav");
+
+                                    } else {
+                                        SoundManager.playSFX("/sounds/Dammaged.wav");
+                                        takeDamage(enemy.attack / 0.5 + Buff);
+                                    }
 
                                     checkHealth();
                                     Adrenaline -= 5;
                                 } else {
                                     typeWriter("You don't have enough Adrenaline to heal");
-                                    SoundManager.playSFX("/sounds/Dammaged.wav");
-                                    takeDamage(enemy.attack / 0.6 + Buff);
+
+                                    if (Lightning) {
+                                        System.out.println("Ionize");
+                                        SoundManager.playSFX("/sounds/Ionize.wav");
+
+                                    } else {
+                                        SoundManager.playSFX("/sounds/Dammaged.wav");
+                                        takeDamage(enemy.attack / 0.6 + Buff);
+                                    }
 
                                     checkHealth();
+                                }
+
+                                if (Wind) {
+                                    System.out.println("Abrasion");
+                                    SoundManager.playSFX("/sounds/Abrasion.wav");
+                                    EnemyHP -= 15;
+                                }
+                                if (FrostStatus) {
+                                    System.out.println("Frost " + Frost);
+                                    SoundManager.playSFX("/sounds/Frost.wav");
+                                    EnemyHP -= 5;
+                                }
+                                if (Cold) {
+                                    System.out.println("Cold");
+                                    SoundManager.playSFX("/sounds/Cold.wav");
+                                }
+                                if (Fire) {
+                                    System.out.println("Combustion");
+                                    EnemyHP -= 10;
                                 }
 
 
@@ -2680,11 +2960,73 @@ public class Main implements NativeKeyListener {
                                 if (p.dodgeAccuracy == 1) {
                                     SoundManager.playSFX("/sounds/Dodge.wav");
                                     Adrenaline += 1.5;
+
+                                    if (Wind) {
+                                        System.out.println("Abrasion");
+                                        SoundManager.playSFX("/sounds/Abrasion.wav");
+                                        EnemyHP -= 15;
+                                    }
+                                    if (FrostStatus) {
+                                        System.out.println("Frost " + Frost);
+                                        SoundManager.playSFX("/sounds/Frost.wav");
+                                        EnemyHP -= 5;
+                                    }
+                                    if (Cold) {
+                                        System.out.println("Cold");
+                                        SoundManager.playSFX("/sounds/Cold.wav");
+                                    }
+                                    if (Fire) {
+                                        System.out.println("Combustion");
+                                        SoundManager.playSFX("/sounds/Combustion.wav");
+                                        EnemyHP -= 10;
+                                    }
+
                                 } else {
                                     typeWriter("You failed to dodge the attack");
-                                    takeDamage(enemy.attack / 0.6 + Buff);
+
+                                    if (Lightning) {
+                                        System.out.println("Ionize");
+                                        SoundManager.playSFX("/sounds/Ionize.wav");
+
+                                    } else {
+                                        takeDamage(enemy.attack / 0.6 + Buff);
+                                        SoundManager.playSFX("/sounds/Dammaged.wav");
+                                    }
+                                }
+                                break;
+
+                            case "5":
+                                SpellChoice = SpellBook();
+
+                                if (Lightning) {
+                                    System.out.println("Ionize");
+                                    SoundManager.playSFX("/sounds/Ionize.wav");
+
+                                } else {
+                                    takeDamage(enemy.attack / 0.5 + Buff);
                                     SoundManager.playSFX("/sounds/Dammaged.wav");
                                 }
+
+                                if (Wind) {
+                                    System.out.println("Abrasion");
+                                    SoundManager.playSFX("/sounds/Abrasion.wav");
+                                    EnemyHP -= 15;
+                                }
+                                if (FrostStatus) {
+                                    System.out.println("Frost " + Frost);
+                                    SoundManager.playSFX("/sounds/Frost.wav");
+                                    EnemyHP -= 5;
+                                }
+                                if (Cold) {
+                                    System.out.println("Cold");
+                                    SoundManager.playSFX("/sounds/Cold.wav");
+                                }
+                                if (Fire) {
+                                    System.out.println("Combustion");
+                                    SoundManager.playSFX("/sounds/Combustion.wav");
+                                    EnemyHP -= 10;
+                                }
+
                                 break;
 
 
@@ -2701,24 +3043,86 @@ public class Main implements NativeKeyListener {
                             Attack();
                             if (p.damageAccuracy == -1) {
 
-                                takeDamage(enemy.attack + Buff);
-                                SoundManager.playSFX("/sounds/Dammaged.wav");
+                                if (Lightning) {
+                                    System.out.println("Ionize");
+                                    SoundManager.playSFX("/sounds/Ionize.wav");
+                                } else {
+                                    takeDamage(enemy.attack + Buff);
+                                    SoundManager.playSFX("/sounds/Dammaged.wav");
+                                }
 
                             } else {
 
                                 EnemyHP -= p.damage;
 
                                 if (EnemyHP > 0) {
-                                    takeDamage(enemy.attack + Buff);
+
+                                    if (Lightning) {
+                                        System.out.println("Ionize");
+                                        SoundManager.playSFX("/sounds/Ionize.wav");
+
+                                    } else {
+                                        takeDamage(enemy.attack + Buff);
+                                        SoundManager.playSFX("/sounds/Attack.wav");
+                                    }
+
                                     Adrenaline += 1;
                                 }
-                                SoundManager.playSFX("/sounds/Attack.wav");
 
                             }
+
+                            if (Wind) {
+                                System.out.println("Abrasion");
+                                SoundManager.playSFX("/sounds/Abrasion.wav");
+                                EnemyHP -= 15;
+                            }
+                            if (FrostStatus) {
+                                System.out.println("Frost " + Frost);
+                                SoundManager.playSFX("/sounds/Frost.wav");
+                                EnemyHP -= 5;
+                            }
+                            if (Cold) {
+                                System.out.println("Cold");
+                                SoundManager.playSFX("/sounds/Cold.wav");
+                            }
+                            if (Fire) {
+                                System.out.println("Combustion");
+                                SoundManager.playSFX("/sounds/Combustion.wav");
+                                EnemyHP -= 10;
+                            }
+
                             break;
                         case "2":
-                            takeDamage(enemy.attack * 0.7 + Buff);
+
+                            if (Lightning) {
+                                System.out.println("Ionize");
+                                SoundManager.playSFX("/sounds/Ionize.wav");
+
+                            } else {
+                                takeDamage(enemy.attack * 0.7 + Buff);
+                            }
                             SoundManager.playSFX("/sounds/Deffend.wav");
+
+                            if (Wind) {
+                                System.out.println("Abrasion");
+                                SoundManager.playSFX("/sounds/Abrasion.wav");
+                                EnemyHP -= 15;
+                            }
+                            if (FrostStatus) {
+                                System.out.println("Frost " + Frost);
+                                SoundManager.playSFX("/sounds/Frost.wav");
+                                EnemyHP -= 5;
+                            }
+                            if (Cold) {
+                                System.out.println("Cold");
+                                SoundManager.playSFX("/sounds/Cold.wav");
+                            }
+                            if (Fire) {
+                                System.out.println("Combustion");
+                                SoundManager.playSFX("/sounds/Combustion.wav");
+                                EnemyHP -= 10;
+                            }
+
                             break;
                         case "3":
 
@@ -2733,8 +3137,36 @@ public class Main implements NativeKeyListener {
                                 Adrenaline -= 5;
                             } else {
                                 typeWriter("You don't have enough Adrenaline to heal");
-                                SoundManager.playSFX("/sounds/Dammaged.wav");
-                                takeDamage(enemy.attack / 0.6 + Buff);
+
+
+                                if (Lightning) {
+                                    System.out.println("Ionize");
+                                    SoundManager.playSFX("/sounds/Ionize.wav");
+
+                                } else {
+                                    SoundManager.playSFX("/sounds/Dammaged.wav");
+                                    takeDamage(enemy.attack / 0.6 + Buff);
+                                }
+
+                                if (Wind) {
+                                    System.out.println("Abrasion");
+                                    SoundManager.playSFX("/sounds/Abrasion.wav");
+                                    EnemyHP -= 15;
+                                }
+                                if (FrostStatus) {
+                                    System.out.println("Frost " + Frost);
+                                    SoundManager.playSFX("/sounds/Frost.wav");
+                                    EnemyHP -= 5;
+                                }
+                                if (Cold) {
+                                    System.out.println("Cold");
+                                    SoundManager.playSFX("/sounds/Cold.wav");
+                                }
+                                if (Fire) {
+                                    System.out.println("Combustion");
+                                    SoundManager.playSFX("/sounds/Combustion.wav");
+                                    EnemyHP -= 10;
+                                }
 
                                 checkHealth();
                             }
@@ -2749,10 +3181,11 @@ public class Main implements NativeKeyListener {
                             } else {
                                 typeWriter("You failed to dodge the attack");
 
-                                if (Lightning){
+                                if (Lightning) {
                                     System.out.println("Ionize");
+                                    SoundManager.playSFX("/sounds/Ionize.wav");
 
-                                }else {
+                                } else {
                                     takeDamage(enemy.attack + Buff);
                                     SoundManager.playSFX("/sounds/Dammaged.wav");
                                 }
@@ -2760,17 +3193,21 @@ public class Main implements NativeKeyListener {
 
                             if (Wind) {
                                 System.out.println("Abrasion");
+                                SoundManager.playSFX("/sounds/Abrasion.wav");
                                 EnemyHP -= 15;
                             }
-                            if (Ice) {
+                            if (FrostStatus) {
                                 System.out.println("Frost " + Frost);
+                                SoundManager.playSFX("/sounds/Frost.wav");
                                 EnemyHP -= 5;
                             }
                             if (Cold) {
                                 System.out.println("Cold");
+                                SoundManager.playSFX("/sounds/Cold.wav");
                             }
-                            if (Fire){
+                            if (Fire) {
                                 System.out.println("Combustion");
+                                SoundManager.playSFX("/sounds/Combustion.wav");
                                 EnemyHP -= 10;
                             }
 
@@ -2779,12 +3216,44 @@ public class Main implements NativeKeyListener {
                         case "5":
                             SpellChoice = SpellBook();
 
+                            if (Lightning) {
+                                System.out.println("Ionize");
+                                SoundManager.playSFX("/sounds/Ionize.wav");
+
+                            } else {
+                                takeDamage(enemy.attack + Buff);
+                                SoundManager.playSFX("/sounds/Dammaged.wav");
+                            }
+
+                            if (Wind) {
+                                System.out.println("Abrasion");
+                                SoundManager.playSFX("/sounds/Abrasion.wav");
+                                EnemyHP -= 15;
+                            }
+                            if (FrostStatus) {
+                                System.out.println("Frost " + Frost);
+                                SoundManager.playSFX("/sounds/Frost.wav");
+                                EnemyHP -= 5;
+                            }
+                            if (Cold) {
+                                System.out.println("Cold");
+                                SoundManager.playSFX("/sounds/Cold.wav");
+                            }
+                            if (Fire) {
+                                System.out.println("Combustion");
+                                SoundManager.playSFX("/sounds/Combustion.wav");
+                                EnemyHP -= 10;
+                            }
+
+                            break;
+
                     }
                 }
 
 
                 checkHealth();
                 Turn++;
+                Ice = false;
                 Cold = false;
                 Fire = false;
 
